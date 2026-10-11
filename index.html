@@ -83,6 +83,24 @@ input[type=range]{width:100%;accent-color:var(--oxygen)}
 .scroll svg{display:block}
 svg text{font-family:var(--f-data);font-size:11px;fill:var(--mute)}
 svg .lbl-strong{fill:var(--snow)}
+.hit{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.hit:focus{outline:none}
+.hit:focus-visible{stroke:var(--snow);stroke-width:1.5}
+.detail{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-top:10px;display:flex;flex-direction:column;gap:12px}
+.d-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.d-time{font-weight:700;font-size:15px}
+.d-time small{display:block;color:var(--mute);font-weight:400;font-size:12px}
+.d-score{display:flex;align-items:baseline;gap:8px}
+.d-score .num{font-size:30px;line-height:1;color:var(--oxygen)}
+.d-score .pill{margin:0}
+.meters{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px 18px}
+.meter{display:flex;flex-direction:column;gap:4px;min-width:0}
+.meter .lab{display:flex;justify-content:space-between;font-size:12px;color:var(--mute)}
+.meter .lab b{font-family:var(--f-data);font-weight:500;color:var(--snow)}
+.meter .bar{height:6px;background:var(--panel2);border-radius:3px;overflow:hidden}
+.meter .bar i{display:block;height:100%;border-radius:3px}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:0 24px;margin:0}
+.facts .row{padding:7px 0}
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--mute);margin-top:8px}
 .legend i{display:inline-block;width:12px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 
@@ -147,8 +165,9 @@ footer a{color:var(--snow)}
 
   <section>
     <h2>48時間の見込み</h2>
-    <p class="sub">1時間ごとのスコア。濃い帯が暗い時間帯、下段は雲の多さ。横にスクロールできます。</p>
-    <div class="scroll" id="tlScroll"><svg id="timeline" role="img" aria-label="48時間のオーロラ見込みスコア"></svg></div>
+    <p class="sub">1時間ごとのスコア。濃い帯が暗い時間帯、下段は雲の多さ。棒をタップすると、その時間の数値が下に出ます。</p>
+    <div class="scroll" id="tlScroll"><svg id="timeline" aria-label="48時間のオーロラ見込みスコア"></svg></div>
+    <div class="detail" id="detail" aria-live="polite"></div>
     <div class="legend">
       <span><i style="background:var(--oxygen)"></i>見込みスコア</span>
       <span><i style="background:var(--panel2);border:1px solid var(--line)"></i>暗い時間帯</span>
@@ -211,7 +230,8 @@ const PRESETS=[
 ];
 
 const S={loc:PRESETS[0],kp:null,sw:null,ovGrid:null,ovTime:null,cloud:null,
-  manual:{kp:3,cloud:30},status:{kp:"loading",sw:"loading",ov:"loading",cl:"loading"},updated:null,hours:[],intensity:.3};
+  manual:{kp:3,cloud:30},status:{kp:"loading",sw:"loading",ov:"loading",cl:"loading"},updated:null,hours:[],intensity:.3,
+  sel:null,bestI:0};
 
 /* ---------- storage (per-viewer convenience only) ---------- */
 function load(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}
@@ -346,16 +366,17 @@ function buildHours(){
   for(let i=0;i<48;i++){
     const t=start+i*HOUR, tm=t+HOUR/2, d=days(tm);
     const sAlt=altOf(sunRaDec(d),d,lat,lon), mAlt=altOf(moonRaDec(d),d,lat,lon), ill=moonIllum(d);
-    let kp=kpAt(tm).kp;
+    const kr=kpAt(tm); let kp=kr.kp, boost=0;
     if(i<2&&S.sw&&Number.isFinite(S.sw.bz)&&S.sw.bz<-3){
       const sp=Number.isFinite(S.sw.speed)?S.sw.speed:400;
-      kp=Math.min(9,kp+Math.min(1.5,(-S.sw.bz-3)/6*Math.max(0.7,sp/450)));
+      const k2=Math.min(9,kp+Math.min(1.5,(-S.sw.bz-3)/6*Math.max(0.7,sp/450)));
+      boost=k2-kp; kp=k2;
     }
     const act=0.75*sig(2*(kp-G.kpH-0.3))+0.25*sig(2*(kp-G.kpO));
     const dark=clamp((-sAlt-5)/11,0,1);
     const cl=cloudAt(tm), clear=1-clamp(cl.eff,0,100)/100;
     const moonF=mAlt>0?1-0.3*ill*Math.min(1,mAlt/20):1;
-    out.push({t,kp,act,dark,clear,cloud:cl.eff,sAlt,mAlt,ill,moonF,score:100*act*dark*clear*moonF});
+    out.push({t,kp,kpKind:kr.kind,boost,act,dark,clear,cloud:cl.eff,cloudTotal:cl.total,sAlt,mAlt,ill,moonF,score:100*act*dark*clear*moonF});
   }
   return out;
 }
@@ -385,11 +406,12 @@ function renderHero(H){
     $("#nightLabel").textContent="48時間以内";
     $("#score").textContent="0"; $("#verdict").textContent="空が暗くなりません";
     $("#window").textContent="白夜や薄明が続く時期です。";
-    $("#reason").textContent=""; hero.dataset.level="low"; S.intensity=.12; return;
+    $("#reason").textContent=""; hero.dataset.level="low"; S.intensity=.12; S.bestI=0; return;
   }
   let i1=i0; while(i1+1<H.length&&H[i1+1].dark>0.05) i1++;
   const night=H.slice(i0,i1+1);
   let bi=i0; for(let i=i0;i<=i1;i++) if(H[i].score>H[bi].score) bi=i;
+  S.bestI=bi;
   const best=H[bi], thr=best.score*0.7; let a=bi,b=bi;
   while(a-1>=i0&&H[a-1].score>=thr) a--; while(b+1<=i1&&H[b+1].score>=thr) b++;
   const endT=H[i1].t+HOUR;
@@ -411,17 +433,23 @@ function renderHero(H){
 /* ---------- render: timeline ---------- */
 const SVGNS="http://www.w3.org/2000/svg";
 function svgEl(tag,attrs,parent,text){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;parent&&parent.appendChild(e);return e}
+function selIndex(H){
+  let i=S.sel!=null?H.findIndex(h=>h.t===S.sel):-1;
+  if(i<0) i=Math.min(S.bestI||0,H.length-1);
+  return i;
+}
 function renderTimeline(H){
   const svg=$("#timeline"); svg.innerHTML="";
   const bw=16, x0=40, W=x0+H.length*bw+16, top=22, ch=130, base=top+ch, cy=base+10, Ht=base+56;
   svg.setAttribute("width",W); svg.setAttribute("height",Ht); svg.setAttribute("viewBox","0 0 "+W+" "+Ht);
   H.forEach((h,i)=>{ if(h.dark>0.05) svgEl("rect",{x:x0+i*bw,y:top-6,width:bw,height:ch+6,fill:"#16213b","fill-opacity":(0.35+0.65*h.dark).toFixed(2)},svg); });
+  const si=selIndex(H);
+  svgEl("rect",{x:x0+si*bw+0.5,y:top-8,width:bw-1,height:cy+14-(top-8),rx:3,fill:"#5ef0a6","fill-opacity":0.10,stroke:"#5ef0a6","stroke-opacity":0.7},svg);
   [25,50,75,100].forEach(v=>{const y=base-v/100*ch; svgEl("line",{x1:x0,x2:W-16,y1:y,y2:y,stroke:"#26334f","stroke-width":1},svg); svgEl("text",{x:x0-6,y:y+4,"text-anchor":"end"},svg,v);});
   svgEl("line",{x1:x0,x2:W-16,y1:base,y2:base,stroke:"#3a4866"},svg);
   H.forEach((h,i)=>{
     const v=Math.max(h.score,0.6), hgt=v/100*ch;
-    const r=svgEl("rect",{x:x0+i*bw+3,y:base-hgt,width:bw-6,height:hgt,rx:2,fill:scoreColor(h.score)},svg);
-    svgEl("title",{},r,md(h.t)+" "+hm(h.t)+"　スコア "+Math.round(h.score)+"／Kp "+h.kp.toFixed(1)+"／雲 "+Math.round(h.cloud)+"%／太陽 "+h.sAlt.toFixed(0)+"°");
+    svgEl("rect",{x:x0+i*bw+3,y:base-hgt,width:bw-6,height:hgt,rx:2,fill:scoreColor(h.score)},svg);
     svgEl("rect",{x:x0+i*bw+1,y:cy,width:bw-2,height:12,rx:2,fill:"#8f9cb5","fill-opacity":(clamp(h.cloud,0,100)/100*0.85+0.05).toFixed(2)},svg);
     const hr=Number(hh(h.t));
     if(hr%3===0){ svgEl("text",{x:x0+i*bw+bw/2,y:cy+28,"text-anchor":"middle",class:hr===0?"lbl-strong":""},svg,hr); }
@@ -431,6 +459,53 @@ function renderTimeline(H){
   const nx=x0+((Date.now()%HOUR)/HOUR)*bw;
   svgEl("line",{x1:nx,x2:nx,y1:top-10,y2:base,stroke:"#e8edf5","stroke-width":1.5},svg);
   svgEl("text",{x:nx+4,y:top-10,class:"lbl-strong"},svg,"いま");
+  H.forEach((h,i)=>{
+    const lbl=md(h.t)+" "+hm(h.t)+" スコア "+Math.round(h.score);
+    const r=svgEl("rect",{x:x0+i*bw,y:0,width:bw,height:Ht,fill:"#000","fill-opacity":0,"pointer-events":"all",
+      class:"hit",tabindex:0,role:"button","data-i":i,"aria-label":lbl,"aria-pressed":i===si?"true":"false"},svg);
+    svgEl("title",{},r,lbl);
+  });
+}
+function selectHour(i,refocus){
+  const H=S.hours; if(!H[i]) return;
+  S.sel=H[i].t; renderTimeline(H); renderDetail(H);
+  if(refocus){const r=$('#timeline .hit[data-i="'+i+'"]'); if(r) r.focus();}
+}
+const tl=$("#timeline");
+tl.addEventListener("click",e=>{const r=e.target.closest&&e.target.closest(".hit"); if(r) selectHour(Number(r.dataset.i),false);});
+tl.addEventListener("keydown",e=>{
+  const r=e.target.closest&&e.target.closest(".hit"); if(!r) return;
+  const i=Number(r.dataset.i);
+  if(e.key==="Enter"||e.key===" "){e.preventDefault();selectHour(i,true);}
+  else if(e.key==="ArrowRight"){e.preventDefault();selectHour(Math.min(i+1,S.hours.length-1),true);}
+  else if(e.key==="ArrowLeft"){e.preventDefault();selectHour(Math.max(i-1,0),true);}
+});
+
+/* ---------- render: selected hour detail ---------- */
+function meter(label,v,note){
+  const p=Math.round(clamp(v,0,1)*100);
+  return '<div class="meter"><div class="lab"><span>'+label+'</span><b>'+p+'%</b></div><div class="bar"><i style="width:'+p+'%;background:'+scoreColor(p)+'"></i></div>'+(note?'<div class="lab"><span>'+note+'</span></div>':'')+'</div>';
+}
+function renderDetail(H){
+  const i=selIndex(H), h=H[i], G=geo(); if(!h) return;
+  const sc=Math.round(h.score), [v,lvl]=verdict(sc);
+  const pc={great:"good",good:"good",maybe:"warn",low:""}[lvl];
+  const kindJ={observed:"観測",estimated:"推定",predicted:"予報",manual:"仮定"}[h.kpKind]||"予報";
+  const twi=h.sAlt<=-18?"天文薄明より暗い":h.sAlt<=-12?"航海薄明":h.sAlt<=-6?"市民薄明より暗い":h.sAlt<0?"薄明":"昼間";
+  const fact=(k,val,sub)=>'<div class="row"><span class="k">'+k+'</span><span class="v">'+val+(sub?"<small>"+sub+"</small>":"")+'</span></div>';
+  $("#detail").innerHTML=
+    '<div class="d-head"><div class="d-time">'+esc(md(h.t))+' '+hm(h.t)+'〜'+hm(h.t+HOUR)+
+      '<small>'+(i===0?"いまの時間帯":i===S.bestI&&h.dark>0.05?"今夜のねらい目":"")+'</small></div>'+
+      '<div class="d-score"><span class="num">'+sc+'</span><span class="pill '+pc+'">'+v+'</span></div></div>'+
+    '<div class="meters">'+
+      meter("磁気活動",h.act,"")+meter("晴れ",h.clear,"")+meter("暗さ",h.dark,"")+meter("月明かりの影響の少なさ",h.moonF,"")+
+    '</div>'+
+    '<div class="facts">'+
+      fact("Kp指数",h.kp.toFixed(1),kindJ+"値"+(h.boost>0.05?"（Bz南向きで +"+h.boost.toFixed(1)+" 補正）":"")+"・目安 "+G.kpH.toFixed(1)+" 以上")+
+      fact("雲量",Math.round(h.cloud)+"%",S.cloud?"実効値（全雲量 "+Math.round(h.cloudTotal)+"%）":"仮定値")+
+      fact("太陽高度",h.sAlt.toFixed(1)+"°",twi)+
+      fact("月",h.mAlt>0?"高度 "+h.mAlt.toFixed(0)+"°":"沈んでいる","輝面 "+Math.round(h.ill*100)+"%")+
+    '</div>';
 }
 
 /* ---------- render: now ---------- */
@@ -499,7 +574,7 @@ function renderStatus(){
 }
 function renderAll(){
   const H=buildHours(); S.hours=H;
-  renderHero(H); renderTimeline(H); renderNow(H); renderKp(); renderStatus();
+  renderHero(H); renderTimeline(H); renderDetail(H); renderNow(H); renderKp(); renderStatus();
 }
 
 /* ---------- loading ---------- */
@@ -531,7 +606,7 @@ function fillSelect(){
   sel.innerHTML=h; sel.value=S.loc.id;
 }
 function setLoc(loc){
-  S.loc=loc; S.cloud=null; save("aurora-loc",loc); fillSelect(); renderAll(); refresh(false);
+  S.loc=loc; S.cloud=null; S.sel=null; save("aurora-loc",loc); fillSelect(); renderAll(); refresh(false);
 }
 function customLoc(lat,lon){return {id:"custom",name:"指定地点",lat,lon,tz:null}}
 $("#loc").addEventListener("change",e=>{
