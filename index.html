@@ -110,7 +110,13 @@ svg .lbl-strong{fill:var(--snow)}
 .map-now{margin:10px 0 0;font-size:14px}
 .map-now b{font-weight:700}
 .map-wrap{position:relative;margin:10px auto 0;max-width:560px}
-#map{display:block;width:100%;aspect-ratio:1/1;max-width:100%;border-radius:14px;background:var(--panel);border:1px solid var(--line);touch-action:manipulation;cursor:crosshair}
+#map{display:block;width:100%;aspect-ratio:1/1;max-width:100%;border-radius:14px;background:var(--panel);border:1px solid var(--line);touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none}
+#map:active{cursor:grabbing}
+.map-ctl{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px}
+.map-ctl button{width:38px;height:38px;display:grid;place-items:center;border-radius:10px;border:1px solid var(--line);background:rgba(16,26,48,.88);color:var(--snow);cursor:pointer;padding:0}
+.map-ctl button:hover{border-color:var(--oxygen)}
+.map-ctl svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.map-hint{font-size:12px;color:var(--mute);margin:8px 0 0;text-align:center}
 .map-src{position:absolute;left:10px;bottom:10px;margin:0;font-size:11px;color:var(--snow);background:rgba(10,17,34,.78);padding:2px 9px;border-radius:999px;max-width:calc(100% - 20px)}
 .ramp{display:inline-flex;align-items:center;gap:6px}
 .legend .ramp i{width:96px;height:8px;border-radius:4px;margin:0;background:linear-gradient(90deg,rgba(94,240,166,.35),#5ef0a6 30%,#f2e14e 62%,#ff5a5a)}
@@ -209,7 +215,15 @@ footer a{color:var(--snow)}
     <div class="map-wrap">
       <canvas id="map" aria-label="オーロラ出現確率の地図。タップで地点の状況を表示"></canvas>
       <p class="map-src" id="mapSrc"></p>
+      <div class="map-ctl" role="group" aria-label="地図の操作">
+        <button type="button" data-z="in" aria-label="拡大" title="拡大"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+        <button type="button" data-z="out" aria-label="縮小" title="縮小"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+        <button type="button" data-z="rl" aria-label="左に回転" title="左に回転"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4h4"/></svg></button>
+        <button type="button" data-z="rr" aria-label="右に回転" title="右に回転"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v4h-4"/></svg></button>
+        <button type="button" data-z="home" aria-label="観測地を中心に" title="観測地を中心に"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></button>
+      </div>
     </div>
+    <p class="map-hint">ドラッグで移動・ピンチ（PCはホイール）で拡大縮小・2本指でひねると回転・ダブルタップで拡大</p>
     <div class="legend">
       <span class="ramp"><i></i><span class="mono">10→50→90%</span></span>
       <span><span class="dash"></span>地平線に見える目安ライン</span>
@@ -653,7 +667,7 @@ const SPOTS=[
   ["invercargill","インバーカーギル","ニュージーランド",-46.41,168.35],["ushuaia","ウシュアイア","アルゼンチン",-54.80,-68.30]
 ].map(a=>({id:a[0],name:a[1],area:a[2],lat:a[3],lon:a[4]}));
 
-const M={mode:"auto",tap:null,spotCloud:null,spotT:0,ovVer:0,mg:null,rkey:"",frame:null,spotPx:[],evals:[],showAll:false};
+const M={mode:"auto",v:null,free:false,dragging:false,tap:null,spotCloud:null,spotT:0,ovVer:0,mg:null,rkey:"",frame:null,spotPx:[],evals:[],showAll:false};
 const mapCv=$("#map"), mctx=mapCv.getContext("2d"), rcv=document.createElement("canvas"), rctx=rcv.getContext("2d");
 
 const PL=rad(80.8), PN=rad(-72.6);
@@ -702,11 +716,84 @@ function evalPoint(lat,lon,cloud,grid){
 function hemi(){ if(M.mode==="north") return 1; if(M.mode==="south") return -1; return S.loc.lat>=0?1:-1; }
 function proj(lat,lon,h,lon0){ const r=h>0?90-lat:90+lat, a=rad(lon-lon0); return [(h>0?1:-1)*r*Math.sin(a), r*Math.cos(a)]; }
 function unproj(x,y,h,lon0){ const r=Math.hypot(x,y), a=Math.atan2(h>0?x:-x,y); return {lat:h>0?90-r:r-90, lon:((lon0+deg(a))%360+540)%360-180}; }
-function mapFrame(){
+function presetView(){
   const h=hemi(), lon0=S.loc.lon;
-  if(M.mode==="local"){ const p=proj(S.loc.lat,S.loc.lon,h,lon0); return {h,lon0,cx:p[0],cy:p[1]-7,half:22,clip:0}; }
-  return {h,lon0,cx:0,cy:0,half:61,clip:60};
+  if(M.mode==="local"){ const p=proj(S.loc.lat,S.loc.lon,h,lon0); return {h,lon0,cx:p[0],cy:p[1]-7,half:22}; }
+  return {h,lon0,cx:0,cy:0,half:61};
 }
+function mapFrame(){ if(!M.v) M.v=presetView(); return Object.assign({clip:91},M.v); }
+
+/* gestures: drag = pan, pinch/wheel = zoom, two-finger twist = rotate around the pole */
+function clampView(){
+  const v=M.v; v.half=clamp(v.half,4,85);
+  const r=Math.hypot(v.cx,v.cy); if(r>100){v.cx*=100/r;v.cy*=100/r;}
+  v.lon0=((v.lon0%360)+540)%360-180;
+}
+function geoAt(p,W){ const v=M.v; return unproj(v.cx+(p.x/W*2-1)*v.half, v.cy+(p.y/W*2-1)*v.half, v.h, v.lon0); }
+function anchorTo(g,p,W){
+  const v=M.v; v.half=clamp(v.half,4,85);
+  const q=proj(g.lat,g.lon,v.h,v.lon0);
+  v.cx=q[0]-(p.x/W*2-1)*v.half; v.cy=q[1]-(p.y/W*2-1)*v.half; clampView();
+}
+let rafMap=false;
+function reqMap(){ if(rafMap) return; rafMap=true; requestAnimationFrame(()=>{rafMap=false; renderMap();}); }
+const ptrs=new Map(); let gest=null, lastTap=null;
+function cpos(e){ const r=mapCv.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top,W:r.width}; }
+function snap(){
+  const a=[...ptrs.values()];
+  if(a.length>=2){ const p=a[0],q=a[1]; return {n:2,mid:{x:(p.x+q.x)/2,y:(p.y+q.y)/2},dist:Math.max(1,Math.hypot(q.x-p.x,q.y-p.y)),ang:Math.atan2(q.y-p.y,q.x-p.x),W:p.W}; }
+  return {n:1,mid:{x:a[0].x,y:a[0].y},dist:1,ang:0,W:a[0].W};
+}
+mapCv.addEventListener("pointerdown",e=>{
+  mapFrame(); try{mapCv.setPointerCapture(e.pointerId);}catch(err){}
+  const p=cpos(e); ptrs.set(e.pointerId,p);
+  if(ptrs.size===1) gest={moved:false,start:p,t:Date.now(),prev:snap()}; else if(gest){gest.prev=snap(); gest.moved=true;}
+});
+mapCv.addEventListener("pointermove",e=>{
+  if(!ptrs.has(e.pointerId)||!gest) return;
+  const p=cpos(e); ptrs.set(e.pointerId,p);
+  const cur=snap(), prev=gest.prev;
+  if(cur.n!==prev.n){gest.prev=cur;return;}
+  if(!gest.moved&&Math.hypot(p.x-gest.start.x,p.y-gest.start.y)<6) return;
+  gest.moved=true; M.free=true; M.dragging=true;
+  const g=geoAt(prev.mid,cur.W);
+  if(cur.n===2){
+    M.v.half*=prev.dist/cur.dist;
+    let d=cur.ang-prev.ang; if(d>Math.PI) d-=2*Math.PI; if(d<-Math.PI) d+=2*Math.PI;
+    M.v.lon0+=M.v.h*deg(d);
+  }
+  anchorTo(g,cur.mid,cur.W); gest.prev=cur; reqMap();
+});
+function endPtr(e){
+  if(!ptrs.has(e.pointerId)) return;
+  const p=ptrs.get(e.pointerId); ptrs.delete(e.pointerId);
+  if(ptrs.size>0){ if(gest) gest.prev=snap(); return; }
+  const wasTap=gest&&!gest.moved&&Date.now()-gest.t<600&&e.type!=="pointercancel";
+  M.dragging=false; gest=null;
+  if(wasTap){
+    if(lastTap&&Date.now()-lastTap.t<320&&Math.hypot(p.x-lastTap.p.x,p.y-lastTap.p.y)<30){
+      const g=geoAt(p,p.W); M.v.half/=2; anchorTo(g,p,p.W); M.free=true; lastTap=null; renderMap(); return;
+    }
+    lastTap={t:Date.now(),p}; handleTap(p);
+  } else renderMap();
+}
+mapCv.addEventListener("pointerup",endPtr);
+mapCv.addEventListener("pointercancel",endPtr);
+mapCv.addEventListener("wheel",e=>{
+  e.preventDefault(); mapFrame();
+  const p=cpos(e), g=geoAt(p,p.W);
+  M.v.half*=Math.exp(clamp(e.deltaY,-120,120)*0.0018); anchorTo(g,p,p.W); M.free=true; reqMap();
+},{passive:false});
+document.querySelector(".map-ctl").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-z]"); if(!b) return;
+  mapFrame(); const W=mapCv.clientWidth, c={x:W/2,y:W/2}, z=b.dataset.z;
+  if(z==="home"){ anchorTo({lat:S.loc.lat,lon:S.loc.lon},c,W); }
+  else { const g=geoAt(c,W);
+    if(z==="in") M.v.half/=1.6; else if(z==="out") M.v.half*=1.6;
+    else M.v.lon0+=M.v.h*(z==="rr"?30:-30);
+    anchorTo(g,c,W); }
+  M.free=true; renderMap();
+});
 
 function buildRaster(F,grid,N){
   rcv.width=N; rcv.height=N;
@@ -752,14 +839,14 @@ function renderMap(){
     c.beginPath(); r.pts.forEach((p,i)=>{const q=px(p[1],p[0]); i?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1]);});
     c.closePath(); c.fill(); c.stroke();
   }
-  const N=Math.max(120,Math.min(320,Math.round(W*dpr*0.55)));
+  const N=M.dragging?120:Math.max(120,Math.min(320,Math.round(W*dpr*0.55)));
   const key=[F.h,F.lon0.toFixed(2),F.cx.toFixed(2),F.cy.toFixed(2),F.half,N,A.key,Math.floor(Date.now()/120000)].join("|");
   if(key!==M.rkey){buildRaster(F,A.grid,N); M.rkey=key;}
   c.imageSmoothingEnabled=true; c.drawImage(rcv,0,0,W,W);
   // graticule
   c.strokeStyle="rgba(143,156,181,.2)"; c.lineWidth=1; c.fillStyle="rgba(143,156,181,.75)"; c.font="10px 'IBM Plex Mono',ui-monospace,monospace";
-  for(let L=30;L<=80;L+=10){ const r=(90-L)*s; c.beginPath(); c.arc(pole[0],pole[1],r,0,Math.PI*2); c.stroke(); if(L<=70) c.fillText((F.h>0?"":"−")+L+"°",pole[0]+3,pole[1]-r-3); }
-  for(let k=0;k<12;k++){ const a=k*Math.PI/6, r=(F.clip||120)*s; c.beginPath(); c.moveTo(pole[0],pole[1]); c.lineTo(pole[0]+Math.sin(a)*r,pole[1]+Math.cos(a)*r); c.stroke(); }
+  for(let L=10;L<=80;L+=10){ const r=(90-L)*s; c.beginPath(); c.arc(pole[0],pole[1],r,0,Math.PI*2); c.stroke(); if(L<=70&&(F.half<40||L>=30)) c.fillText((F.h>0?"":"−")+L+"°",pole[0]+3,pole[1]-r-3); }
+  for(let k=0;k<12;k++){ const a=k*Math.PI/6, r=90*s; c.beginPath(); c.moveTo(pole[0],pole[1]); c.lineTo(pole[0]+Math.sin(a)*r,pole[1]+Math.cos(a)*r); c.stroke(); }
   // view line
   c.strokeStyle="#b98cff"; c.lineWidth=1.6; c.setLineDash([5,4]); c.beginPath(); let pen=false;
   for(let lon=-180;lon<=180;lon+=2){
@@ -782,7 +869,7 @@ function renderMap(){
     if(k==="vis"||k==="vish"){ c.fillStyle="rgba(94,240,166,.25)"; c.arc(q[0],q[1],9,0,Math.PI*2); c.fill(); c.beginPath(); c.fillStyle="#5ef0a6"; c.arc(q[0],q[1],4.5,0,Math.PI*2); c.fill(); }
     else if(k==="none"){ c.fillStyle="rgba(143,156,181,.75)"; c.arc(q[0],q[1],2.5,0,Math.PI*2); c.fill(); }
     else { c.strokeStyle="#f2c14e"; c.lineWidth=2; c.arc(q[0],q[1],4.5,0,Math.PI*2); c.stroke(); }
-    if((k==="vis"||k==="vish"||M.mode==="local")&&Math.hypot(q[0]-o[0],q[1]-o[1])>6){
+    if((k==="vis"||k==="vish"||F.half<30)&&Math.hypot(q[0]-o[0],q[1]-o[1])>6){
       const w=c.measureText(sp.name).width, r=[q[0]+6,q[1]-17,q[0]+8+w,q[1]-3];
       if(free(r)){ taken.push(r); labels.push([sp.name,q[0]+7,q[1]-6]); }
     }
@@ -802,7 +889,7 @@ function renderMap(){
     ?"OVATION 出現確率"+(isFinite(S.ovTime)?"・予測時刻 "+hm(S.ovTime):"")
     :"OVATIONを取得できないため、Kp "+(S.hours[0]?S.hours[0].kp.toFixed(1):"")+" から推定";
   document.querySelectorAll(".seg button").forEach(b=>{
-    const on=M.mode==="local"?b.dataset.m==="local":b.dataset.m===(F.h>0?"north":"south");
+    const on=!M.free&&(M.mode==="local"?b.dataset.m==="local":b.dataset.m===(F.h>0?"north":"south"));
     b.setAttribute("aria-pressed",on?"true":"false");
   });
 }
@@ -853,9 +940,9 @@ async function fetchSpotClouds(){
   if(arr.length!==SPOTS.length) throw new Error("length");
   return arr.map(o=>{const c=(o&&o.current)||{};return effCloud(num(c.cloud_cover_low),num(c.cloud_cover_mid),num(c.cloud_cover_high),num(c.cloud_cover));});
 }
-mapCv.addEventListener("click",e=>{
+function handleTap(pt){
   const F=M.frame; if(!F) return;
-  const r=mapCv.getBoundingClientRect(), W=r.width, x0=e.clientX-r.left, y0=e.clientY-r.top;
+  const W=pt.W, x0=pt.x, y0=pt.y;
   let hit=null, bd=16; for(const p of M.spotPx){const d=Math.hypot(p.x-x0,p.y-y0); if(d<bd){bd=d;hit=p;}}
   const x=F.cx+(x0/W*2-1)*F.half, y=F.cy+(y0/W*2-1)*F.half;
   if(!hit&&F.clip&&Math.hypot(x,y)>F.clip) return;
@@ -864,7 +951,7 @@ mapCv.addEventListener("click",e=>{
   else { const g=unproj(x,y,F.h,F.lon0); t={lat:g.lat,lon:g.lon,name:null,cloud:undefined}; }
   M.tap=t; renderMap(); renderTap();
   if(t.cloud===undefined) fetchPointCloud(t.lat,t.lon).then(v=>{t.cloud=v;},()=>{t.cloud=null;}).then(()=>{ if(M.tap===t) renderTap(); });
-});
+}
 $("#tapInfo").addEventListener("click",e=>{
   if(!e.target.closest("#tapGo")||!M.tap) return;
   const t=M.tap, loc=t.name?{id:"tap",name:t.name,lat:t.lat,lon:t.lon,tz:null}:customLoc(t.lat,t.lon);
@@ -877,7 +964,7 @@ $("#spots").addEventListener("click",e=>{
 });
 $("#spotMore").addEventListener("click",()=>{M.showAll=!M.showAll; renderSpots();});
 document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{
-  M.mode=b.dataset.m; save("aurora-map",M.mode==="local"?"local":"auto"); M.tap=null; renderMap(); renderTap();
+  M.mode=b.dataset.m; M.v=null; M.free=false; save("aurora-map",M.mode==="local"?"local":"auto"); M.tap=null; renderMap(); renderTap();
 }));
 if(window.ResizeObserver) new ResizeObserver(()=>renderMap()).observe(mapCv); else window.addEventListener("resize",renderMap);
 
@@ -927,7 +1014,7 @@ function fillSelect(){
   sel.innerHTML=h; sel.value=S.loc.id;
 }
 function setLoc(loc){
-  S.loc=loc; S.cloud=null; S.sel=null; M.tap=null; if(M.mode!=="local") M.mode="auto"; save("aurora-loc",loc); fillSelect(); renderAll(); refresh(false);
+  S.loc=loc; S.cloud=null; S.sel=null; M.tap=null; M.v=null; M.free=false; if(M.mode!=="local") M.mode="auto"; save("aurora-loc",loc); fillSelect(); renderAll(); refresh(false);
 }
 function customLoc(lat,lon){return {id:"custom",name:"指定地点",lat,lon,tz:null}}
 $("#loc").addEventListener("change",e=>{
