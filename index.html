@@ -115,6 +115,11 @@ svg .lbl-strong{fill:var(--snow)}
 .map-ctl{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px}
 .map-ctl button{width:38px;height:38px;display:grid;place-items:center;border-radius:10px;border:1px solid var(--line);background:rgba(16,26,48,.88);color:var(--snow);cursor:pointer;padding:0}
 .map-ctl button:hover{border-color:var(--oxygen)}
+.map-ctl button[aria-pressed="true"]{border-color:var(--oxygen);color:var(--oxygen)}
+.near-ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+.rank{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--snow);color:var(--night);font-family:var(--f-data);font-size:11px;font-weight:500;margin-right:8px;vertical-align:1px}
+.spot .acts{display:flex;gap:6px;justify-self:end;flex-wrap:wrap;justify-content:flex-end}
+a.btn{text-decoration:none;display:inline-block;color:var(--snow)}
 .map-ctl svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .map-hint{font-size:12px;color:var(--mute);margin:8px 0 0;text-align:center}
 .map-src{position:absolute;left:10px;bottom:10px;margin:0;font-size:11px;color:var(--snow);background:rgba(10,17,34,.78);padding:2px 9px;border-radius:999px;max-width:calc(100% - 20px)}
@@ -205,7 +210,7 @@ footer a{color:var(--snow)}
         <h2>いま、どこで見えている？</h2>
         <p class="sub" id="mapSub">オーロラの出現確率に昼夜を重ねた地図です。タップした地点の状況が下に出ます。</p>
       </div>
-      <div class="seg" role="group" aria-label="地図の範囲">
+      <div class="seg" id="mapMode" role="group" aria-label="地図の範囲">
         <button type="button" data-m="north" aria-pressed="false">北半球</button>
         <button type="button" data-m="south" aria-pressed="false">南半球</button>
         <button type="button" data-m="local" aria-pressed="false">観測地まわり</button>
@@ -221,6 +226,7 @@ footer a{color:var(--snow)}
         <button type="button" data-z="rl" aria-label="左に回転" title="左に回転"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4h4"/></svg></button>
         <button type="button" data-z="rr" aria-label="右に回転" title="右に回転"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v4h-4"/></svg></button>
         <button type="button" data-z="home" aria-label="観測地を中心に" title="観測地を中心に"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></button>
+        <button type="button" data-z="cloud" aria-label="雲の表示" title="雲の表示" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .4-7.98A6 6 0 0 0 5.9 9.3 4.4 4.4 0 0 0 7 18z"/></svg></button>
       </div>
     </div>
     <p class="map-hint">ドラッグで移動・ピンチ（PCはホイール）で拡大縮小・2本指でひねると回転・ダブルタップで拡大</p>
@@ -230,8 +236,30 @@ footer a{color:var(--snow)}
       <span><i style="background:#c9d3e6;opacity:.45"></i>昼の地域</span>
       <span><span class="ringdot" style="background:var(--oxygen)"></span>見えていそうな地点</span>
       <span><span class="ringdot" style="border:2px solid var(--warn)"></span>出ているが曇り・明るい</span>
+      <span><i style="background:#d6dce8;opacity:.6"></i>雲（白いほど厚い）</span>
+      <span><span class="ringdot" style="background:var(--snow);color:var(--night);font-size:8px;text-align:center;line-height:10px;font-weight:700">1</span>近くの候補地</span>
     </div>
     <div class="tapinfo" id="tapInfo" hidden></div>
+
+    <h3 class="h3">近くで見えやすい場所</h3>
+    <p class="sub" id="nearSub"></p>
+    <div class="near-ctl">
+      <div class="seg" id="nearTime" role="group" aria-label="時刻">
+        <button type="button" data-k="0" aria-pressed="true">いま</button>
+        <button type="button" data-k="1" aria-pressed="false">1時間後</button>
+        <button type="button" data-k="2" aria-pressed="false">2時間後</button>
+        <button type="button" data-k="3" aria-pressed="false">3時間後</button>
+      </div>
+      <div class="seg" id="nearRad" role="group" aria-label="探す範囲">
+        <button type="button" data-r="50" aria-pressed="false">〜50km</button>
+        <button type="button" data-r="100" aria-pressed="true">〜100km</button>
+        <button type="button" data-r="200" aria-pressed="false">〜200km</button>
+      </div>
+      <button class="btn sm" id="nearHere" type="button">地図の中心で探す</button>
+    </div>
+    <p class="map-now" id="nearBase"></p>
+    <div class="spots" id="nearList"></div>
+
     <h3 class="h3">いま見えていそうな場所</h3>
     <p class="sub" id="spotSub"></p>
     <div class="spots" id="spots"></div>
@@ -276,6 +304,7 @@ footer a{color:var(--snow)}
       <li><b>月明かり</b>：月が出ていて明るいほど少し減点します。</li>
     </ul>
     <p>地図の「いま見えていそう」は別の判定です。OVATIONの出現確率（真上、または極側8°以内の値の6割）が10%以上あり、太陽が十分沈んでいて、現在の雲量が多すぎない地点を表示しています。OVATIONを取得できないときは、Kpから推定したオーロラ帯で代用します。</p>
+    <p>「近くで見えやすい場所」は、基準点のまわり約±220kmを約44km間隔で区切った121地点の雲量予報（Open-Meteo、1時間ごと）を使います。陸地の地点だけを対象に、「出現確率 × 暗さ × 晴れの割合」を見える度（0〜100）として比べます。陸地の判定は簡易的なため、海岸近くや湖の多い地域では誤差があります。</p>
     <p>4つを掛け合わせて0〜100にしています。オーロラは数十分単位で急に変わるため、あくまで出かける判断の目安です。</p>
   </details>
 
@@ -667,7 +696,7 @@ const SPOTS=[
   ["invercargill","インバーカーギル","ニュージーランド",-46.41,168.35],["ushuaia","ウシュアイア","アルゼンチン",-54.80,-68.30]
 ].map(a=>({id:a[0],name:a[1],area:a[2],lat:a[3],lon:a[4]}));
 
-const M={mode:"auto",v:null,free:false,dragging:false,tap:null,spotCloud:null,spotT:0,ovVer:0,mg:null,rkey:"",frame:null,spotPx:[],evals:[],showAll:false};
+const M={mode:"auto",v:null,free:false,dragging:false,tap:null,cg:null,cgVer:0,cgCache:null,cgBase:null,cgFail:false,cgLoading:false,ck:0,crad:100,showCloud:true,near:[],spotCloud:null,spotT:0,ovVer:0,mg:null,rkey:"",frame:null,spotPx:[],evals:[],showAll:false};
 const mapCv=$("#map"), mctx=mapCv.getContext("2d"), rcv=document.createElement("canvas"), rctx=rcv.getContext("2d");
 
 const PL=rad(80.8), PN=rad(-72.6);
@@ -700,10 +729,10 @@ function ovSample(grid,lat,lon){
   const x1=(x0+1)%360, y1=Math.min(y0+1,180), v=(a,b)=>{const t=grid[a*181+b];return t>0?t:0;};
   return (v(x0,y0)*(1-fx)+v(x1,y0)*fx)*(1-fy)+(v(x0,y1)*(1-fx)+v(x1,y1)*fx)*fy;
 }
-function evalPoint(lat,lon,cloud,grid){
+function evalPoint(lat,lon,cloud,grid,T){
   const over=ovSample(grid,lat,lon), dir=lat>=0?1:-1; let hor=0;
   for(let d=1;d<=8;d++){const la=lat+dir*d; if(Math.abs(la)>90) break; for(const dx of [-3,0,3]) hor=Math.max(hor,ovSample(grid,la,lon+dx));}
-  const aur=Math.max(over,0.6*hor), dd=days(Date.now()), sAlt=altOf(sunRaDec(dd),dd,lat,lon), dark=clamp((-sAlt-5)/11,0,1);
+  const aur=Math.max(over,0.6*hor), dd=days(T||Date.now()), sAlt=altOf(sunRaDec(dd),dd,lat,lon), dark=clamp((-sAlt-5)/11,0,1);
   const hasC=cloud!=null&&Number.isFinite(cloud), clear=hasC?1-clamp(cloud,0,100)/100:1;
   let st;
   if(aur<10) st={key:"none",label:"出ていない",cls:"s-none"};
@@ -713,12 +742,122 @@ function evalPoint(lat,lon,cloud,grid){
   return {over,hor,aur,sAlt,dark,cloud:hasC?cloud:null,vis:aur*dark*clear,st};
 }
 
+/* ---------- cloud grid around a base point (Open-Meteo, multi-location) ---------- */
+const CG_N=11, CG_DLAT=0.4;
+function cgLayout(lat,lon){
+  const dlon=CG_DLAT/Math.max(0.15,Math.cos(rad(lat))), half=(CG_N-1)/2, pts=[];
+  for(let j=0;j<CG_N;j++) for(let i=0;i<CG_N;i++)
+    pts.push({lat:clamp(lat+(j-half)*CG_DLAT,-89.5,89.5),lon:((lon+(i-half)*dlon)%360+540)%360-180});
+  return {lat,lon,dlon,south:lat-half*CG_DLAT,west:lon-half*dlon,pts};
+}
+async function fetchCloudGrid(lat,lon){
+  const g=cgLayout(lat,lon);
+  const q="latitude="+g.pts.map(p=>p.lat.toFixed(3)).join(",")+"&longitude="+g.pts.map(p=>p.lon.toFixed(3)).join(",")+
+    "&hourly=cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high&forecast_hours=6&timeformat=unixtime";
+  const j=await getJSON("https://api.open-meteo.com/v1/forecast?"+q,30000), arr=Array.isArray(j)?j:[j];
+  if(arr.length!==g.pts.length) throw new Error("length");
+  g.series=arr.map(o=>{
+    const h=(o&&o.hourly)||{}, t=Array.isArray(h.time)?h.time:[], at=(a,k)=>num(Array.isArray(a)?a[k]:NaN);
+    return {t,v:t.map((_,k)=>effCloud(at(h.cloud_cover_low,k),at(h.cloud_cover_mid,k),at(h.cloud_cover_high,k),at(h.cloud_cover,k)))};
+  });
+  g.fetched=Date.now(); return g;
+}
+function seriesAt(s,T){
+  const t=s.t; if(!t.length) return null;
+  const x=(T/1000-t[0])/3600, i=Math.floor(x);
+  if(i<0) return s.v[0]; if(i>=t.length-1) return s.v[t.length-1];
+  const a=s.v[i], b=s.v[i+1]; if(a==null) return b; if(b==null) return a; return a+(b-a)*(x-i);
+}
+function cgValsAt(T){
+  const g=M.cg; if(!g) return null;
+  const key=M.cgVer+"_"+Math.floor(T/300000);
+  if(M.cgCache&&M.cgCache.key===key) return M.cgCache.vals;
+  const vals=g.series.map(s=>seriesAt(s,T));
+  M.cgCache={key,vals}; return vals;
+}
+function cgSample(vals,lat,lon){
+  const g=M.cg; if(!g||!vals) return null;
+  const u=(((lon-g.west)%360)+360)%360/g.dlon, v=(lat-g.south)/CG_DLAT;
+  if(u<0||u>CG_N-1||v<0||v>CG_N-1) return null;
+  const i0=Math.min(Math.floor(u),CG_N-2), j0=Math.min(Math.floor(v),CG_N-2), fu=u-i0, fv=v-j0;
+  const at=(i,j)=>vals[j*CG_N+i];
+  const a=at(i0,j0),b=at(i0+1,j0),c=at(i0,j0+1),e=at(i0+1,j0+1);
+  if([a,b,c,e].some(x=>x==null)) return [a,b,c,e].find(x=>x!=null)??null;
+  return (a*(1-fu)+b*fu)*(1-fv)+(c*(1-fu)+e*fu)*fv;
+}
+function onLand(lat,lon){
+  let inside=false;
+  for(const r of LAND){
+    if(lat<r.mn||lat>r.mx) continue;
+    const p=r.pts;
+    for(let i=0,j=p.length-1;i<p.length;j=i++){
+      const xi=p[i][0],yi=p[i][1],xj=p[j][0],yj=p[j][1];
+      if(((yi>lat)!==(yj>lat))&&(lon<(xj-xi)*(lat-yi)/(yj-yi)+xi)) inside=!inside;
+    }
+  }
+  return inside;
+}
+function distBear(a,b){
+  const f1=rad(a.lat),f2=rad(b.lat),dl=rad(b.lon-a.lon);
+  const d=2*6371*Math.asin(Math.sqrt(Math.sin((f2-f1)/2)**2+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)**2));
+  const br=(deg(Math.atan2(Math.sin(dl)*Math.cos(f2),Math.cos(f1)*Math.sin(f2)-Math.sin(f1)*Math.cos(f2)*Math.cos(dl)))+360)%360;
+  return {d,dir:["北","北東","東","南東","南","南西","西","北西"][Math.round(br/45)%8]};
+}
+async function loadCloudGrid(force){
+  const c=M.cgBase||{lat:S.loc.lat,lon:S.loc.lon};
+  const same=M.cg&&Math.abs(M.cg.lat-c.lat)<1e-6&&Math.abs(M.cg.lon-c.lon)<1e-6;
+  if(!force&&same&&Date.now()-M.cg.fetched<30*60000) return;
+  if(M.cgLoading) return; M.cgLoading=true; renderNear();
+  try{ const g=await fetchCloudGrid(c.lat,c.lon); M.cg=g; M.cgVer++; M.cgFail=false; }
+  catch(e){ if(!same) M.cg=null; M.cgFail=true; }
+  finally{ M.cgLoading=false; }
+  M.rkey=""; renderAll();
+}
+function renderNear(){
+  const list=$("#nearList"), sub=$("#nearSub"), base=$("#nearBase");
+  document.querySelectorAll("#nearTime button").forEach(b=>b.setAttribute("aria-pressed",Number(b.dataset.k)===M.ck?"true":"false"));
+  document.querySelectorAll("#nearRad button").forEach(b=>b.setAttribute("aria-pressed",Number(b.dataset.r)===M.crad?"true":"false"));
+  M.near=[];
+  const bp=M.cgBase||{lat:S.loc.lat,lon:S.loc.lon,name:S.loc.name.replace(/（.*）/,"")};
+  const bname=M.cgBase?"地図の中心":bp.name;
+  if(!M.cg){
+    base.textContent=""; list.innerHTML="";
+    sub.textContent=M.cgLoading?"周辺の雲の情報を読み込んでいます…":M.cgFail?"周辺の雲の情報を取得できませんでした。通信状態を確認して「更新」を押してください。":"";
+    return;
+  }
+  const T=Date.now()+M.ck*HOUR, vals=cgValsAt(T), A=auroraGrid(), when=M.ck?M.ck+"時間後":"いま";
+  const evs=M.cg.pts.map((p,k)=>{
+    const e=evalPoint(p.lat,p.lon,vals[k],A.grid,T), db=distBear(bp,p);
+    return {p,k,e,db,score:e.aur*e.dark*(e.cloud==null?1:1-e.cloud/100),sky:e.dark*(e.cloud==null?1:1-e.cloud/100)};
+  });
+  const bc=cgSample(vals,bp.lat,bp.lon), be=evalPoint(bp.lat,bp.lon,bc,A.grid,T), bs=be.aur*be.dark*(be.cloud==null?1:1-be.cloud/100);
+  base.innerHTML='<b>'+esc(bname)+'（'+when+'）</b>　<span class="chip-s '+scoreCls(bs)+'">見える度 '+Math.round(bs)+'</span>　<span class="mono" style="color:var(--mute);font-size:12px">雲 '+(bc==null?"—":Math.round(bc)+"%")+' ・ 確率 '+Math.round(be.aur)+'% ・ 太陽 '+be.sAlt.toFixed(0)+'°</span>';
+  const clr=x=>x.e.cloud==null?1:1-x.e.cloud/100;
+  const cand=evs.filter(x=>x.db.d<=M.crad&&x.db.d>8&&onLand(x.p.lat,x.p.lon)).sort((a,b)=>(b.score-a.score)||(b.sky-a.sky)||(clr(b)-clr(a)));
+  const top=cand.slice(0,5); M.near=top;
+  const maxAur=Math.max(0,...evs.map(x=>x.e.aur));
+  let msg="半径"+M.crad+"km以内の陸地"+cand.length+"地点を比べています。雲と暗さは"+when+"、オーロラの強さは現在の予測です。";
+  if(be.dark<0.1) msg+=" この時刻はまだ空が明るいため、雲の少ない場所の順に並べています。暗くなる時刻（1〜3時間後）に切り替えて確認してください。";
+  else if(maxAur<10) msg+=" いまはこの周辺のオーロラの出現確率が低いため、晴れている場所の順に並べています。";
+  else if(top.length&&top[0].score-bs<5) msg+=" 近くの候補とここの条件はほぼ同じです。";
+  sub.textContent=msg;
+  list.innerHTML=top.length?top.map((x,n)=>{
+    const e=x.e;
+    return '<div class="spot"><div class="nm"><span class="rank">'+(n+1)+'</span>'+x.db.dir+'へ '+Math.round(x.db.d)+' km</div>'+
+      '<span class="chip-s st '+scoreCls(x.score)+'">見える度 '+Math.round(x.score)+'</span>'+
+      '<div class="vals mono">雲 '+(e.cloud==null?"—":Math.round(e.cloud)+"%")+' ・ 確率 '+Math.round(e.aur)+'% ・ 太陽 '+e.sAlt.toFixed(0)+'°</div>'+
+      '<div class="acts"><button class="btn sm" type="button" data-near="'+n+'">地図で見る</button>'+
+      '<a class="btn sm" href="https://www.google.com/maps/search/?api=1&amp;query='+x.p.lat.toFixed(4)+','+x.p.lon.toFixed(4)+'" target="_blank" rel="noopener">Googleマップ</a></div></div>';
+  }).join(""):'<p class="sub">この範囲に候補の陸地がありません。距離を広げてください。</p>';
+}
+function scoreCls(s){ return s>=25?"s-vis":s>=8?"s-dim":"s-none"; }
+
 function hemi(){ if(M.mode==="north") return 1; if(M.mode==="south") return -1; return S.loc.lat>=0?1:-1; }
 function proj(lat,lon,h,lon0){ const r=h>0?90-lat:90+lat, a=rad(lon-lon0); return [(h>0?1:-1)*r*Math.sin(a), r*Math.cos(a)]; }
 function unproj(x,y,h,lon0){ const r=Math.hypot(x,y), a=Math.atan2(h>0?x:-x,y); return {lat:h>0?90-r:r-90, lon:((lon0+deg(a))%360+540)%360-180}; }
 function presetView(){
   const h=hemi(), lon0=S.loc.lon;
-  if(M.mode==="local"){ const p=proj(S.loc.lat,S.loc.lon,h,lon0); return {h,lon0,cx:p[0],cy:p[1]-7,half:22}; }
+  if(M.mode==="local"){ const p=proj(S.loc.lat,S.loc.lon,h,lon0); return {h,lon0,cx:p[0],cy:p[1]-3,half:10}; }
   return {h,lon0,cx:0,cy:0,half:61};
 }
 function mapFrame(){ if(!M.v) M.v=presetView(); return Object.assign({clip:91},M.v); }
@@ -787,6 +926,7 @@ mapCv.addEventListener("wheel",e=>{
 document.querySelector(".map-ctl").addEventListener("click",e=>{
   const b=e.target.closest("button[data-z]"); if(!b) return;
   mapFrame(); const W=mapCv.clientWidth, c={x:W/2,y:W/2}, z=b.dataset.z;
+  if(z==="cloud"){ M.showCloud=!M.showCloud; renderMap(); return; }
   if(z==="home"){ anchorTo({lat:S.loc.lat,lon:S.loc.lon},c,W); }
   else { const g=geoAt(c,W);
     if(z==="in") M.v.half/=1.6; else if(z==="out") M.v.half*=1.6;
@@ -797,8 +937,9 @@ document.querySelector(".map-ctl").addEventListener("click",e=>{
 
 function buildRaster(F,grid,N){
   rcv.width=N; rcv.height=N;
-  const img=rctx.createImageData(N,N), d=img.data;
-  const dd=days(Date.now()), sun=sunRaDec(dd), gmst=280.46061837+360.98564736629*dd, sd=Math.sin(sun.dec), cd=Math.cos(sun.dec);
+  const img=rctx.createImageData(N,N), d=img.data, T=Date.now()+M.ck*HOUR;
+  const dd=days(T), sun=sunRaDec(dd), gmst=280.46061837+360.98564736629*dd, sd=Math.sin(sun.dec), cd=Math.cos(sun.dec);
+  const cvals=M.showCloud?cgValsAt(T):null;
   const lim=F.clip||170;
   for(let j=0;j<N;j++) for(let i=0;i<N;i++){
     const x=F.cx+((i+0.5)/N*2-1)*F.half, y=F.cy+((j+0.5)/N*2-1)*F.half;
@@ -814,6 +955,13 @@ function buildRaster(F,grid,N){
       else if(t>=0.65){const f=Math.min(1,(t-0.65)/0.3);cr=242+13*f;cg=225-135*f;cb=78+12*f;}
       const aa=clamp(0.18+p/35,0,0.88)*(1-0.7*dayF), oa=aa+A*(1-aa);
       R=(cr*aa+R*A*(1-aa))/oa; G=(cg*aa+G*A*(1-aa))/oa; B=(cb*aa+B*A*(1-aa))/oa; A=oa;
+    }
+    if(cvals){
+      const cv=cgSample(cvals,g.lat,g.lon);
+      if(cv!=null&&cv>4){
+        const ca=0.62*clamp(cv/100,0,1)*cv/(cv+8), oa=ca+A*(1-ca);
+        R=(214*ca+R*A*(1-ca))/oa; G=(220*ca+G*A*(1-ca))/oa; B=(232*ca+B*A*(1-ca))/oa; A=oa;
+      }
     }
     const k=(j*N+i)*4; d[k]=R; d[k+1]=G; d[k+2]=B; d[k+3]=A*255;
   }
@@ -840,7 +988,7 @@ function renderMap(){
     c.closePath(); c.fill(); c.stroke();
   }
   const N=M.dragging?120:Math.max(120,Math.min(320,Math.round(W*dpr*0.55)));
-  const key=[F.h,F.lon0.toFixed(2),F.cx.toFixed(2),F.cy.toFixed(2),F.half,N,A.key,Math.floor(Date.now()/120000)].join("|");
+  const key=[F.h,F.lon0.toFixed(2),F.cx.toFixed(2),F.cy.toFixed(2),F.half,N,A.key,Math.floor(Date.now()/120000),M.showCloud?1:0,M.cgVer,M.ck].join("|");
   if(key!==M.rkey){buildRaster(F,A.grid,N); M.rkey=key;}
   c.imageSmoothingEnabled=true; c.drawImage(rcv,0,0,W,W);
   // graticule
@@ -882,13 +1030,33 @@ function renderMap(){
   c.beginPath(); c.moveTo(o[0]-11,o[1]); c.lineTo(o[0]-4,o[1]); c.moveTo(o[0]+4,o[1]); c.lineTo(o[0]+11,o[1]); c.moveTo(o[0],o[1]-11); c.lineTo(o[0],o[1]-4); c.moveTo(o[0],o[1]+4); c.lineTo(o[0],o[1]+11); c.stroke();
   c.fillStyle="#ffffff"; c.font="700 11px 'Zen Kaku Gothic New','Hiragino Sans',sans-serif"; c.fillText("観測地",o[0]+10,o[1]+15);
   if(M.tap){ const t=px(M.tap.lat,M.tap.lon); c.strokeStyle="#e8edf5"; c.lineWidth=2; c.beginPath(); c.moveTo(t[0]-5,t[1]-5); c.lineTo(t[0]+5,t[1]+5); c.moveTo(t[0]+5,t[1]-5); c.lineTo(t[0]-5,t[1]+5); c.stroke(); }
+  // cloud-grid footprint + nearby candidates
+  if(M.cg&&M.showCloud){
+    const g=M.cg, e=g.south+(CG_N-1)*CG_DLAT, w=g.west, ea=g.west+(CG_N-1)*g.dlon, ring=[];
+    for(let k=0;k<=20;k++) ring.push([g.south,w+(ea-w)*k/20]);
+    for(let k=0;k<=20;k++) ring.push([g.south+(e-g.south)*k/20,ea]);
+    for(let k=20;k>=0;k--) ring.push([e,w+(ea-w)*k/20]);
+    for(let k=20;k>=0;k--) ring.push([g.south+(e-g.south)*k/20,w]);
+    c.strokeStyle="rgba(232,237,245,.35)"; c.lineWidth=1; c.setLineDash([2,4]); c.beginPath();
+    ring.forEach((p,k)=>{const q=px(p[0],p[1]); k?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1]);}); c.closePath(); c.stroke(); c.setLineDash([]);
+  }
+  c.font="700 11px 'IBM Plex Mono',ui-monospace,monospace"; c.textAlign="center"; c.textBaseline="middle";
+  M.near.forEach((x,n)=>{
+    const q=px(x.p.lat,x.p.lon);
+    c.beginPath(); c.fillStyle="#e8edf5"; c.arc(q[0],q[1],8.5,0,Math.PI*2); c.fill();
+    c.strokeStyle="#0a1122"; c.lineWidth=1.5; c.stroke();
+    c.fillStyle="#0a1122"; c.fillText(String(n+1),q[0],q[1]+0.5);
+  });
+  c.textAlign="start"; c.textBaseline="alphabetic";
   c.restore();
   if(F.clip){ c.strokeStyle="#26334f"; c.lineWidth=1; c.beginPath(); c.arc(pole[0],pole[1],F.clip*s,0,Math.PI*2); c.stroke(); }
   // captions
-  $("#mapSrc").textContent=A.src==="ovation"
+  $("#mapSrc").textContent=(A.src==="ovation"
     ?"OVATION 出現確率"+(isFinite(S.ovTime)?"・予測時刻 "+hm(S.ovTime):"")
-    :"OVATIONを取得できないため、Kp "+(S.hours[0]?S.hours[0].kp.toFixed(1):"")+" から推定";
-  document.querySelectorAll(".seg button").forEach(b=>{
+    :"OVATIONを取得できないため、Kp "+(S.hours[0]?S.hours[0].kp.toFixed(1):"")+" から推定")+
+    (M.showCloud&&M.cg?"・雲 "+(M.ck?M.ck+"時間後":"いま"):"");
+  const cb=document.querySelector('.map-ctl button[data-z="cloud"]'); if(cb) cb.setAttribute("aria-pressed",M.showCloud?"true":"false");
+  document.querySelectorAll("#mapMode button").forEach(b=>{
     const on=!M.free&&(M.mode==="local"?b.dataset.m==="local":b.dataset.m===(F.h>0?"north":"south"));
     b.setAttribute("aria-pressed",on?"true":"false");
   });
@@ -963,7 +1131,21 @@ $("#spots").addEventListener("click",e=>{
   setLoc({id:"spot-"+sp.id,name:placeName(sp),lat:sp.lat,lon:sp.lon,tz:null}); window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
 });
 $("#spotMore").addEventListener("click",()=>{M.showAll=!M.showAll; renderSpots();});
-document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{
+document.querySelectorAll("#nearTime button").forEach(b=>b.addEventListener("click",()=>{ M.ck=Number(b.dataset.k); renderNear(); renderMap(); }));
+document.querySelectorAll("#nearRad button").forEach(b=>b.addEventListener("click",()=>{ M.crad=Number(b.dataset.r); renderNear(); renderMap(); }));
+$("#nearHere").addEventListener("click",()=>{
+  mapFrame(); const W=mapCv.clientWidth, g=geoAt({x:W/2,y:W/2},W);
+  M.cgBase={lat:g.lat,lon:g.lon}; M.cg=null; M.near=[]; loadCloudGrid(true);
+});
+$("#nearList").addEventListener("click",e=>{
+  const b=e.target.closest("[data-near]"); if(!b) return;
+  const x=M.near[Number(b.dataset.near)]; if(!x) return;
+  mapFrame(); const W=mapCv.clientWidth;
+  M.v.half=Math.min(M.v.half,3.5); anchorTo({lat:x.p.lat,lon:x.p.lon},{x:W/2,y:W/2},W); M.free=true;
+  M.tap={lat:x.p.lat,lon:x.p.lon,name:"候補"+(Number(b.dataset.near)+1)+"（"+x.db.dir+"へ "+Math.round(x.db.d)+" km）",cloud:x.e.cloud};
+  renderMap(); renderTap(); $("#mapSec").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+});
+document.querySelectorAll("#mapMode button").forEach(b=>b.addEventListener("click",()=>{
   M.mode=b.dataset.m; M.v=null; M.free=false; save("aurora-map",M.mode==="local"?"local":"auto"); M.tap=null; renderMap(); renderTap();
 }));
 if(window.ResizeObserver) new ResizeObserver(()=>renderMap()).observe(mapCv); else window.addEventListener("resize",renderMap);
@@ -981,7 +1163,7 @@ function renderStatus(){
 }
 function renderAll(){
   const H=buildHours(); S.hours=H;
-  renderHero(H); renderSpots(); renderMap(); renderTap(); renderTimeline(H); renderDetail(H); renderNow(H); renderKp(); renderStatus();
+  renderHero(H); renderSpots(); renderNear(); renderMap(); renderTap(); renderTimeline(H); renderDetail(H); renderNow(H); renderKp(); renderStatus();
 }
 
 /* ---------- loading ---------- */
@@ -997,6 +1179,7 @@ async function refresh(all){
     jobs.push(fetchSpotClouds().then(v=>{M.spotCloud=v;M.spotT=Date.now()},()=>{if(Date.now()-M.spotT>3*HOUR) M.spotCloud=null}).then(renderAll));
   }
   S.status.cl="loading"; renderStatus();
+  jobs.push(loadCloudGrid(false));
   const loc=S.loc;
   jobs.push(fetchCloud(loc).then(v=>{if(loc===S.loc){S.cloud=v;S.status.cl="live"}},()=>{if(loc===S.loc){S.cloud=null;S.status.cl="fail"}}).then(renderAll));
   await Promise.allSettled(jobs);
@@ -1014,7 +1197,7 @@ function fillSelect(){
   sel.innerHTML=h; sel.value=S.loc.id;
 }
 function setLoc(loc){
-  S.loc=loc; S.cloud=null; S.sel=null; M.tap=null; M.v=null; M.free=false; if(M.mode!=="local") M.mode="auto"; save("aurora-loc",loc); fillSelect(); renderAll(); refresh(false);
+  S.loc=loc; S.cloud=null; S.sel=null; M.tap=null; M.v=null; M.free=false; M.cgBase=null; M.near=[]; if(M.mode!=="local") M.mode="auto"; save("aurora-loc",loc); fillSelect(); renderAll(); refresh(false);
 }
 function customLoc(lat,lon){return {id:"custom",name:"指定地点",lat,lon,tz:null}}
 $("#loc").addEventListener("change",e=>{
