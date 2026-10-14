@@ -1,0 +1,38 @@
+{
+  "name": "極光ナビ｜オーロラ予報",
+  "short_name": "極光ナビ",
+  "description": "今夜オーロラは見える？ NOAAのKp予報・OVATION・雲量予報・暗さ・月明かりから、観測地ごとの見えやすさを0〜100で予測。リアルタイムの出現マップと、近くの晴れている場所さがしにも対応した無料Webアプリです。",
+  "lang": "ja",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a1122",
+  "theme_color": "#0a1122",
+  "categories": [
+    "weather",
+    "travel",
+    "utilities"
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
