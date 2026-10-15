@@ -25,7 +25,7 @@ NOAA（米国海洋大気庁）の宇宙天気データと雲量予報をもと�
 
 ## 使い方
 
-1. 上のリンクを開き、観測地を選びます。プリセットのほか、現在地や緯度・経度の入力にも対応しています。
+1. 上のリンクを開き、観測地を選びます。画面右上の「日本語 / EN」で英語表示にも切り替えられます。プリセットのほか、現在地や緯度・経度の入力にも対応しています。
 2. スマホのホーム画面に追加すると、アプリのように起動できます。
    - iPhone（Safari）：共有ボタン →「ホーム画面に追加」
    - Android（Chrome）：メニュー →「アプリをインストール」または「ホーム画面に追加」
@@ -55,7 +55,7 @@ NOAA（米国海洋大気庁）の宇宙天気データと雲量予報をもと�
 
 **Open the app: https://gaaasuu2013-prog.github.io/aurora/**
 
-A free web app (currently in Japanese) that estimates how likely you are to see the northern or southern lights tonight. It rates your location from 0 to 100 using NOAA's Kp forecast, real-time solar wind and the OVATION aurora model, together with cloud forecasts, darkness and moonlight.
+A free web app, in English and Japanese, that estimates how likely you are to see the northern or southern lights tonight. It rates your location from 0 to 100 using NOAA's Kp forecast, real-time solar wind and the OVATION aurora model, together with cloud forecasts, darkness and moonlight.
 
 - Live aurora map (NOAA OVATION) with day/night, clouds and a "view line" for seeing aurora low on the horizon
 - Nearby clear-sky finder: the best spots within about 200 km, now or in up to 3 hours, with Google Maps links

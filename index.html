@@ -15,6 +15,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="極光ナビ　今夜、オーロラは見える？">
 <meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="theme-color" content="#0a1122">
 <link rel="manifest" href="manifest.webmanifest">
@@ -164,6 +165,9 @@ a.btn{text-decoration:none;display:inline-block;color:var(--snow)}
 .s-vis{color:var(--oxygen)} .s-dim{color:var(--warn)} .s-none{color:var(--mute)}
 .btn.sm{padding:2px 12px;font-size:12px}
 .more{margin-top:10px;align-self:flex-start}
+:root:not([lang="en"]) [data-lang="en"],:root[lang="en"] [data-lang="ja"]{display:none!important}
+.lang-seg{margin-left:auto}
+.lang-seg button{padding:4px 10px;font-size:12px}
 .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12px;color:var(--mute);margin-top:8px}
 .legend i{display:inline-block;width:12px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
 
@@ -193,145 +197,165 @@ footer a{color:var(--snow)}
     <canvas id="sky" aria-hidden="true"></canvas>
     <div class="hero-in">
       <div class="loc-row">
-        <label for="loc">観測地</label>
+        <label for="loc" data-i18n="locLabel">観測地</label>
         <select id="loc"></select>
+        <div class="seg lang-seg" id="langSeg" role="group" aria-label="Language">
+          <button type="button" data-setlang="ja" aria-pressed="true" lang="ja">日本語</button>
+          <button type="button" data-setlang="en" aria-pressed="false" lang="en">EN</button>
+        </div>
       </div>
-      <p class="eyebrow" id="nightLabel">計算中…</p>
+      <p class="eyebrow" id="nightLabel" data-i18n="calc">計算中…</p>
       <div class="score"><span class="num" id="score">--</span><span class="of">/ 100</span></div>
-      <h1 id="verdict">データを読み込んでいます</h1>
+      <h1 id="verdict" data-i18n="loadingData">データを読み込んでいます</h1>
       <p id="window"></p>
       <p id="reason"></p>
     </div>
   </header>
 
   <div class="status" id="status">
-    <span class="chip" data-s="loading" id="st-kp"><span class="dot"></span>Kp予報</span>
-    <span class="chip" data-s="loading" id="st-sw"><span class="dot"></span>太陽風</span>
+    <span class="chip" data-s="loading" id="st-kp"><span class="dot"></span><span data-i18n="stKp">Kp予報</span></span>
+    <span class="chip" data-s="loading" id="st-sw"><span class="dot"></span><span data-i18n="stSw">太陽風</span></span>
     <span class="chip" data-s="loading" id="st-ov"><span class="dot"></span>OVATION</span>
-    <span class="chip" data-s="loading" id="st-cl"><span class="dot"></span>雲量</span>
+    <span class="chip" data-s="loading" id="st-cl"><span class="dot"></span><span data-i18n="stCl">雲量</span></span>
     <span id="updated" class="mono"></span>
-    <button class="btn" id="refresh" type="button">更新</button>
+    <button class="btn" id="refresh" type="button" data-i18n="refresh">更新</button>
   </div>
 
   <div class="custom" id="customBox" hidden>
-    <label for="lat">緯度<input id="lat" type="number" step="0.01" min="-90" max="90" inputmode="decimal" placeholder="66.50"></label>
-    <label for="lon">経度<input id="lon" type="number" step="0.01" min="-180" max="180" inputmode="decimal" placeholder="25.73"></label>
-    <button class="btn" id="setCustom" type="button">この地点で予報</button>
+    <label for="lat"><span data-i18n="lat">緯度</span><input id="lat" type="number" step="0.01" min="-90" max="90" inputmode="decimal" placeholder="66.50"></label>
+    <label for="lon"><span data-i18n="lon">経度</span><input id="lon" type="number" step="0.01" min="-180" max="180" inputmode="decimal" placeholder="25.73"></label>
+    <button class="btn" id="setCustom" type="button" data-i18n="setCustom">この地点で予報</button>
     <p class="msg" id="customMsg"></p>
   </div>
 
   <section class="manual" id="manual" hidden>
     <p id="manualNote">ライブデータを取得できなかった項目があります。つまみで条件を変えて試せます（取得できた項目はライブ値を使います）。</p>
-    <div class="slider" id="kpSlider"><label for="mKp">Kp（仮定）</label><input id="mKp" type="range" min="0" max="9" step="0.33" value="3"><output id="mKpOut" for="mKp">3.0</output></div>
-    <div class="slider" id="clSlider"><label for="mCl">雲量（仮定）</label><input id="mCl" type="range" min="0" max="100" step="5" value="30"><output id="mClOut" for="mCl">30%</output></div>
+    <div class="slider" id="kpSlider"><label for="mKp" data-i18n="kpAssumed">Kp（仮定）</label><input id="mKp" type="range" min="0" max="9" step="0.33" value="3"><output id="mKpOut" for="mKp">3.0</output></div>
+    <div class="slider" id="clSlider"><label for="mCl" data-i18n="clAssumed">雲量（仮定）</label><input id="mCl" type="range" min="0" max="100" step="5" value="30"><output id="mClOut" for="mCl">30%</output></div>
   </section>
 
   <section id="mapSec">
     <div class="map-head">
       <div>
-        <h2>いま、どこで見えている？</h2>
-        <p class="sub" id="mapSub">オーロラの出現確率に昼夜を重ねた地図です。タップした地点の状況が下に出ます。</p>
+        <h2 data-i18n="mapTitle">いま、どこで見えている？</h2>
+        <p class="sub" id="mapSub" data-i18n="mapSub">オーロラの出現確率に昼夜を重ねた地図です。タップした地点の状況が下に出ます。</p>
       </div>
-      <div class="seg" id="mapMode" role="group" aria-label="地図の範囲">
-        <button type="button" data-m="north" aria-pressed="false">北半球</button>
-        <button type="button" data-m="south" aria-pressed="false">南半球</button>
-        <button type="button" data-m="local" aria-pressed="false">観測地まわり</button>
+      <div class="seg" id="mapMode" role="group" aria-label="地図の範囲" data-i18n-aria="ariaMapArea">
+        <button type="button" data-m="north" aria-pressed="false" data-i18n="north">北半球</button>
+        <button type="button" data-m="south" aria-pressed="false" data-i18n="south">南半球</button>
+        <button type="button" data-m="local" aria-pressed="false" data-i18n="local">観測地まわり</button>
       </div>
     </div>
     <p class="map-now" id="mapNow"></p>
     <div class="map-wrap">
-      <canvas id="map" aria-label="オーロラ出現確率の地図。タップで地点の状況を表示"></canvas>
+      <canvas id="map" aria-label="オーロラ出現確率の地図。タップで地点の状況を表示" data-i18n-aria="ariaMap"></canvas>
       <p class="map-src" id="mapSrc"></p>
-      <div class="map-ctl" role="group" aria-label="地図の操作">
-        <button type="button" data-z="in" aria-label="拡大" title="拡大"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
-        <button type="button" data-z="out" aria-label="縮小" title="縮小"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
-        <button type="button" data-z="rl" aria-label="左に回転" title="左に回転"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4h4"/></svg></button>
-        <button type="button" data-z="rr" aria-label="右に回転" title="右に回転"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v4h-4"/></svg></button>
-        <button type="button" data-z="home" aria-label="観測地を中心に" title="観測地を中心に"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></button>
-        <button type="button" data-z="cloud" aria-label="雲の表示" title="雲の表示" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .4-7.98A6 6 0 0 0 5.9 9.3 4.4 4.4 0 0 0 7 18z"/></svg></button>
+      <div class="map-ctl" role="group" aria-label="地図の操作" data-i18n-aria="ariaMapCtl">
+        <button type="button" data-z="in" aria-label="拡大" title="拡大" data-i18n-aria="zIn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+        <button type="button" data-z="out" aria-label="縮小" title="縮小" data-i18n-aria="zOut"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+        <button type="button" data-z="rl" aria-label="左に回転" title="左に回転" data-i18n-aria="zRl"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4h4"/></svg></button>
+        <button type="button" data-z="rr" aria-label="右に回転" title="右に回転" data-i18n-aria="zRr"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v4h-4"/></svg></button>
+        <button type="button" data-z="home" aria-label="観測地を中心に" title="観測地を中心に" data-i18n-aria="zHome"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></button>
+        <button type="button" data-z="cloud" aria-label="雲の表示" title="雲の表示" data-i18n-aria="zCloud" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .4-7.98A6 6 0 0 0 5.9 9.3 4.4 4.4 0 0 0 7 18z"/></svg></button>
       </div>
     </div>
-    <p class="map-hint">ドラッグで移動・ピンチ（PCはホイール）で拡大縮小・2本指でひねると回転・ダブルタップで拡大</p>
+    <p class="map-hint" data-i18n="mapHint">ドラッグで移動・ピンチ（PCはホイール）で拡大縮小・2本指でひねると回転・ダブルタップで拡大</p>
     <div class="legend">
       <span class="ramp"><i></i><span class="mono">10→50→90%</span></span>
-      <span><span class="dash"></span>地平線に見える目安ライン</span>
-      <span><i style="background:#c9d3e6;opacity:.45"></i>昼の地域</span>
-      <span><span class="ringdot" style="background:var(--oxygen)"></span>見えていそうな地点</span>
-      <span><span class="ringdot" style="border:2px solid var(--warn)"></span>出ているが曇り・明るい</span>
-      <span><i style="background:#d6dce8;opacity:.6"></i>雲（白いほど厚い）</span>
-      <span><span class="ringdot" style="background:var(--snow);color:var(--night);font-size:8px;text-align:center;line-height:10px;font-weight:700">1</span>近くの候補地</span>
+      <span><span class="dash"></span><span data-i18n="lgView">地平線に見える目安ライン</span></span>
+      <span><i style="background:#c9d3e6;opacity:.45"></i><span data-i18n="lgDay">昼の地域</span></span>
+      <span><span class="ringdot" style="background:var(--oxygen)"></span><span data-i18n="lgVis">見えていそうな地点</span></span>
+      <span><span class="ringdot" style="border:2px solid var(--warn)"></span><span data-i18n="lgDim">出ているが曇り・明るい</span></span>
+      <span><i style="background:#d6dce8;opacity:.6"></i><span data-i18n="lgCloud">雲（白いほど厚い）</span></span>
+      <span><span class="ringdot" style="background:var(--snow);color:var(--night);font-size:8px;text-align:center;line-height:10px;font-weight:700">1</span><span data-i18n="lgCand">近くの候補地</span></span>
     </div>
     <div class="tapinfo" id="tapInfo" hidden></div>
 
-    <h3 class="h3">近くで見えやすい場所</h3>
+    <h3 class="h3" data-i18n="nearTitle">近くで見えやすい場所</h3>
     <p class="sub" id="nearSub"></p>
     <div class="near-ctl">
-      <div class="seg" id="nearTime" role="group" aria-label="時刻">
-        <button type="button" data-k="0" aria-pressed="true">いま</button>
-        <button type="button" data-k="1" aria-pressed="false">1時間後</button>
-        <button type="button" data-k="2" aria-pressed="false">2時間後</button>
-        <button type="button" data-k="3" aria-pressed="false">3時間後</button>
+      <div class="seg" id="nearTime" role="group" aria-label="時刻" data-i18n-aria="ariaTime">
+        <button type="button" data-k="0" aria-pressed="true" data-i18n="kNow">いま</button>
+        <button type="button" data-k="1" aria-pressed="false" data-i18n="k1">1時間後</button>
+        <button type="button" data-k="2" aria-pressed="false" data-i18n="k2">2時間後</button>
+        <button type="button" data-k="3" aria-pressed="false" data-i18n="k3">3時間後</button>
       </div>
-      <div class="seg" id="nearRad" role="group" aria-label="探す範囲">
-        <button type="button" data-r="50" aria-pressed="false">〜50km</button>
-        <button type="button" data-r="100" aria-pressed="true">〜100km</button>
-        <button type="button" data-r="200" aria-pressed="false">〜200km</button>
+      <div class="seg" id="nearRad" role="group" aria-label="探す範囲" data-i18n-aria="ariaRad">
+        <button type="button" data-r="50" aria-pressed="false" data-i18n="r50">〜50km</button>
+        <button type="button" data-r="100" aria-pressed="true" data-i18n="r100">〜100km</button>
+        <button type="button" data-r="200" aria-pressed="false" data-i18n="r200">〜200km</button>
       </div>
-      <button class="btn sm" id="nearHere" type="button">地図の中心で探す</button>
+      <button class="btn sm" id="nearHere" type="button" data-i18n="nearHere">地図の中心で探す</button>
     </div>
     <p class="map-now" id="nearBase"></p>
     <div class="spots" id="nearList"></div>
 
-    <h3 class="h3">いま見えていそうな場所</h3>
+    <h3 class="h3" data-i18n="spotsTitle">いま見えていそうな場所</h3>
     <p class="sub" id="spotSub"></p>
     <div class="spots" id="spots"></div>
     <button class="btn more" id="spotMore" type="button"></button>
   </section>
 
   <section>
-    <h2>48時間の見込み</h2>
-    <p class="sub">1時間ごとのスコア。濃い帯が暗い時間帯、下段は雲の多さ。棒をタップすると、その時間の数値が下に出ます。</p>
-    <div class="scroll" id="tlScroll"><svg id="timeline" aria-label="48時間のオーロラ見込みスコア"></svg></div>
+    <h2 data-i18n="tlTitle">48時間の見込み</h2>
+    <p class="sub" data-i18n="tlSub">1時間ごとのスコア。濃い帯が暗い時間帯、下段は雲の多さ。棒をタップすると、その時間の数値が下に出ます。</p>
+    <div class="scroll" id="tlScroll"><svg id="timeline" aria-label="48時間のオーロラ見込みスコア" data-i18n-aria="ariaTl"></svg></div>
     <div class="detail" id="detail" aria-live="polite"></div>
     <div class="legend">
-      <span><i style="background:var(--oxygen)"></i>見込みスコア</span>
-      <span><i style="background:var(--panel2);border:1px solid var(--line)"></i>暗い時間帯</span>
-      <span><i style="background:var(--mute)"></i>雲（濃いほど多い）</span>
+      <span><i style="background:var(--oxygen)"></i><span data-i18n="lgScore">見込みスコア</span></span>
+      <span><i style="background:var(--panel2);border:1px solid var(--line)"></i><span data-i18n="lgDark">暗い時間帯</span></span>
+      <span><i style="background:var(--mute)"></i><span data-i18n="lgCloud2">雲（濃いほど多い）</span></span>
     </div>
   </section>
 
   <section>
-    <h2>いまの宇宙天気と空</h2>
+    <h2 data-i18n="nowTitle">いまの宇宙天気と空</h2>
     <div class="now" id="now"></div>
   </section>
 
   <section>
-    <h2>Kp指数 3日予報</h2>
-    <p class="sub" id="kpSub">3時間ごとの地磁気活動。点線はこの地点で地平線近くに見え始める目安。</p>
-    <div class="scroll"><svg id="kpchart" role="img" aria-label="Kp指数の3日予報"></svg></div>
+    <h2 data-i18n="kpTitle">Kp指数 3日予報</h2>
+    <p class="sub" id="kpSub" data-i18n="kpSub">3時間ごとの地磁気活動。点線はこの地点で地平線近くに見え始める目安。</p>
+    <div class="scroll"><svg id="kpchart" role="img" aria-label="Kp指数の3日予報" data-i18n-aria="ariaKp"></svg></div>
     <div class="legend">
       <span><i style="background:var(--oxygen)"></i>Kp 0–4</span>
-      <span><i style="background:var(--warn)"></i>Kp 5–6（磁気嵐 G1–G2）</span>
-      <span><i style="background:var(--bad)"></i>Kp 7以上（G3以上）</span>
-      <span><i style="background:var(--oxygen);opacity:.45"></i>観測・推定値</span>
+      <span><i style="background:var(--warn)"></i><span data-i18n="lgKp5">Kp 5–6（磁気嵐 G1–G2）</span></span>
+      <span><i style="background:var(--bad)"></i><span data-i18n="lgKp7">Kp 7以上（G3以上）</span></span>
+      <span><i style="background:var(--oxygen);opacity:.45"></i><span data-i18n="lgObs">観測・推定値</span></span>
     </div>
   </section>
 
   <details>
-    <summary>スコアの考え方</summary>
-    <ul>
-      <li><b>磁気活動</b>：NOAAのKp予報を、観測地の地磁気緯度で「地平線に見える目安のKp」「真上に来る目安のKp」と比べます。直近2時間は太陽風の磁場Bzが南向きなら上乗せします。</li>
-      <li><b>暗さ</b>：太陽高度を端末内で計算し、−5°より暗くなるほど加点、−16°以下で満点です。</li>
-      <li><b>晴れ</b>：Open-Meteoの低層・中層・上層雲を重み付けして実効雲量にします（低い雲ほど強く遮る）。</li>
-      <li><b>月明かり</b>：月が出ていて明るいほど少し減点します。</li>
-    </ul>
-    <p>地図の「いま見えていそう」は別の判定です。OVATIONの出現確率（真上、または極側8°以内の値の6割）が10%以上あり、太陽が十分沈んでいて、現在の雲量が多すぎない地点を表示しています。OVATIONを取得できないときは、Kpから推定したオーロラ帯で代用します。</p>
-    <p>「近くで見えやすい場所」は、基準点のまわり約±220kmを約44km間隔で区切った121地点の雲量予報（Open-Meteo、1時間ごと）を使います。陸地の地点だけを対象に、「出現確率 × 暗さ × 晴れの割合」を見える度（0〜100）として比べます。陸地の判定は簡易的なため、海岸近くや湖の多い地域では誤差があります。</p>
-    <p>4つを掛け合わせて0〜100にしています。オーロラは数十分単位で急に変わるため、あくまで出かける判断の目安です。</p>
+    <summary><span data-lang="ja">スコアの考え方</span><span data-lang="en">How the score works</span></summary>
+    <div data-lang="ja">
+      <p>今夜の見えやすさ（0〜100）は、次の4つを掛け合わせた目安です。確率ではありません。</p>
+      <ul>
+        <li><b>磁気活動</b>：NOAAのKp予報を、観測地の地磁気緯度で「地平線に見える目安のKp」「真上に来る目安のKp」と比べます。直近2時間は太陽風の磁場Bzが南向きなら上乗せします。</li>
+        <li><b>暗さ</b>：太陽高度を端末内で計算し、−5°より暗くなるほど加点、−16°以下で満点です。</li>
+        <li><b>晴れ</b>：Open-Meteoの低層・中層・上層雲を重み付けして実効雲量にします（低い雲ほど強く遮る）。</li>
+        <li><b>月明かり</b>：月が出ていて明るいほど少し減点します。</li>
+      </ul>
+      <p>オーロラは数十分単位で急に変わるため、あくまで出かける判断の目安です。</p>
+      <p>地図の「いま見えていそう」は別の判定です。OVATIONの出現確率（真上、または極側8°以内の値の6割）が10%以上あり、太陽が十分沈んでいて、現在の雲量が多すぎない地点を表示しています。OVATIONを取得できないときは、Kpから推定したオーロラ帯で代用します。</p>
+      <p>「近くで見えやすい場所」は、基準点のまわり約±220kmを約44km間隔で区切った121地点の雲量予報（Open-Meteo、1時間ごと）を使います。陸地の地点だけを対象に、「出現確率 × 暗さ × 晴れの割合」を見える度（0〜100）として比べます。陸地の判定は簡易的なため、海岸近くや湖の多い地域では誤差があります。</p>
+    </div>
+    <div data-lang="en">
+      <p>Tonight's score (0–100) multiplies four factors. It is a guide for comparing conditions, not a probability.</p>
+      <ul>
+        <li><b>Geomagnetic activity</b>: NOAA's Kp forecast is compared with the Kp needed for aurora to appear low on the horizon and overhead at your magnetic latitude. For the next two hours, a southward solar-wind Bz adds a boost.</li>
+        <li><b>Darkness</b>: the sun's altitude is calculated on your device. The score rises once the sun is more than 5° below the horizon and is full at −16° or lower.</li>
+        <li><b>Clear sky</b>: Open-Meteo's low, mid and high cloud are weighted into an effective cloud cover (low cloud blocks the most).</li>
+        <li><b>Moonlight</b>: a bright moon above the horizon lowers the score a little.</li>
+      </ul>
+      <p>Aurora can change within minutes, so use the score to decide whether it's worth heading out.</p>
+      <p>"Likely visible" on the map is a separate check: OVATION probability of 10% or more (overhead, or 60% of the highest value within 8° poleward), the sun well below the horizon, and not too much cloud right now. If OVATION is unavailable, an aurora oval estimated from Kp is used instead.</p>
+      <p>"Best spots nearby" uses hourly cloud forecasts (Open-Meteo) for 121 points about 44 km apart, within roughly ±220 km of the search point. Land points only are ranked by probability × darkness × clear sky. The land check is approximate near coasts and in lake country.</p>
+    </div>
   </details>
 
   <footer>
-    データ：<a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener">NOAA SWPC</a>（Kp予報・リアルタイム太陽風・OVATION）、<a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>（雲量、<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>）。地図の陸地は <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a>。太陽・月の位置と地磁気緯度は端末内で計算。アクセス数の集計に <a href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a> を使用しています（Cookieなし・個人は特定しません）。位置情報と選んだ観測地は送信しません。
+    <p data-lang="ja">データ：<a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener">NOAA SWPC</a>（Kp予報・リアルタイム太陽風・OVATION）、<a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>（雲量、<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>）。地図の陸地は <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a>。太陽・月の位置と地磁気緯度は端末内で計算。アクセス数の集計に <a href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a> を使用しています（Cookieなし・個人は特定しません）。位置情報と選んだ観測地は送信しません。</p>
+    <p data-lang="en">Data: <a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener">NOAA SWPC</a> (Kp forecast, real-time solar wind, OVATION), <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (clouds, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>). Map land from <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a>. Sun, moon and magnetic latitude are calculated on your device. Visits are counted with <a href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a> (no cookies, no personal data). Your location and chosen place are never sent anywhere.</p>
   </footer>
 </div>
 
@@ -344,16 +368,129 @@ const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
 const sig=x=>1/(1+Math.exp(-x));
 const HOUR=3600000;
 
+/* ---------- language ---------- */
+let LANG=(function(){ try{const v=JSON.parse(localStorage.getItem("aurora-lang")); if(v==="ja"||v==="en") return v;}catch(e){}
+  const n=(navigator.languages&&navigator.languages[0])||navigator.language||"ja"; return /^ja/i.test(n)?"ja":"en"; })();
+const I18N={
+ ja:{
+  locLabel:"観測地",calc:"計算中…",loadingData:"データを読み込んでいます",stKp:"Kp予報",stSw:"太陽風",stCl:"雲量",refresh:"更新",
+  lat:"緯度",lon:"経度",setCustom:"この地点で予報",kpAssumed:"Kp（仮定）",clAssumed:"雲量（仮定）",
+  mapTitle:"いま、どこで見えている？",mapSub:"オーロラの出現確率に昼夜を重ねた地図です。タップした地点の状況が下に出ます。",
+  ariaMapArea:"地図の範囲",north:"北半球",south:"南半球",local:"観測地まわり",ariaMap:"オーロラ出現確率の地図。タップで地点の状況を表示",
+  ariaMapCtl:"地図の操作",zIn:"拡大",zOut:"縮小",zRl:"左に回転",zRr:"右に回転",zHome:"観測地を中心に",zCloud:"雲の表示",
+  mapHint:"ドラッグで移動・ピンチ（PCはホイール）で拡大縮小・2本指でひねると回転・ダブルタップで拡大",
+  lgView:"地平線に見える目安ライン",lgDay:"昼の地域",lgVis:"見えていそうな地点",lgDim:"出ているが曇り・明るい",lgCloud:"雲（白いほど厚い）",lgCand:"近くの候補地",
+  nearTitle:"近くで見えやすい場所",ariaTime:"時刻",kNow:"いま",k1:"1時間後",k2:"2時間後",k3:"3時間後",ariaRad:"探す範囲",r50:"〜50km",r100:"〜100km",r200:"〜200km",
+  nearHere:"地図の中心で探す",spotsTitle:"いま見えていそうな場所",
+  tlTitle:"48時間の見込み",tlSub:"1時間ごとのスコア。濃い帯が暗い時間帯、下段は雲の多さ。棒をタップすると、その時間の数値が下に出ます。",ariaTl:"48時間のオーロラ見込みスコア",
+  lgScore:"見込みスコア",lgDark:"暗い時間帯",lgCloud2:"雲（濃いほど多い）",nowTitle:"いまの宇宙天気と空",
+  kpTitle:"Kp指数 3日予報",kpSub:"3時間ごとの地磁気活動。点線はこの地点で地平線近くに見え始める目安。",ariaKp:"Kp指数の3日予報",
+  lgKp5:"Kp 5–6（磁気嵐 G1–G2）",lgKp7:"Kp 7以上（G3以上）",lgObs:"観測・推定値",
+  vGreat:"見えるチャンス大",vGood:"可能性あり",vMaybe:"条件しだい",vLow:"きびしそう",
+  noDarkLbl:"48時間以内",noDarkV:"空が暗くなりません",noDarkW:"白夜や薄明が続く時期です。",
+  nightNow:(e,p)=>"いまから "+e+" ごろまで・"+p, nightLater:(a,e,p)=>"今夜 "+a+"〜"+e+"・"+p,
+  noChance:"今夜は目立ったチャンスがありません。",win:(a,b)=>"ねらい目は "+a+"〜"+b+" ごろ",
+  fAct:(k,n)=>"磁気活動が弱め（Kp予報 "+k+"、この地点の目安 "+n+" 以上）",fClear:c=>"雲が多い予報（実効雲量 "+c+"%）",fDark:a=>"空が暗くなりきらない（太陽高度 "+a+"°）",
+  neck:x=>"ネック："+x,allGood:"活動・晴れ・暗さの条件がそろっています",moonNote:p=>" ／ 月明かりあり（輝面 "+p+"%）",
+  tlCloud:"雲",now:"いま",scoreLbl:(d,s)=>d+" スコア "+s,
+  kind:{observed:"観測値",estimated:"推定値",predicted:"予報値",manual:"仮定値"},kindS:{observed:"観測",estimated:"推定",predicted:"予報",manual:"仮定"},
+  twi:["完全に暗い（夜）","天文薄明","航海薄明","市民薄明","昼間"],twi2:["真っ暗","十分暗い","やや明るい","薄明","昼間"],
+  nowSlot:"いまの時間帯",bestSlot:"今夜のねらい目",mAct:"磁気活動",mClear:"晴れ",mDark:"暗さ",mMoon:"月明かりの影響の少なさ",
+  fKp:"Kp指数",boost:b=>"（Bz南向きで +"+b+" 補正）",need:n=>"・目安 "+n+" 以上",fCloud:"雲量",effTot:n=>"実効値（全雲量 "+n+"%）",assumed:"仮定値",
+  fSun:"太陽高度",fMoon:"月",moonUp:a=>"高度 "+a+"°",moonDown:"沈んでいる",lit:p=>"輝面 "+p+"%",
+  kpNow:"Kp指数（いま）",storm:"磁気嵐",block3:"・3時間枠",bz:"磁場 Bz",bzS:"南向き：オーロラが出やすい",bzN:"北向き：出にくい",na:"取得できませんでした",
+  wind:"太陽風速度",windFast:"速い：活発化しやすい",windNorm:"ふつう",ovP:"OVATION 出現確率",ovVals:(a,b)=>"真上 "+a+"% / 極側 "+b+"%",ovFor:t=>"予測時刻 "+t,
+  cloudHr:"雲量（この1時間）",effLow:"実効値（低い雲を重視）",mlat:"地磁気緯度",mlatSub:(a,b)=>"地平線の目安 Kp "+a+"／真上 Kp "+b,
+  kp9:"この地点では Kp 9 超の大磁気嵐が必要",kpLine:k=>"地平線の目安 Kp "+k,
+  st:{none:"出ていない",bright:"出ているが明るい",cloud:"出ているが曇り",vis:"見えていそう（頭上）",vish:"見えていそう（地平線）"},
+  dirs:["北","北東","東","南東","南","南西","西","北西"],
+  mapCenter:"地図の中心",gridLoading:"周辺の雲の情報を読み込んでいます…",gridFail:"周辺の雲の情報を取得できませんでした。通信状態を確認して「更新」を押してください。",
+  when:k=>k?k+"時間後":"いま",baseWhen:(n,w)=>n+"（"+w+"）",visIdx:n=>"見える度 "+n,cl:"雲",pr:"確率",sun:"太陽",
+  nearMsg:(r,n,w)=>"半径"+r+"km以内の陸地"+n+"地点を比べています。雲と暗さは"+w+"、オーロラの強さは現在の予測です。",
+  nearBright:" この時刻はまだ空が明るいため、雲の少ない場所の順に並べています。暗くなる時刻（1〜3時間後）に切り替えて確認してください。",
+  nearWeak:" いまはこの周辺のオーロラの出現確率が低いため、晴れている場所の順に並べています。",nearSame:" 近くの候補とここの条件はほぼ同じです。",
+  candDir:(d,km)=>d+"へ "+km+" km",showMap:"地図で見る",gmaps:"Googleマップ",noCand:"この範囲に候補の陸地がありません。距離を広げてください。",
+  candName:(n,d,km)=>"候補"+n+"（"+d+"へ "+km+" km）",me:"観測地",
+  srcOv:t=>"OVATION 出現確率"+(t?"・予測時刻 "+t:""),srcKp:k=>"OVATIONを取得できないため、Kp "+k+" から推定",srcCloud:w=>"・雲 "+w,
+  place:(n,a)=>n+"（"+a+"）",
+  spotVis:(n,v)=>"代表的な観測地"+n+"か所のうち "+v+" か所で見えていそうです。",spotNone:n=>"代表的な観測地"+n+"か所で、いま見えていそうな場所はありません。",
+  spotCl:"雲は現在の予報値です。",spotNoCl:"雲量を取得できていないため、雲は考慮していません。",spotGo:"ここの予報",top8:"上位8か所だけ表示",all:n=>"すべて表示（"+n+"か所）",
+  latlon:(la,lo)=>(la>=0?"北緯 ":"南緯 ")+Math.abs(la).toFixed(1)+"° "+(lo>=0?"東経 ":"西経 ")+Math.abs(lo).toFixed(1)+"°",
+  fetching:"取得中…",pOver:"出現確率（真上）",pHor:"極側8°以内の最大",pHorSub:"地平線付近に見える目安",cloudNow:"雲量（現在）",tapGo:"この地点の予報を見る",
+  updated:t=>"更新 "+t,manualAll:"この表示環境では外部データに接続できないため、Kpと雲量は仮定値です。太陽・月の位置と暗さは実際の計算です。つまみで条件を変えて試せます。",
+  manualSome:"一部のライブデータを取得できませんでした。つまみの値で補っています。",
+  useGeo:"現在地を使う",enterCoord:"緯度・経度を入力",customOpt:(a,b)=>"指定地点（"+a+", "+b+"）",custom:"指定地点",
+  noGeo:"位置情報を使えません。緯度・経度を入力してください。",gettingGeo:"現在地を取得しています…",geoFail:"現在地を取得できませんでした。緯度・経度を入力してください。",
+  badCoord:"緯度は −90〜90、経度は −180〜180 で入力してください。",title:"極光ナビ｜オーロラ予報・リアルタイム出現マップ"
+ },
+ en:{
+  locLabel:"Location",calc:"Calculating…",loadingData:"Loading data",stKp:"Kp forecast",stSw:"Solar wind",stCl:"Clouds",refresh:"Refresh",
+  lat:"Latitude",lon:"Longitude",setCustom:"Forecast here",kpAssumed:"Kp (assumed)",clAssumed:"Clouds (assumed)",
+  mapTitle:"Where is the aurora right now?",mapSub:"Live aurora probability over day and night. Tap anywhere to see conditions there.",
+  ariaMapArea:"Map area",north:"North",south:"South",local:"Around location",ariaMap:"Aurora probability map. Tap to see conditions at a point",
+  ariaMapCtl:"Map controls",zIn:"Zoom in",zOut:"Zoom out",zRl:"Rotate left",zRr:"Rotate right",zHome:"Center on location",zCloud:"Show clouds",
+  mapHint:"Drag to move · pinch (or scroll) to zoom · twist with two fingers to rotate · double-tap to zoom in",
+  lgView:"View line (low on the horizon)",lgDay:"Daylight",lgVis:"Likely visible",lgDim:"Aurora, but cloudy or bright",lgCloud:"Clouds (whiter = thicker)",lgCand:"Nearby spots",
+  nearTitle:"Best spots nearby",ariaTime:"Time",kNow:"Now",k1:"In 1 h",k2:"In 2 h",k3:"In 3 h",ariaRad:"Search radius",r50:"≤50 km",r100:"≤100 km",r200:"≤200 km",
+  nearHere:"Search around map center",spotsTitle:"Where it's likely visible now",
+  tlTitle:"48-hour outlook",tlSub:"Hourly score. Shaded bands are dark hours; the lower strip shows cloud. Tap a bar to see that hour's numbers.",ariaTl:"48-hour aurora score",
+  lgScore:"Score",lgDark:"Dark hours",lgCloud2:"Clouds (darker = more)",nowTitle:"Space weather and sky now",
+  kpTitle:"3-day Kp forecast",kpSub:"Geomagnetic activity in 3-hour blocks. The dotted line marks the Kp at which aurora starts to show low on the horizon here.",ariaKp:"3-day Kp forecast",
+  lgKp5:"Kp 5–6 (storm G1–G2)",lgKp7:"Kp 7+ (G3+)",lgObs:"Observed / estimated",
+  vGreat:"Great chance",vGood:"Good chance",vMaybe:"Possible",vLow:"Unlikely",
+  noDarkLbl:"Next 48 hours",noDarkV:"The sky won't get dark",noDarkW:"It's the season of midnight sun or constant twilight.",
+  nightNow:(e,p)=>"Now until about "+e+" · "+p, nightLater:(a,e,p)=>"Tonight "+a+"–"+e+" · "+p,
+  noChance:"No real chance tonight.",win:(a,b)=>"Best window: about "+a+"–"+b,
+  fAct:(k,n)=>"Weak activity (Kp forecast "+k+"; this place needs about "+n+"+)",fClear:c=>"Cloudy forecast (effective cloud "+c+"%)",fDark:a=>"Sky not fully dark (sun at "+a+"°)",
+  neck:x=>"Main limit: "+x,allGood:"Activity, clear skies and darkness line up",moonNote:p=>" / Moonlight ("+p+"% lit)",
+  tlCloud:"Cloud",now:"Now",scoreLbl:(d,s)=>d+" score "+s,
+  kind:{observed:"Observed",estimated:"Estimated",predicted:"Forecast",manual:"Assumed"},kindS:{observed:"observed",estimated:"estimated",predicted:"forecast",manual:"assumed"},
+  twi:["Fully dark","Astronomical twilight","Nautical twilight","Civil twilight","Daytime"],twi2:["Fully dark","Dark enough","A bit bright","Twilight","Daytime"],
+  nowSlot:"Current hour",bestSlot:"Tonight's best window",mAct:"Activity",mClear:"Clear sky",mDark:"Darkness",mMoon:"Little moonlight",
+  fKp:"Kp index",boost:b=>" (+"+b+" for southward Bz)",need:n=>" · needs "+n+"+",fCloud:"Cloud cover",effTot:n=>"Effective (total "+n+"%)",assumed:"Assumed",
+  fSun:"Sun altitude",fMoon:"Moon",moonUp:a=>a+"° up",moonDown:"Below horizon",lit:p=>p+"% lit",
+  kpNow:"Kp index (now)",storm:"Storm",block3:" · 3-hour block",bz:"IMF Bz",bzS:"Southward: favors aurora",bzN:"Northward: less likely",na:"Unavailable",
+  wind:"Solar wind speed",windFast:"Fast: activity likely",windNorm:"Normal",ovP:"OVATION probability",ovVals:(a,b)=>"Overhead "+a+"% / poleward "+b+"%",ovFor:t=>"Forecast for "+t,
+  cloudHr:"Cloud (this hour)",effLow:"Effective (low cloud weighted)",mlat:"Magnetic latitude",mlatSub:(a,b)=>"Horizon Kp "+a+" / overhead Kp "+b,
+  kp9:"Needs an extreme storm (Kp 9+) here",kpLine:k=>"Horizon line: Kp "+k,
+  st:{none:"No aurora",bright:"Aurora, but too bright",cloud:"Aurora, but cloudy",vis:"Likely visible (overhead)",vish:"Likely visible (horizon)"},
+  dirs:["N","NE","E","SE","S","SW","W","NW"],
+  mapCenter:"Map center",gridLoading:"Loading cloud data for the area…",gridFail:"Couldn't load cloud data for the area. Check your connection and tap Refresh.",
+  when:k=>k?"in "+k+" h":"now",baseWhen:(n,w)=>n+" ("+w+")",visIdx:n=>"Visibility "+n,cl:"Cloud",pr:"Prob.",sun:"Sun",
+  nearMsg:(r,n,w)=>"Comparing "+n+" land points within "+r+" km. Cloud and darkness are for "+w+"; aurora strength is the current forecast.",
+  nearBright:" It's still light at this time, so places are sorted by clearest sky. Switch to a later time (1–3 h) to check after dark.",
+  nearWeak:" Aurora probability is low around here right now, so places are sorted by clearest sky.",nearSame:" Nearby spots are about the same as here.",
+  candDir:(d,km)=>km+" km "+d,showMap:"Show on map",gmaps:"Google Maps",noCand:"No land points in this range. Try a larger distance.",
+  candName:(n,d,km)=>"Spot "+n+" ("+km+" km "+d+")",me:"Location",
+  srcOv:t=>"OVATION probability"+(t?" · for "+t:""),srcKp:k=>"OVATION unavailable · estimated from Kp "+k,srcCloud:w=>" · clouds "+w,
+  place:(n,a)=>n+", "+a,
+  spotVis:(n,v)=>"Likely visible at "+v+" of "+n+" well-known aurora spots.",spotNone:n=>"None of "+n+" well-known aurora spots is likely to see it right now.",
+  spotCl:" Clouds are current forecasts.",spotNoCl:" Cloud data unavailable, so clouds aren't considered.",spotGo:"Forecast",top8:"Show top 8 only",all:n=>"Show all ("+n+")",
+  latlon:(la,lo)=>Math.abs(la).toFixed(1)+"°"+(la>=0?"N":"S")+" "+Math.abs(lo).toFixed(1)+"°"+(lo>=0?"E":"W"),
+  fetching:"Loading…",pOver:"Probability overhead",pHor:"Max within 8° poleward",pHorSub:"Guide for aurora low on the horizon",cloudNow:"Cloud (now)",tapGo:"Forecast for this point",
+  updated:t=>"Updated "+t,manualAll:"Live data can't be reached in this view, so Kp and clouds are assumed values. Sun, moon and darkness are calculated. Use the sliders to try conditions.",
+  manualSome:"Some live data couldn't be loaded. The slider values are used instead.",
+  useGeo:"Use my location",enterCoord:"Enter coordinates",customOpt:(a,b)=>"Custom point ("+a+", "+b+")",custom:"Custom point",
+  noGeo:"Location isn't available. Enter latitude and longitude.",gettingGeo:"Getting your location…",geoFail:"Couldn't get your location. Enter latitude and longitude.",
+  badCoord:"Latitude must be −90 to 90 and longitude −180 to 180.",title:"Kyokko Navi | Aurora forecast & live map"
+ }
+};
+function t(k,...a){ const v=(I18N[LANG]&&I18N[LANG][k]!==undefined)?I18N[LANG][k]:I18N.ja[k]; return typeof v==="function"?v(...a):v; }
+const LOCALE=()=>LANG==="ja"?"ja-JP":"en-GB";
+function locLabel(l){ return LANG==="en"?(l.en||l.name):l.name; }
+function shortName(n){ return String(n).replace(/（.*）/,"").replace(/,.*$/,""); }
+function twiOf(a,key){ const L=t(key||"twi"); return a<=-18?L[0]:a<=-12?L[1]:a<=-6?L[2]:a<0?L[3]:L[4]; }
+
 const PRESETS=[
-  {id:"rovaniemi",name:"ロヴァニエミ（フィンランド）",lat:66.50,lon:25.73,tz:"Europe/Helsinki"},
-  {id:"saariselka",name:"サーリセルカ（フィンランド）",lat:68.42,lon:27.41,tz:"Europe/Helsinki"},
-  {id:"helsinki",name:"ヘルシンキ（フィンランド）",lat:60.17,lon:24.94,tz:"Europe/Helsinki"},
-  {id:"tromso",name:"トロムソ（ノルウェー）",lat:69.65,lon:18.96,tz:"Europe/Oslo"},
-  {id:"abisko",name:"アビスコ（スウェーデン）",lat:68.35,lon:18.83,tz:"Europe/Stockholm"},
-  {id:"reykjavik",name:"レイキャビク（アイスランド）",lat:64.15,lon:-21.94,tz:"Atlantic/Reykjavik"},
-  {id:"fairbanks",name:"フェアバンクス（アラスカ）",lat:64.84,lon:-147.72,tz:"America/Anchorage"},
-  {id:"yellowknife",name:"イエローナイフ（カナダ）",lat:62.45,lon:-114.37,tz:"America/Edmonton"},
-  {id:"rikubetsu",name:"陸別（北海道）",lat:43.47,lon:143.74,tz:"Asia/Tokyo"}
+  {id:"rovaniemi",en:"Rovaniemi, Finland",name:"ロヴァニエミ（フィンランド）",lat:66.50,lon:25.73,tz:"Europe/Helsinki"},
+  {id:"saariselka",en:"Saariselkä, Finland",name:"サーリセルカ（フィンランド）",lat:68.42,lon:27.41,tz:"Europe/Helsinki"},
+  {id:"helsinki",en:"Helsinki, Finland",name:"ヘルシンキ（フィンランド）",lat:60.17,lon:24.94,tz:"Europe/Helsinki"},
+  {id:"tromso",en:"Tromsø, Norway",name:"トロムソ（ノルウェー）",lat:69.65,lon:18.96,tz:"Europe/Oslo"},
+  {id:"abisko",en:"Abisko, Sweden",name:"アビスコ（スウェーデン）",lat:68.35,lon:18.83,tz:"Europe/Stockholm"},
+  {id:"reykjavik",en:"Reykjavík, Iceland",name:"レイキャビク（アイスランド）",lat:64.15,lon:-21.94,tz:"Atlantic/Reykjavik"},
+  {id:"fairbanks",en:"Fairbanks, Alaska",name:"フェアバンクス（アラスカ）",lat:64.84,lon:-147.72,tz:"America/Anchorage"},
+  {id:"yellowknife",en:"Yellowknife, Canada",name:"イエローナイフ（カナダ）",lat:62.45,lon:-114.37,tz:"America/Edmonton"},
+  {id:"rikubetsu",en:"Rikubetsu, Hokkaido",name:"陸別（北海道）",lat:43.47,lon:143.74,tz:"Asia/Tokyo"}
 ];
 
 const S={loc:PRESETS[0],kp:null,sw:null,ovGrid:null,ovTime:null,cloud:null,
@@ -514,9 +651,9 @@ function buildHours(){
 
 /* ---------- formatting ---------- */
 function tz(){return (S.cloud&&S.cloud.tz)||S.loc.tz||Intl.DateTimeFormat().resolvedOptions().timeZone}
-function fmt(t,opt){try{return new Intl.DateTimeFormat("ja-JP",Object.assign({timeZone:tz()},opt)).format(new Date(t))}catch(e){return new Intl.DateTimeFormat("ja-JP",opt).format(new Date(t))}}
+function fmt(t,opt){try{return new Intl.DateTimeFormat(LOCALE(),Object.assign({timeZone:tz()},opt)).format(new Date(t))}catch(e){return new Intl.DateTimeFormat(LOCALE(),opt).format(new Date(t))}}
 const hm=t=>fmt(t,{hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
-const hh=t=>fmt(t,{hour:"numeric",hourCycle:"h23"}).replace("時","");
+const hh=t=>String(Number(fmt(t,{hour:"numeric",hourCycle:"h23"}).replace(/\D/g,"")));
 const md=t=>fmt(t,{month:"numeric",day:"numeric",weekday:"short"});
 const ymd=t=>fmt(t,{year:"numeric",month:"2-digit",day:"2-digit"});
 function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
@@ -525,18 +662,18 @@ const scoreColor=s=>s>=75?mix("#5ef0a6","#b98cff",clamp((s-75)/25,0,1)):mix("#34
 
 /* ---------- render: hero ---------- */
 function verdict(s){
-  if(s>=60) return ["見えるチャンス大","great"];
-  if(s>=35) return ["可能性あり","good"];
-  if(s>=15) return ["条件しだい","maybe"];
-  return ["きびしそう","low"];
+  if(s>=60) return [t("vGreat"),"great"];
+  if(s>=35) return [t("vGood"),"good"];
+  if(s>=15) return [t("vMaybe"),"maybe"];
+  return [t("vLow"),"low"];
 }
 function renderHero(H){
   const G=geo(), hero=$("#hero");
   let i0=H.findIndex(h=>h.dark>0.05);
   if(i0<0){
-    $("#nightLabel").textContent="48時間以内";
-    $("#score").textContent="0"; $("#verdict").textContent="空が暗くなりません";
-    $("#window").textContent="白夜や薄明が続く時期です。";
+    $("#nightLabel").textContent=t("noDarkLbl");
+    $("#score").textContent="0"; $("#verdict").textContent=t("noDarkV");
+    $("#window").textContent=t("noDarkW");
     $("#reason").textContent=""; hero.dataset.level="low"; S.intensity=.12; S.bestI=0; return;
   }
   let i1=i0; while(i1+1<H.length&&H[i1+1].dark>0.05) i1++;
@@ -546,17 +683,18 @@ function renderHero(H){
   const best=H[bi], thr=best.score*0.7; let a=bi,b=bi;
   while(a-1>=i0&&H[a-1].score>=thr) a--; while(b+1<=i1&&H[b+1].score>=thr) b++;
   const endT=H[i1].t+HOUR;
-  $("#nightLabel").textContent=(i0===0?"いまから "+hm(endT)+" ごろまで":"今夜 "+hm(H[i0].t)+"〜"+hm(endT))+"・"+S.loc.name.replace(/（.*）/,"");
+  const pn=shortName(locLabel(S.loc));
+  $("#nightLabel").textContent=i0===0?t("nightNow",hm(endT),pn):t("nightLater",hm(H[i0].t),hm(endT),pn);
   const sc=Math.round(best.score), [v,lvl]=verdict(sc);
   $("#score").textContent=sc; $("#verdict").textContent=v; hero.dataset.level=lvl;
-  $("#window").textContent=sc<5?"今夜は目立ったチャンスがありません。":"ねらい目は "+hm(H[a].t)+"〜"+hm(H[b].t+HOUR)+" ごろ";
+  $("#window").textContent=sc<5?t("noChance"):t("win",hm(H[a].t),hm(H[b].t+HOUR));
   const f=[
-    ["act",best.act,"磁気活動が弱め（Kp予報 "+best.kp.toFixed(1)+"、この地点の目安 "+G.kpH.toFixed(1)+" 以上）"],
-    ["clear",best.clear,"雲が多い予報（実効雲量 "+Math.round(best.cloud)+"%）"],
-    ["dark",best.dark,"空が暗くなりきらない（太陽高度 "+best.sAlt.toFixed(0)+"°）"]
+    ["act",best.act,t("fAct",best.kp.toFixed(1),G.kpH.toFixed(1))],
+    ["clear",best.clear,t("fClear",Math.round(best.cloud))],
+    ["dark",best.dark,t("fDark",best.sAlt.toFixed(0))]
   ].sort((x,y)=>x[1]-y[1]);
-  let r=f[0][1]<0.6?"ネック："+f[0][2]:"活動・晴れ・暗さの条件がそろっています";
-  if(best.mAlt>10&&best.ill>0.6) r+=" ／ 月明かりあり（輝面 "+Math.round(best.ill*100)+"%）";
+  let r=f[0][1]<0.6?t("neck",f[0][2]):t("allGood");
+  if(best.mAlt>10&&best.ill>0.6) r+=t("moonNote",Math.round(best.ill*100));
   $("#reason").textContent=r;
   S.intensity=clamp(0.12+best.score/100,0.12,1);
 }
@@ -586,12 +724,12 @@ function renderTimeline(H){
     if(hr%3===0){ svgEl("text",{x:x0+i*bw+bw/2,y:cy+28,"text-anchor":"middle",class:hr===0?"lbl-strong":""},svg,hr); }
     if(hr===0||i===0){ svgEl("text",{x:x0+i*bw+2,y:Ht-4,class:"lbl-strong"},svg,md(h.t)); if(i>0) svgEl("line",{x1:x0+i*bw,x2:x0+i*bw,y1:top-6,y2:cy+14,stroke:"#3a4866","stroke-dasharray":"2 3"},svg); }
   });
-  svgEl("text",{x:x0-6,y:cy+10,"text-anchor":"end"},svg,"雲");
+  svgEl("text",{x:x0-6,y:cy+10,"text-anchor":"end"},svg,t("tlCloud"));
   const nx=x0+((Date.now()%HOUR)/HOUR)*bw;
   svgEl("line",{x1:nx,x2:nx,y1:top-10,y2:base,stroke:"#e8edf5","stroke-width":1.5},svg);
-  svgEl("text",{x:nx+4,y:top-10,class:"lbl-strong"},svg,"いま");
+  svgEl("text",{x:nx+4,y:top-10,class:"lbl-strong"},svg,t("now"));
   H.forEach((h,i)=>{
-    const lbl=md(h.t)+" "+hm(h.t)+" スコア "+Math.round(h.score);
+    const lbl=t("scoreLbl",md(h.t)+" "+hm(h.t),Math.round(h.score));
     const r=svgEl("rect",{x:x0+i*bw,y:0,width:bw,height:Ht,fill:"#000","fill-opacity":0,"pointer-events":"all",
       class:"hit",tabindex:0,role:"button","data-i":i,"aria-label":lbl,"aria-pressed":i===si?"true":"false"},svg);
     svgEl("title",{},r,lbl);
@@ -621,21 +759,21 @@ function renderDetail(H){
   const i=selIndex(H), h=H[i], G=geo(); if(!h) return;
   const sc=Math.round(h.score), [v,lvl]=verdict(sc);
   const pc={great:"good",good:"good",maybe:"warn",low:""}[lvl];
-  const kindJ={observed:"観測",estimated:"推定",predicted:"予報",manual:"仮定"}[h.kpKind]||"予報";
-  const twi=h.sAlt<=-18?"天文薄明より暗い":h.sAlt<=-12?"航海薄明":h.sAlt<=-6?"市民薄明より暗い":h.sAlt<0?"薄明":"昼間";
+  const kindJ=t("kind")[h.kpKind]||t("kind").predicted;
+  const twi=twiOf(h.sAlt);
   const fact=(k,val,sub)=>'<div class="row"><span class="k">'+k+'</span><span class="v">'+val+(sub?"<small>"+sub+"</small>":"")+'</span></div>';
   $("#detail").innerHTML=
     '<div class="d-head"><div class="d-time">'+esc(md(h.t))+' '+hm(h.t)+'〜'+hm(h.t+HOUR)+
-      '<small>'+(i===0?"いまの時間帯":i===S.bestI&&h.dark>0.05?"今夜のねらい目":"")+'</small></div>'+
+      '<small>'+(i===0?t("nowSlot"):i===S.bestI&&h.dark>0.05?t("bestSlot"):"")+'</small></div>'+
       '<div class="d-score"><span class="num">'+sc+'</span><span class="pill '+pc+'">'+v+'</span></div></div>'+
     '<div class="meters">'+
-      meter("磁気活動",h.act,"")+meter("晴れ",h.clear,"")+meter("暗さ",h.dark,"")+meter("月明かりの影響の少なさ",h.moonF,"")+
+      meter(t("mAct"),h.act,"")+meter(t("mClear"),h.clear,"")+meter(t("mDark"),h.dark,"")+meter(t("mMoon"),h.moonF,"")+
     '</div>'+
     '<div class="facts">'+
-      fact("Kp指数",h.kp.toFixed(1),kindJ+"値"+(h.boost>0.05?"（Bz南向きで +"+h.boost.toFixed(1)+" 補正）":"")+"・目安 "+G.kpH.toFixed(1)+" 以上")+
-      fact("雲量",Math.round(h.cloud)+"%",S.cloud?"実効値（全雲量 "+Math.round(h.cloudTotal)+"%）":"仮定値")+
-      fact("太陽高度",h.sAlt.toFixed(1)+"°",twi)+
-      fact("月",h.mAlt>0?"高度 "+h.mAlt.toFixed(0)+"°":"沈んでいる","輝面 "+Math.round(h.ill*100)+"%")+
+      fact(t("fKp"),h.kp.toFixed(1),kindJ+(h.boost>0.05?t("boost",h.boost.toFixed(1)):"")+t("need",G.kpH.toFixed(1)))+
+      fact(t("fCloud"),Math.round(h.cloud)+"%",S.cloud?t("effTot",Math.round(h.cloudTotal)):t("assumed"))+
+      fact(t("fSun"),h.sAlt.toFixed(1)+"°",twi)+
+      fact(t("fMoon"),h.mAlt>0?t("moonUp",h.mAlt.toFixed(0)):t("moonDown"),t("lit",Math.round(h.ill*100)))+
     '</div>';
 }
 
@@ -644,20 +782,20 @@ function renderNow(H){
   const G=geo(), h=H[0], k=kpAt(Date.now()), sw=S.sw, ov=ovAt(S.loc.lat,S.loc.lon);
   const rowsHtml=[];
   const add=(k,v,sub)=>rowsHtml.push('<div class="row"><span class="k">'+k+'</span><span class="v">'+v+(sub?"<small>"+sub+"</small>":"")+"</span></div>");
-  const kindJ={observed:"観測",estimated:"推定",predicted:"予報",manual:"仮定"}[k.kind]||"予報";
-  add("Kp指数（いま）",k.kp.toFixed(2)+(k.kp>=5?'<span class="pill warn">磁気嵐</span>':""),kindJ+"値・3時間枠");
+  const kindJ=t("kind")[k.kind]||t("kind").predicted;
+  add(t("kpNow"),k.kp.toFixed(2)+(k.kp>=5?'<span class="pill warn">'+t("storm")+'</span>':""),kindJ+t("block3"));
   if(sw&&Number.isFinite(sw.bz)){
     const c=sw.bz<=-5?"good":sw.bz<0?"":"warn";
-    add("磁場 Bz",'<span class="'+c+'">'+(sw.bz>0?"+":"")+sw.bz.toFixed(1)+" nT</span>",sw.bz<0?"南向き：オーロラが出やすい":"北向き：出にくい");
-  } else add("磁場 Bz","—","取得できませんでした");
-  if(sw&&Number.isFinite(sw.speed)) add("太陽風速度",Math.round(sw.speed)+" km/s",sw.speed>=500?"速い：活発化しやすい":"ふつう");
-  else add("太陽風速度","—","");
-  if(ov) add("OVATION 出現確率","真上 "+Math.round(ov.over)+"% / 極側 "+Math.round(ov.hor)+"%",S.ovTime?"予測時刻 "+hm(S.ovTime):"");
-  else add("OVATION 出現確率","—","取得できませんでした");
-  add("雲量（この1時間）",Math.round(h.cloud)+"%",S.cloud?"実効値（低い雲を重視）":"仮定値");
-  add("太陽高度",h.sAlt.toFixed(1)+"°",h.sAlt<=-18?"天文薄明より暗い":h.sAlt<=-12?"航海薄明":h.sAlt<=-6?"市民薄明より暗い":h.sAlt<0?"薄明":"昼間");
-  add("月",(h.mAlt>0?"高度 "+h.mAlt.toFixed(0)+"°":"沈んでいる"),"輝面 "+Math.round(h.ill*100)+"%");
-  add("地磁気緯度",G.ml.toFixed(1)+"°","地平線の目安 Kp "+G.kpH.toFixed(1)+"／真上 Kp "+G.kpO.toFixed(1));
+    add(t("bz"),'<span class="'+c+'">'+(sw.bz>0?"+":"")+sw.bz.toFixed(1)+" nT</span>",sw.bz<0?t("bzS"):t("bzN"));
+  } else add(t("bz"),"—",t("na"));
+  if(sw&&Number.isFinite(sw.speed)) add(t("wind"),Math.round(sw.speed)+" km/s",sw.speed>=500?t("windFast"):t("windNorm"));
+  else add(t("wind"),"—","");
+  if(ov) add(t("ovP"),t("ovVals",Math.round(ov.over),Math.round(ov.hor)),S.ovTime?t("ovFor",hm(S.ovTime)):"");
+  else add(t("ovP"),"—",t("na"));
+  add(t("cloudHr"),Math.round(h.cloud)+"%",S.cloud?t("effLow"):t("assumed"));
+  add(t("fSun"),h.sAlt.toFixed(1)+"°",twiOf(h.sAlt));
+  add(t("fMoon"),(h.mAlt>0?t("moonUp",h.mAlt.toFixed(0)):t("moonDown")),t("lit",Math.round(h.ill*100)));
+  add(t("mlat"),G.ml.toFixed(1)+"°",t("mlatSub",G.kpH.toFixed(1),G.kpO.toFixed(1)));
   $("#now").innerHTML=rowsHtml.join("");
 }
 
@@ -679,7 +817,7 @@ function renderKp(){
     const hgt=Math.max(r.kp,0.08)/9*ch, col=r.kp>=7?"#ff7a7a":r.kp>=5?"#f2c14e":"#5ef0a6";
     const op=(r.kind==="observed"||r.kind==="estimated")?0.45:(r.kind==="manual"?0.3:1);
     const b=svgEl("rect",{x:x0+i*bw+3,y:base-hgt,width:bw-6,height:hgt,rx:2,fill:col,"fill-opacity":op},svg);
-    svgEl("title",{},b,md(r.t)+" "+hm(r.t)+"〜　Kp "+r.kp.toFixed(2)+"（"+({observed:"観測",estimated:"推定",predicted:"予報",manual:"仮定"}[r.kind]||r.kind)+"）");
+    svgEl("title",{},b,md(r.t)+" "+hm(r.t)+"–  Kp "+r.kp.toFixed(2)+" ("+(t("kindS")[r.kind]||r.kind)+")");
     const hr=Number(hh(r.t));
     if(i%2===0) svgEl("text",{x:x0+i*bw+bw/2,y:base+14,"text-anchor":"middle"},svg,hr);
     const prev=i>0?ymd(list[i-1].t):null;
@@ -687,7 +825,7 @@ function renderKp(){
   });
   const yH=base-Math.min(G.kpH,9)/9*ch;
   svgEl("line",{x1:x0,x2:W-16,y1:yH,y2:yH,stroke:"#b98cff","stroke-width":1.5,"stroke-dasharray":"5 4"},svg);
-  svgEl("text",{x:x0+4,y:yH-5,fill:"#b98cff",style:"fill:#b98cff"},svg,G.kpH>=9.5?"この地点では Kp 9 超の大磁気嵐が必要":"地平線の目安 Kp "+G.kpH.toFixed(1));
+  svgEl("text",{x:x0+4,y:yH-5,fill:"#b98cff",style:"fill:#b98cff"},svg,G.kpH>=9.5?t("kp9"):t("kpLine",G.kpH.toFixed(1)));
   const nowI=list.findIndex(r=>Date.now()>=r.t&&Date.now()<r.t+3*HOUR);
   if(nowI>=0){const nx=x0+nowI*bw+((Date.now()-list[nowI].t)/(3*HOUR))*bw; svgEl("line",{x1:nx,x2:nx,y1:top-8,y2:base,stroke:"#e8edf5","stroke-width":1.5},svg);}
 }
@@ -699,24 +837,24 @@ const LAND=("-298,-400,-1,-3,-2,-2,-10,1,-11,-1,-7,2,-2,2,11,0,11,-1,3,2,3,2,5,-
   return {pts,mn,mx};
 });
 const SPOTS=[
-  ["fairbanks","フェアバンクス","アラスカ",64.84,-147.72],["anchorage","アンカレッジ","アラスカ",61.22,-149.90],
-  ["whitehorse","ホワイトホース","カナダ",60.72,-135.06],["yellowknife","イエローナイフ","カナダ",62.45,-114.37],
-  ["churchill","チャーチル","カナダ",58.77,-94.17],["calgary","カルガリー","カナダ",51.05,-114.07],
-  ["iqaluit","イカルイト","カナダ",63.75,-68.52],["nuuk","ヌーク","グリーンランド",64.18,-51.72],
-  ["kanger","カンゲルルススアーク","グリーンランド",67.01,-50.72],["reykjavik","レイキャビク","アイスランド",64.15,-21.94],
-  ["akureyri","アークレイリ","アイスランド",65.68,-18.09],["tromso","トロムソ","ノルウェー",69.65,18.96],
-  ["alta","アルタ","ノルウェー",69.97,23.27],["lofoten","ロフォーテン","ノルウェー",68.23,14.57],
-  ["oslo","オスロ","ノルウェー",59.91,10.75],["abisko","アビスコ","スウェーデン",68.35,18.83],
-  ["kiruna","キルナ","スウェーデン",67.86,20.23],["stockholm","ストックホルム","スウェーデン",59.33,18.07],
-  ["rovaniemi","ロヴァニエミ","フィンランド",66.50,25.73],["saariselka","サーリセルカ","フィンランド",68.42,27.41],
-  ["oulu","オウル","フィンランド",65.01,25.47],["helsinki","ヘルシンキ","フィンランド",60.17,24.94],
-  ["murmansk","ムルマンスク","ロシア",68.97,33.07],["shetland","シェトランド","英国",60.15,-1.15],
-  ["edinburgh","エディンバラ","英国",55.95,-3.19],["copenhagen","コペンハーゲン","デンマーク",55.68,12.57],
-  ["seattle","シアトル","米国",47.61,-122.33],["minneapolis","ミネアポリス","米国",44.98,-93.27],
-  ["wakkanai","稚内","北海道",45.42,141.67],["rikubetsu","陸別","北海道",43.47,143.74],
-  ["hobart","ホバート","タスマニア",-42.88,147.33],["queenstown","クイーンズタウン","ニュージーランド",-45.03,168.66],
-  ["invercargill","インバーカーギル","ニュージーランド",-46.41,168.35],["ushuaia","ウシュアイア","アルゼンチン",-54.80,-68.30]
-].map(a=>({id:a[0],name:a[1],area:a[2],lat:a[3],lon:a[4]}));
+  ["fairbanks","フェアバンクス","アラスカ",64.84,-147.72,"Fairbanks","Alaska"],["anchorage","アンカレッジ","アラスカ",61.22,-149.90,"Anchorage","Alaska"],
+  ["whitehorse","ホワイトホース","カナダ",60.72,-135.06,"Whitehorse","Canada"],["yellowknife","イエローナイフ","カナダ",62.45,-114.37,"Yellowknife","Canada"],
+  ["churchill","チャーチル","カナダ",58.77,-94.17,"Churchill","Canada"],["calgary","カルガリー","カナダ",51.05,-114.07,"Calgary","Canada"],
+  ["iqaluit","イカルイト","カナダ",63.75,-68.52,"Iqaluit","Canada"],["nuuk","ヌーク","グリーンランド",64.18,-51.72,"Nuuk","Greenland"],
+  ["kanger","カンゲルルススアーク","グリーンランド",67.01,-50.72,"Kangerlussuaq","Greenland"],["reykjavik","レイキャビク","アイスランド",64.15,-21.94,"Reykjavík","Iceland"],
+  ["akureyri","アークレイリ","アイスランド",65.68,-18.09,"Akureyri","Iceland"],["tromso","トロムソ","ノルウェー",69.65,18.96,"Tromsø","Norway"],
+  ["alta","アルタ","ノルウェー",69.97,23.27,"Alta","Norway"],["lofoten","ロフォーテン","ノルウェー",68.23,14.57,"Lofoten","Norway"],
+  ["oslo","オスロ","ノルウェー",59.91,10.75,"Oslo","Norway"],["abisko","アビスコ","スウェーデン",68.35,18.83,"Abisko","Sweden"],
+  ["kiruna","キルナ","スウェーデン",67.86,20.23,"Kiruna","Sweden"],["stockholm","ストックホルム","スウェーデン",59.33,18.07,"Stockholm","Sweden"],
+  ["rovaniemi","ロヴァニエミ","フィンランド",66.50,25.73,"Rovaniemi","Finland"],["saariselka","サーリセルカ","フィンランド",68.42,27.41,"Saariselkä","Finland"],
+  ["oulu","オウル","フィンランド",65.01,25.47,"Oulu","Finland"],["helsinki","ヘルシンキ","フィンランド",60.17,24.94,"Helsinki","Finland"],
+  ["murmansk","ムルマンスク","ロシア",68.97,33.07,"Murmansk","Russia"],["shetland","シェトランド","英国",60.15,-1.15,"Shetland","UK"],
+  ["edinburgh","エディンバラ","英国",55.95,-3.19,"Edinburgh","UK"],["copenhagen","コペンハーゲン","デンマーク",55.68,12.57,"Copenhagen","Denmark"],
+  ["seattle","シアトル","米国",47.61,-122.33,"Seattle","USA"],["minneapolis","ミネアポリス","米国",44.98,-93.27,"Minneapolis","USA"],
+  ["wakkanai","稚内","北海道",45.42,141.67,"Wakkanai","Hokkaido"],["rikubetsu","陸別","北海道",43.47,143.74,"Rikubetsu","Hokkaido"],
+  ["hobart","ホバート","タスマニア",-42.88,147.33,"Hobart","Tasmania"],["queenstown","クイーンズタウン","ニュージーランド",-45.03,168.66,"Queenstown","New Zealand"],
+  ["invercargill","インバーカーギル","ニュージーランド",-46.41,168.35,"Invercargill","New Zealand"],["ushuaia","ウシュアイア","アルゼンチン",-54.80,-68.30,"Ushuaia","Argentina"]
+].map(a=>({id:a[0],name:a[1],area:a[2],lat:a[3],lon:a[4],enName:a[5],enArea:a[6]}));
 
 const M={mode:"auto",v:null,free:false,dragging:false,tap:null,cg:null,cgVer:0,cgCache:null,cgBase:null,cgFail:false,cgLoading:false,ck:0,crad:100,showCloud:true,near:[],spotCloud:null,spotT:0,ovVer:0,mg:null,rkey:"",frame:null,spotPx:[],evals:[],showAll:false};
 const mapCv=$("#map"), mctx=mapCv.getContext("2d"), rcv=document.createElement("canvas"), rctx=rcv.getContext("2d");
@@ -757,10 +895,11 @@ function evalPoint(lat,lon,cloud,grid,T){
   const aur=Math.max(over,0.6*hor), dd=days(T||Date.now()), sAlt=altOf(sunRaDec(dd),dd,lat,lon), dark=clamp((-sAlt-5)/11,0,1);
   const hasC=cloud!=null&&Number.isFinite(cloud), clear=hasC?1-clamp(cloud,0,100)/100:1;
   let st;
-  if(aur<10) st={key:"none",label:"出ていない",cls:"s-none"};
-  else if(dark<0.4) st={key:"bright",label:"出ているが明るい",cls:"s-dim"};
-  else if(hasC&&clear<0.4) st={key:"cloud",label:"出ているが曇り",cls:"s-dim"};
-  else st=over>=10?{key:"vis",label:"見えていそう（頭上）",cls:"s-vis"}:{key:"vish",label:"見えていそう（地平線）",cls:"s-vis"};
+  if(aur<10) st={key:"none",cls:"s-none"};
+  else if(dark<0.4) st={key:"bright",cls:"s-dim"};
+  else if(hasC&&clear<0.4) st={key:"cloud",cls:"s-dim"};
+  else st=over>=10?{key:"vis",cls:"s-vis"}:{key:"vish",cls:"s-vis"};
+  st.label=t("st")[st.key];
   return {over,hor,aur,sAlt,dark,cloud:hasC?cloud:null,vis:aur*dark*clear,st};
 }
 
@@ -823,7 +962,7 @@ function distBear(a,b){
   const f1=rad(a.lat),f2=rad(b.lat),dl=rad(b.lon-a.lon);
   const d=2*6371*Math.asin(Math.sqrt(Math.sin((f2-f1)/2)**2+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)**2));
   const br=(deg(Math.atan2(Math.sin(dl)*Math.cos(f2),Math.cos(f1)*Math.sin(f2)-Math.sin(f1)*Math.cos(f2)*Math.cos(dl)))+360)%360;
-  return {d,dir:["北","北東","東","南東","南","南西","西","北西"][Math.round(br/45)%8]};
+  return {d,di:Math.round(br/45)%8,get dir(){return t("dirs")[this.di];}};
 }
 async function loadCloudGrid(force){
   const c=M.cgBase||{lat:S.loc.lat,lon:S.loc.lon};
@@ -840,37 +979,37 @@ function renderNear(){
   document.querySelectorAll("#nearTime button").forEach(b=>b.setAttribute("aria-pressed",Number(b.dataset.k)===M.ck?"true":"false"));
   document.querySelectorAll("#nearRad button").forEach(b=>b.setAttribute("aria-pressed",Number(b.dataset.r)===M.crad?"true":"false"));
   M.near=[];
-  const bp=M.cgBase||{lat:S.loc.lat,lon:S.loc.lon,name:S.loc.name.replace(/（.*）/,"")};
-  const bname=M.cgBase?"地図の中心":bp.name;
+  const bp=M.cgBase||{lat:S.loc.lat,lon:S.loc.lon,name:shortName(locLabel(S.loc))};
+  const bname=M.cgBase?t("mapCenter"):bp.name;
   if(!M.cg){
     base.textContent=""; list.innerHTML="";
-    sub.textContent=M.cgLoading?"周辺の雲の情報を読み込んでいます…":M.cgFail?"周辺の雲の情報を取得できませんでした。通信状態を確認して「更新」を押してください。":"";
+    sub.textContent=M.cgLoading?t("gridLoading"):M.cgFail?t("gridFail"):"";
     return;
   }
-  const T=Date.now()+M.ck*HOUR, vals=cgValsAt(T), A=auroraGrid(), when=M.ck?M.ck+"時間後":"いま";
+  const T=Date.now()+M.ck*HOUR, vals=cgValsAt(T), A=auroraGrid(), when=t("when",M.ck);
   const evs=M.cg.pts.map((p,k)=>{
     const e=evalPoint(p.lat,p.lon,vals[k],A.grid,T), db=distBear(bp,p);
     return {p,k,e,db,score:e.aur*e.dark*(e.cloud==null?1:1-e.cloud/100),sky:e.dark*(e.cloud==null?1:1-e.cloud/100)};
   });
   const bc=cgSample(vals,bp.lat,bp.lon), be=evalPoint(bp.lat,bp.lon,bc,A.grid,T), bs=be.aur*be.dark*(be.cloud==null?1:1-be.cloud/100);
-  base.innerHTML='<b>'+esc(bname)+'（'+when+'）</b>　<span class="chip-s '+scoreCls(bs)+'">見える度 '+Math.round(bs)+'</span>　<span class="mono" style="color:var(--mute);font-size:12px">雲 '+(bc==null?"—":Math.round(bc)+"%")+' ・ 確率 '+Math.round(be.aur)+'% ・ 太陽 '+be.sAlt.toFixed(0)+'°</span>';
+  base.innerHTML='<b>'+esc(t("baseWhen",bname,when))+'</b>　<span class="chip-s '+scoreCls(bs)+'">'+t("visIdx",Math.round(bs))+'</span>　<span class="mono" style="color:var(--mute);font-size:12px">'+t("cl")+' '+(bc==null?"—":Math.round(bc)+"%")+' · '+t("pr")+' '+Math.round(be.aur)+'% · '+t("sun")+' '+be.sAlt.toFixed(0)+'°</span>';
   const clr=x=>x.e.cloud==null?1:1-x.e.cloud/100;
   const cand=evs.filter(x=>x.db.d<=M.crad&&x.db.d>8&&onLand(x.p.lat,x.p.lon)).sort((a,b)=>(b.score-a.score)||(b.sky-a.sky)||(clr(b)-clr(a)));
   const top=cand.slice(0,5); M.near=top;
   const maxAur=Math.max(0,...evs.map(x=>x.e.aur));
-  let msg="半径"+M.crad+"km以内の陸地"+cand.length+"地点を比べています。雲と暗さは"+when+"、オーロラの強さは現在の予測です。";
-  if(be.dark<0.1) msg+=" この時刻はまだ空が明るいため、雲の少ない場所の順に並べています。暗くなる時刻（1〜3時間後）に切り替えて確認してください。";
-  else if(maxAur<10) msg+=" いまはこの周辺のオーロラの出現確率が低いため、晴れている場所の順に並べています。";
-  else if(top.length&&top[0].score-bs<5) msg+=" 近くの候補とここの条件はほぼ同じです。";
+  let msg=t("nearMsg",M.crad,cand.length,when);
+  if(be.dark<0.1) msg+=t("nearBright");
+  else if(maxAur<10) msg+=t("nearWeak");
+  else if(top.length&&top[0].score-bs<5) msg+=t("nearSame");
   sub.textContent=msg;
   list.innerHTML=top.length?top.map((x,n)=>{
     const e=x.e;
-    return '<div class="spot"><div class="nm"><span class="rank">'+(n+1)+'</span>'+x.db.dir+'へ '+Math.round(x.db.d)+' km</div>'+
-      '<span class="chip-s st '+scoreCls(x.score)+'">見える度 '+Math.round(x.score)+'</span>'+
-      '<div class="vals mono">雲 '+(e.cloud==null?"—":Math.round(e.cloud)+"%")+' ・ 確率 '+Math.round(e.aur)+'% ・ 太陽 '+e.sAlt.toFixed(0)+'°</div>'+
-      '<div class="acts"><button class="btn sm" type="button" data-near="'+n+'">地図で見る</button>'+
-      '<a class="btn sm" href="https://www.google.com/maps/search/?api=1&amp;query='+x.p.lat.toFixed(4)+','+x.p.lon.toFixed(4)+'" target="_blank" rel="noopener">Googleマップ</a></div></div>';
-  }).join(""):'<p class="sub">この範囲に候補の陸地がありません。距離を広げてください。</p>';
+    return '<div class="spot"><div class="nm"><span class="rank">'+(n+1)+'</span>'+t("candDir",x.db.dir,Math.round(x.db.d))+'</div>'+
+      '<span class="chip-s st '+scoreCls(x.score)+'">'+t("visIdx",Math.round(x.score))+'</span>'+
+      '<div class="vals mono">'+t("cl")+' '+(e.cloud==null?"—":Math.round(e.cloud)+"%")+' · '+t("pr")+' '+Math.round(e.aur)+'% · '+t("sun")+' '+e.sAlt.toFixed(0)+'°</div>'+
+      '<div class="acts"><button class="btn sm" type="button" data-near="'+n+'">'+t("showMap")+'</button>'+
+      '<a class="btn sm" href="https://www.google.com/maps/search/?api=1&amp;query='+x.p.lat.toFixed(4)+','+x.p.lon.toFixed(4)+'" target="_blank" rel="noopener">'+t("gmaps")+'</a></div></div>';
+  }).join(""):'<p class="sub">'+t("noCand")+'</p>';
 }
 function scoreCls(s){ return s>=25?"s-vis":s>=8?"s-dim":"s-none"; }
 
@@ -1040,8 +1179,8 @@ function renderMap(){
     else if(k==="none"){ c.fillStyle="rgba(143,156,181,.75)"; c.arc(q[0],q[1],2.5,0,Math.PI*2); c.fill(); }
     else { c.strokeStyle="#f2c14e"; c.lineWidth=2; c.arc(q[0],q[1],4.5,0,Math.PI*2); c.stroke(); }
     if((k==="vis"||k==="vish"||F.half<30)&&Math.hypot(q[0]-o[0],q[1]-o[1])>6){
-      const w=c.measureText(sp.name).width, r=[q[0]+6,q[1]-17,q[0]+8+w,q[1]-3];
-      if(free(r)){ taken.push(r); labels.push([sp.name,q[0]+7,q[1]-6]); }
+      const w=c.measureText(spName(sp)).width, r=[q[0]+6,q[1]-17,q[0]+8+w,q[1]-3];
+      if(free(r)){ taken.push(r); labels.push([spName(sp),q[0]+7,q[1]-6]); }
     }
   }
   c.fillStyle="#e8edf5"; c.shadowColor="rgba(5,10,22,.9)"; c.shadowBlur=3;
@@ -1050,7 +1189,7 @@ function renderMap(){
   // observer
   c.strokeStyle="#ffffff"; c.lineWidth=2; c.beginPath(); c.arc(o[0],o[1],7,0,Math.PI*2); c.stroke();
   c.beginPath(); c.moveTo(o[0]-11,o[1]); c.lineTo(o[0]-4,o[1]); c.moveTo(o[0]+4,o[1]); c.lineTo(o[0]+11,o[1]); c.moveTo(o[0],o[1]-11); c.lineTo(o[0],o[1]-4); c.moveTo(o[0],o[1]+4); c.lineTo(o[0],o[1]+11); c.stroke();
-  c.fillStyle="#ffffff"; c.font="700 11px 'Zen Kaku Gothic New','Hiragino Sans',sans-serif"; c.fillText("観測地",o[0]+10,o[1]+15);
+  c.fillStyle="#ffffff"; c.font="700 11px 'Zen Kaku Gothic New','Hiragino Sans',sans-serif"; c.fillText(t("me"),o[0]+10,o[1]+15);
   if(M.tap){ const t=px(M.tap.lat,M.tap.lon); c.strokeStyle="#e8edf5"; c.lineWidth=2; c.beginPath(); c.moveTo(t[0]-5,t[1]-5); c.lineTo(t[0]+5,t[1]+5); c.moveTo(t[0]+5,t[1]-5); c.lineTo(t[0]-5,t[1]+5); c.stroke(); }
   // cloud-grid footprint + nearby candidates
   if(M.cg&&M.showCloud){
@@ -1075,9 +1214,9 @@ function renderMap(){
   if(F.clip){ c.strokeStyle="#26334f"; c.lineWidth=1; c.beginPath(); c.arc(pole[0],pole[1],F.clip*s,0,Math.PI*2); c.stroke(); }
   // captions
   $("#mapSrc").textContent=(A.src==="ovation"
-    ?"OVATION 出現確率"+(isFinite(S.ovTime)?"・予測時刻 "+hm(S.ovTime):"")
-    :"OVATIONを取得できないため、Kp "+(S.hours[0]?S.hours[0].kp.toFixed(1):"")+" から推定")+
-    (M.showCloud&&M.cg?"・雲 "+(M.ck?M.ck+"時間後":"いま"):"");
+    ?t("srcOv",isFinite(S.ovTime)?hm(S.ovTime):"")
+    :t("srcKp",S.hours[0]?S.hours[0].kp.toFixed(1):""))+
+    (M.showCloud&&M.cg?t("srcCloud",t("when",M.ck)):"");
   const cb=document.querySelector('.map-ctl button[data-z="cloud"]'); if(cb) cb.setAttribute("aria-pressed",M.showCloud?"true":"false");
   document.querySelectorAll("#mapMode button").forEach(b=>{
     const on=!M.free&&(M.mode==="local"?b.dataset.m==="local":b.dataset.m===(F.h>0?"north":"south"));
@@ -1085,40 +1224,41 @@ function renderMap(){
   });
 }
 
-function placeName(sp){ return sp.name+"（"+sp.area+"）"; }
+function placeName(sp,lang){ return (lang||LANG)==="en"?sp.enName+", "+sp.enArea:sp.name+"（"+sp.area+"）"; }
+function spName(sp){ return LANG==="en"?sp.enName:sp.name; }
+function spArea(sp){ return LANG==="en"?sp.enArea:sp.area; }
 function renderSpots(){
   const A=auroraGrid();
   const list=SPOTS.map((sp,i)=>({sp,i,e:evalPoint(sp.lat,sp.lon,M.spotCloud?M.spotCloud[i]:null,A.grid)}));
   list.sort((a,b)=>(b.e.vis-a.e.vis)||(b.e.aur-a.e.aur));
   M.evals=list;
   const vis=list.filter(x=>x.e.st.key==="vis"||x.e.st.key==="vish");
-  $("#spotSub").textContent=(vis.length?"代表的な観測地"+SPOTS.length+"か所のうち "+vis.length+" か所で見えていそうです。":"代表的な観測地"+SPOTS.length+"か所で、いま見えていそうな場所はありません。")+
-    (M.spotCloud?"雲は現在の予報値です。":"雲量を取得できていないため、雲は考慮していません。");
+  $("#spotSub").textContent=(vis.length?t("spotVis",SPOTS.length,vis.length):t("spotNone",SPOTS.length))+
+    (M.spotCloud?t("spotCl"):t("spotNoCl"));
   const shown=M.showAll?list:list.slice(0,8);
   $("#spots").innerHTML=shown.map(x=>{
     const e=x.e;
-    return '<div class="spot"><div class="nm">'+esc(x.sp.name)+'<small>'+esc(x.sp.area)+'</small></div>'+
+    return '<div class="spot"><div class="nm">'+esc(spName(x.sp))+'<small>'+esc(spArea(x.sp))+'</small></div>'+
       '<span class="chip-s st '+e.st.cls+'">'+e.st.label+'</span>'+
-      '<div class="vals mono">確率 '+Math.round(e.aur)+'% ・ 雲 '+(e.cloud==null?"—":Math.round(e.cloud)+"%")+' ・ 太陽 '+e.sAlt.toFixed(0)+'°</div>'+
-      '<button class="btn sm go" type="button" data-spot="'+x.i+'">ここの予報</button></div>';
+      '<div class="vals mono">'+t("pr")+' '+Math.round(e.aur)+'% · '+t("cl")+' '+(e.cloud==null?"—":Math.round(e.cloud)+"%")+' · '+t("sun")+' '+e.sAlt.toFixed(0)+'°</div>'+
+      '<button class="btn sm go" type="button" data-spot="'+x.i+'">'+t("spotGo")+'</button></div>';
   }).join("");
-  $("#spotMore").textContent=M.showAll?"上位8か所だけ表示":"すべて表示（"+SPOTS.length+"か所）";
+  $("#spotMore").textContent=M.showAll?t("top8"):t("all",SPOTS.length);
   // observer line
   const cl=S.cloud?cloudAt(Date.now()).eff:null, me=evalPoint(S.loc.lat,S.loc.lon,cl,A.grid);
-  $("#mapNow").innerHTML='<b>'+esc(S.loc.name.replace(/（.*）/,""))+'</b>　<span class="chip-s '+me.st.cls+'">'+me.st.label+'</span>　<span class="mono" style="color:var(--mute);font-size:12px">確率 '+Math.round(me.aur)+'%'+(me.cloud!=null?' ・ 雲 '+Math.round(me.cloud)+'%':'')+' ・ 太陽 '+me.sAlt.toFixed(0)+'°</span>';
+  $("#mapNow").innerHTML='<b>'+esc(shortName(locLabel(S.loc)))+'</b>　<span class="chip-s '+me.st.cls+'">'+me.st.label+'</span>　<span class="mono" style="color:var(--mute);font-size:12px">'+t("pr")+' '+Math.round(me.aur)+'%'+(me.cloud!=null?' · '+t("cl")+' '+Math.round(me.cloud)+'%':'')+' · '+t("sun")+' '+me.sAlt.toFixed(0)+'°</span>';
 }
 function renderTap(){
-  const box=$("#tapInfo"), t=M.tap; if(!t){box.hidden=true;return;}
-  const e=evalPoint(t.lat,t.lon,t.cloud,auroraGrid().grid);
-  const ns=t.lat>=0?"北緯":"南緯", ew=t.lon>=0?"東経":"西経";
-  const title=t.name||(ns+" "+Math.abs(t.lat).toFixed(1)+"° "+ew+" "+Math.abs(t.lon).toFixed(1)+"°");
-  const cloudTxt=t.cloud===undefined?"取得中…":t.cloud==null?"取得できませんでした":Math.round(t.cloud)+"%";
-  const twi=e.sAlt<=-18?"真っ暗":e.sAlt<=-12?"十分暗い":e.sAlt<=-6?"やや明るい":e.sAlt<0?"薄明":"昼間";
+  const box=$("#tapInfo"), tp=M.tap; if(!tp){box.hidden=true;return;}
+  const e=evalPoint(tp.lat,tp.lon,tp.cloud,auroraGrid().grid);
+  const title=tp.spot!=null?placeName(SPOTS[tp.spot]):tp.cand?t("candName",tp.cand.n,t("dirs")[tp.cand.di],tp.cand.km):t("latlon",tp.lat,tp.lon);
+  const cloudTxt=tp.cloud===undefined?t("fetching"):tp.cloud==null?t("na"):Math.round(tp.cloud)+"%";
+  const twi=twiOf(e.sAlt,"twi2");
   const row=(k,v,sub)=>'<div class="row"><span class="k">'+k+'</span><span class="v">'+v+(sub?"<small>"+sub+"</small>":"")+'</span></div>';
   box.innerHTML='<div class="t-head"><b>'+esc(title)+'</b><span class="chip-s '+e.st.cls+'">'+e.st.label+'</span></div>'+
-    '<div class="facts">'+row("出現確率（真上）",Math.round(e.over)+"%","")+row("極側8°以内の最大",Math.round(e.hor)+"%","地平線付近に見える目安")+
-    row("太陽高度",e.sAlt.toFixed(1)+"°",twi)+row("雲量（現在）",cloudTxt,"")+'</div>'+
-    '<button class="btn sm" type="button" id="tapGo" style="align-self:flex-start">この地点の予報を見る</button>';
+    '<div class="facts">'+row(t("pOver"),Math.round(e.over)+"%","")+row(t("pHor"),Math.round(e.hor)+"%",t("pHorSub"))+
+    row(t("fSun"),e.sAlt.toFixed(1)+"°",twi)+row(t("cloudNow"),cloudTxt,"")+'</div>'+
+    '<button class="btn sm" type="button" id="tapGo" style="align-self:flex-start">'+t("tapGo")+'</button>';
   box.hidden=false;
 }
 async function fetchPointCloud(lat,lon){
@@ -1137,21 +1277,22 @@ function handleTap(pt){
   let hit=null, bd=16; for(const p of M.spotPx){const d=Math.hypot(p.x-x0,p.y-y0); if(d<bd){bd=d;hit=p;}}
   const x=F.cx+(x0/W*2-1)*F.half, y=F.cy+(y0/W*2-1)*F.half;
   if(!hit&&F.clip&&Math.hypot(x,y)>F.clip) return;
-  let t;
-  if(hit) t={lat:hit.ev.sp.lat,lon:hit.ev.sp.lon,name:placeName(hit.ev.sp),cloud:M.spotCloud?M.spotCloud[hit.ev.i]:undefined};
-  else { const g=unproj(x,y,F.h,F.lon0); t={lat:g.lat,lon:g.lon,name:null,cloud:undefined}; }
-  M.tap=t; renderMap(); renderTap();
-  if(t.cloud===undefined) fetchPointCloud(t.lat,t.lon).then(v=>{t.cloud=v;},()=>{t.cloud=null;}).then(()=>{ if(M.tap===t) renderTap(); });
+  let tp;
+  if(hit) tp={lat:hit.ev.sp.lat,lon:hit.ev.sp.lon,spot:hit.ev.i,cloud:M.spotCloud?M.spotCloud[hit.ev.i]:undefined};
+  else { const g=unproj(x,y,F.h,F.lon0); tp={lat:g.lat,lon:g.lon,cloud:undefined}; }
+  M.tap=tp; renderMap(); renderTap();
+  if(tp.cloud===undefined) fetchPointCloud(tp.lat,tp.lon).then(v=>{tp.cloud=v;},()=>{tp.cloud=null;}).then(()=>{ if(M.tap===tp) renderTap(); });
 }
 $("#tapInfo").addEventListener("click",e=>{
   if(!e.target.closest("#tapGo")||!M.tap) return;
-  const t=M.tap, loc=t.name?{id:"tap",name:t.name,lat:t.lat,lon:t.lon,tz:null}:customLoc(t.lat,t.lon);
+  const tp=M.tap, sp=tp.spot!=null?SPOTS[tp.spot]:null;
+  const loc=sp?{id:"spot-"+sp.id,name:placeName(sp,"ja"),en:placeName(sp,"en"),lat:sp.lat,lon:sp.lon,tz:null}:customLoc(tp.lat,tp.lon);
   setLoc(loc); window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
 });
 $("#spots").addEventListener("click",e=>{
   const b=e.target.closest("[data-spot]"); if(!b) return;
   const sp=SPOTS[Number(b.dataset.spot)];
-  setLoc({id:"spot-"+sp.id,name:placeName(sp),lat:sp.lat,lon:sp.lon,tz:null}); window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
+  setLoc({id:"spot-"+sp.id,name:placeName(sp,"ja"),en:placeName(sp,"en"),lat:sp.lat,lon:sp.lon,tz:null}); window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
 });
 $("#spotMore").addEventListener("click",()=>{M.showAll=!M.showAll; renderSpots();});
 document.querySelectorAll("#nearTime button").forEach(b=>b.addEventListener("click",()=>{ M.ck=Number(b.dataset.k); renderNear(); renderMap(); }));
@@ -1165,7 +1306,7 @@ $("#nearList").addEventListener("click",e=>{
   const x=M.near[Number(b.dataset.near)]; if(!x) return;
   mapFrame(); const W=mapCv.clientWidth;
   M.v.half=Math.min(M.v.half,2.2); anchorTo({lat:x.p.lat,lon:x.p.lon},{x:W/2,y:W/2},W); M.free=true;
-  M.tap={lat:x.p.lat,lon:x.p.lon,name:"候補"+(Number(b.dataset.near)+1)+"（"+x.db.dir+"へ "+Math.round(x.db.d)+" km）",cloud:x.e.cloud};
+  M.tap={lat:x.p.lat,lon:x.p.lon,cand:{n:Number(b.dataset.near)+1,di:x.db.di,km:Math.round(x.db.d)},cloud:x.e.cloud};
   renderMap(); renderTap(); $("#mapSec").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
 });
 document.querySelectorAll("#mapMode button").forEach(b=>b.addEventListener("click",()=>{
@@ -1176,13 +1317,13 @@ if(window.ResizeObserver) new ResizeObserver(()=>renderMap()).observe(mapCv); el
 /* ---------- status & manual ---------- */
 function renderStatus(){
   for(const k of ["kp","sw","ov","cl"]) $("#st-"+k).dataset.s=S.status[k];
-  $("#updated").textContent=S.updated?"更新 "+new Intl.DateTimeFormat("ja-JP",{hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(S.updated):"";
+  $("#updated").textContent=S.updated?t("updated",new Intl.DateTimeFormat(LOCALE(),{hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(S.updated)):"";
   const kpMissing=S.status.kp==="fail", clMissing=S.status.cl==="fail";
   $("#manual").hidden=!(kpMissing||clMissing);
   $("#kpSlider").hidden=!kpMissing; $("#clSlider").hidden=!clMissing;
   if(kpMissing&&clMissing&&S.status.sw==="fail"&&S.status.ov==="fail")
-    $("#manualNote").textContent="この表示環境では外部データに接続できないため、Kpと雲量は仮定値です。太陽・月の位置と暗さは実際の計算です。つまみで条件を変えて試せます。";
-  else $("#manualNote").textContent="一部のライブデータを取得できませんでした。つまみの値で補っています。";
+    $("#manualNote").textContent=t("manualAll");
+  else $("#manualNote").textContent=t("manualSome");
 }
 function renderAll(){
   const H=buildHours(); S.hours=H;
@@ -1211,36 +1352,50 @@ async function refresh(all){
   if(i0>2) sc.scrollLeft=Math.max(0,40+(i0-2)*16);
 }
 
+/* ---------- language switch ---------- */
+function applyLang(){
+  document.documentElement.lang=LANG;
+  document.querySelectorAll("[data-i18n]").forEach(e=>{e.textContent=t(e.dataset.i18n);});
+  document.querySelectorAll("[data-i18n-aria]").forEach(e=>{const v=t(e.dataset.i18nAria); e.setAttribute("aria-label",v); if(e.hasAttribute("title")) e.setAttribute("title",v);});
+  document.querySelectorAll("[data-setlang]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.setlang===LANG?"true":"false"));
+  if(/github\.io$/.test(location.hostname)) document.title=t("title");
+  fillSelect(); renderAll();
+}
+$("#langSeg").addEventListener("click",e=>{
+  const b=e.target.closest("[data-setlang]"); if(!b||b.dataset.setlang===LANG) return;
+  LANG=b.dataset.setlang; save("aurora-lang",LANG); applyLang();
+});
+
 /* ---------- location UI ---------- */
 function fillSelect(){
   const sel=$("#loc"); let h="";
-  for(const p of PRESETS) h+='<option value="'+p.id+'">'+esc(p.name)+"</option>";
-  h+='<option value="__geo">現在地を使う</option><option value="__custom">緯度・経度を入力</option>';
-  if(!PRESETS.some(p=>p.id===S.loc.id)) h+='<option value="'+esc(S.loc.id)+'">'+esc(S.loc.id==="custom"?"指定地点（"+S.loc.lat.toFixed(2)+", "+S.loc.lon.toFixed(2)+"）":S.loc.name)+"</option>";
+  for(const p of PRESETS) h+='<option value="'+p.id+'">'+esc(locLabel(p))+"</option>";
+  h+='<option value="__geo">'+t("useGeo")+'</option><option value="__custom">'+t("enterCoord")+'</option>';
+  if(!PRESETS.some(p=>p.id===S.loc.id)) h+='<option value="'+esc(S.loc.id)+'">'+esc(S.loc.id==="custom"?t("customOpt",S.loc.lat.toFixed(2),S.loc.lon.toFixed(2)):locLabel(S.loc))+"</option>";
   sel.innerHTML=h; sel.value=S.loc.id;
 }
 function setLoc(loc){
   S.loc=loc; S.cloud=null; S.sel=null; M.tap=null; M.v=null; M.free=false; M.cgBase=null; M.near=[]; if(M.mode!=="local") M.mode="auto"; save("aurora-loc",loc); fillSelect(); renderAll(); refresh(false);
 }
-function customLoc(lat,lon){return {id:"custom",name:"指定地点",lat,lon,tz:null}}
+function customLoc(lat,lon){return {id:"custom",name:I18N.ja.custom,en:I18N.en.custom,lat,lon,tz:null}}
 $("#loc").addEventListener("change",e=>{
   const v=e.target.value; $("#customMsg").textContent="";
   if(v==="__custom"){$("#customBox").hidden=false;$("#lat").focus();e.target.value=S.loc.id;return;}
   if(v==="__geo"){
     e.target.value=S.loc.id; $("#customBox").hidden=false;
-    if(!navigator.geolocation){$("#customMsg").textContent="位置情報を使えません。緯度・経度を入力してください。";return;}
-    $("#customMsg").textContent="現在地を取得しています…";
+    if(!navigator.geolocation){$("#customMsg").textContent=t("noGeo");return;}
+    $("#customMsg").textContent=t("gettingGeo");
     try{
       navigator.geolocation.getCurrentPosition(p=>{$("#customMsg").textContent="";$("#customBox").hidden=true;setLoc(customLoc(p.coords.latitude,p.coords.longitude));},
-        ()=>{$("#customMsg").textContent="現在地を取得できませんでした。緯度・経度を入力してください。";},{timeout:10000,maximumAge:600000});
-    }catch(err){$("#customMsg").textContent="現在地を取得できませんでした。緯度・経度を入力してください。";}
+        ()=>{$("#customMsg").textContent=t("geoFail");},{timeout:10000,maximumAge:600000});
+    }catch(err){$("#customMsg").textContent=t("geoFail");}
     return;
   }
   const p=PRESETS.find(x=>x.id===v); if(p){$("#customBox").hidden=true;setLoc(p);}
 });
 $("#setCustom").addEventListener("click",()=>{
   const lat=parseFloat($("#lat").value), lon=parseFloat($("#lon").value);
-  if(!(lat>=-90&&lat<=90)||!(lon>=-180&&lon<=180)){$("#customMsg").textContent="緯度は −90〜90、経度は −180〜180 で入力してください。";return;}
+  if(!(lat>=-90&&lat<=90)||!(lon>=-180&&lon<=180)){$("#customMsg").textContent=t("badCoord");return;}
   $("#customMsg").textContent=""; $("#customBox").hidden=true; setLoc(customLoc(lat,lon));
 });
 $("#refresh").addEventListener("click",()=>refresh(true));
@@ -1287,9 +1442,9 @@ window.addEventListener("resize",()=>{if(reduce) drawSky(0)});
 /* ---------- boot ---------- */
 const saved=load("aurora-loc");
 if(saved&&typeof saved.lat==="number"&&typeof saved.lon==="number")
-  S.loc=PRESETS.find(p=>p.id===saved.id)||{id:saved.id||"custom",name:saved.name||"指定地点",lat:saved.lat,lon:saved.lon,tz:saved.tz||null};
+  S.loc=PRESETS.find(p=>p.id===saved.id)||{id:saved.id||"custom",name:saved.name||I18N.ja.custom,en:saved.en||(saved.id==="custom"||!saved.id?I18N.en.custom:saved.name),lat:saved.lat,lon:saved.lon,tz:saved.tz||null};
 if(load("aurora-map")==="local") M.mode="local";
-fillSelect(); renderAll(); requestAnimationFrame(loop);
+applyLang(); requestAnimationFrame(loop);
 refresh(true);
 setInterval(()=>{ if(!document.hidden) refresh(true); },10*60*1000);
 setInterval(()=>{
