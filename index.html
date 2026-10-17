@@ -165,6 +165,59 @@ a.btn{text-decoration:none;display:inline-block;color:var(--snow)}
 .s-vis{color:var(--oxygen)} .s-dim{color:var(--warn)} .s-none{color:var(--mute)}
 .btn.sm{padding:2px 12px;font-size:12px}
 .more{margin-top:10px;align-self:flex-start}
+/* next 3 nights */
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:8px}
+.nights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:12px}
+.night{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px 12px 14px;display:flex;flex-direction:column;gap:2px;cursor:pointer;text-align:left;color:var(--snow);font:inherit;min-width:0}
+.night:hover{border-color:var(--oxygen)}
+.night .nl{font-size:13px;font-weight:700}
+.night .nd{font-size:11px;color:var(--mute)}
+.night .ns{font-family:var(--f-data);font-size:34px;line-height:1.1;margin-top:6px}
+.night .nv{font-size:12px;font-weight:700}
+.night .nw{font-size:11px;color:var(--mute);font-family:var(--f-data)}
+.night .nf{font-size:11px;color:var(--mute);margin-top:4px;display:flex;flex-wrap:wrap;gap:2px 8px}
+.night .nx{font-size:10px;color:var(--warn);margin-top:2px}
+.alertbox{margin-top:12px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between}
+.alertbox[data-on="true"]{border-color:var(--oxygen)}
+.ab-text{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 240px}
+.ab-text b{font-size:15px}
+.ab-ctl{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.chk{display:inline-flex;gap:6px;align-items:center;font-size:13px;color:var(--mute);cursor:pointer}
+.chk input{accent-color:var(--oxygen);width:16px;height:16px}
+#alertToggle[aria-pressed="true"]{background:var(--oxygen);color:var(--night);border-color:var(--oxygen);font-weight:700}
+/* nowcast banner */
+.nowcast{position:fixed;left:0;right:0;bottom:0;z-index:20;padding:0 12px calc(12px + env(safe-area-inset-bottom,0px))}
+.nc-in{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:12px;justify-content:space-between;border-radius:16px;padding:14px 16px;background:var(--panel2);border:2px solid var(--warn);box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.nowcast[data-lv="2"] .nc-in{border-color:var(--oxygen);background:linear-gradient(90deg,rgba(94,240,166,.22),rgba(185,140,255,.18)),var(--panel2);animation:ncpulse 2.4s ease-in-out infinite}
+@keyframes ncpulse{0%,100%{box-shadow:0 0 0 0 rgba(94,240,166,.0),0 10px 40px rgba(0,0,0,.5)}50%{box-shadow:0 0 0 6px rgba(94,240,166,.25),0 10px 40px rgba(0,0,0,.5)}}
+@media (prefers-reduced-motion: reduce){.nowcast[data-lv="2"] .nc-in{animation:none}}
+.nc-in b{display:block;font-family:var(--f-display);font-size:20px}
+.nc-in span{font-size:13px;color:var(--snow);opacity:.85}
+.nc-x{background:none;border:1px solid var(--line);color:var(--snow);border-radius:10px;width:36px;height:36px;font-size:20px;line-height:1;cursor:pointer;flex:none}
+/* hero share */
+.hero-act{margin-top:12px;display:flex;gap:8px;flex-wrap:wrap}
+.btn.share{display:inline-flex;align-items:center;gap:8px;background:rgba(10,17,34,.7)}
+.btn.share svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* share modal */
+.modal{position:fixed;inset:0;z-index:30;background:rgba(5,10,22,.82);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal-in{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;width:100%;max-width:420px;max-height:100%;overflow:auto;display:flex;flex-direction:column;gap:10px}
+.modal-head{display:flex;justify-content:space-between;align-items:center}
+.modal-in img{width:100%;max-height:58vh;object-fit:contain;border-radius:12px;background:var(--night)}
+.modal-act{display:flex;flex-wrap:wrap;gap:8px}
+/* calendar */
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:8px}
+.cal-nav b{font-size:16px}
+.cal{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;margin-top:8px}
+.cal .wd{font-size:11px;color:var(--mute);text-align:center;padding:2px 0}
+.cal .day{position:relative;border:1px solid var(--line);border-radius:10px;min-height:58px;padding:4px 4px 3px;display:flex;flex-direction:column;align-items:center;gap:2px;color:var(--snow);font:inherit;cursor:pointer;background:var(--panel)}
+.cal .day:disabled{opacity:.35;cursor:default}
+.cal .day .dn{font-family:var(--f-data);font-size:12px;align-self:flex-start;line-height:1}
+.cal .day svg{width:18px;height:18px}
+.cal .day .kp{font-family:var(--f-data);font-size:10px;line-height:1}
+.cal .day .kp.g{color:var(--oxygen)}.cal .day .kp.y{color:var(--warn)}.cal .day .kp.r{color:var(--bad)}
+.cal .day[aria-pressed="true"]{outline:2px solid var(--snow);outline-offset:-1px}
+.cal .day.today .dn{color:var(--oxygen);font-weight:700}
+.cal .empty{min-height:58px}
 :root:not([lang="en"]) [data-lang="en"],:root[lang="en"] [data-lang="ja"]{display:none!important}
 .lang-seg{margin-left:auto}
 .lang-seg button{padding:4px 10px;font-size:12px}
@@ -209,6 +262,9 @@ footer a{color:var(--snow)}
       <h1 id="verdict" data-i18n="loadingData">データを読み込んでいます</h1>
       <p id="window"></p>
       <p id="reason"></p>
+      <div class="hero-act">
+        <button class="btn share" id="shareBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg><span data-i18n="share">画像で共有</span></button>
+      </div>
     </div>
   </header>
 
@@ -227,6 +283,22 @@ footer a{color:var(--snow)}
     <button class="btn" id="setCustom" type="button" data-i18n="setCustom">この地点で予報</button>
     <p class="msg" id="customMsg"></p>
   </div>
+
+  <section id="nightsSec">
+    <div class="sec-head">
+      <h2 data-i18n="nightsTitle">この先3晩</h2>
+      <button class="btn sm" id="toCal" type="button" data-i18n="toCal">もっと先の旅行計画</button>
+    </div>
+    <div class="nights" id="nights"></div>
+    <p class="sub" data-i18n="nTap">タップすると、その夜の時間ごとの数値が見られます。</p>
+    <div class="alertbox" id="alertBox" data-on="false">
+      <div class="ab-text"><b data-i18n="alertTitle">「いま外を見て！」速報</b><span class="sub" id="alertState"></span></div>
+      <div class="ab-ctl">
+        <button class="btn" id="alertToggle" type="button" aria-pressed="false"></button>
+        <label class="chk" for="wakeChk"><input type="checkbox" id="wakeChk"><span data-i18n="keepAwake">画面をつけたままにする</span></label>
+      </div>
+    </div>
+  </section>
 
   <section class="manual" id="manual" hidden>
     <p id="manualNote">ライブデータを取得できなかった項目があります。つまみで条件を変えて試せます（取得できた項目はライブ値を使います）。</p>
@@ -325,6 +397,22 @@ footer a{color:var(--snow)}
     </div>
   </section>
 
+  <section id="calSec">
+    <h2 data-i18n="calTitle">旅行日えらび：暗さと月明かりカレンダー</h2>
+    <p class="sub" data-i18n="calSub">オーロラの強さは3日より先は予報できません。暗い時間が長く月明かりの少ない夜を選び、出発直前にKp予報を確認しましょう。日付をタップすると詳細が出ます。</p>
+    <div class="cal-nav">
+      <button class="btn sm" id="calPrev" type="button" data-i18n-aria="calPrev" aria-label="前の月">‹</button>
+      <b id="calMonth"></b>
+      <button class="btn sm" id="calNext" type="button" data-i18n-aria="calNext" aria-label="次の月">›</button>
+    </div>
+    <div class="cal" id="cal"></div>
+    <div class="legend">
+      <span><i style="background:var(--oxygen);opacity:.5"></i><span data-i18n="lgCalQ">緑が濃いほど暗く、月明かりが少ない</span></span>
+      <span><i style="background:var(--warn)"></i><span data-i18n="lgCalKp">Kp：NOAA 27日予報の最大値（目安）</span></span>
+    </div>
+    <div class="tapinfo" id="calInfo" hidden></div>
+  </section>
+
   <details>
     <summary><span data-lang="ja">スコアの考え方</span><span data-lang="en">How the score works</span></summary>
     <div data-lang="ja">
@@ -359,6 +447,23 @@ footer a{color:var(--snow)}
   </footer>
 </div>
 
+<div class="nowcast" id="nowcast" hidden role="alert" data-lv="0">
+  <div class="nc-in"><div><b id="ncTitle"></b><span id="ncWhy"></span></div><button class="nc-x" id="ncClose" type="button" data-i18n-aria="close" aria-label="閉じる">×</button></div>
+</div>
+<div class="modal" id="shareModal" hidden role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+  <div class="modal-in">
+    <div class="modal-head"><b id="shareTitle" data-i18n="shareTitle">共有用の画像</b><button class="nc-x" id="shareClose" type="button" data-i18n-aria="close" aria-label="閉じる">×</button></div>
+    <img id="shareImg" alt="">
+    <p class="sub" data-i18n="shareHint">画像を長押しして保存することもできます。</p>
+    <div class="modal-act">
+      <button class="btn" id="shareGo" type="button" data-i18n="shareGo">共有する</button>
+      <button class="btn" id="shareSave" type="button" data-i18n="shareSave">保存</button>
+      <button class="btn" id="shareCopy" type="button" data-i18n="shareCopy">リンクをコピー</button>
+    </div>
+    <p class="msg" id="shareMsg"></p>
+  </div>
+</div>
+
 <script>
 (function(){
 "use strict";
@@ -373,6 +478,23 @@ let LANG=(function(){ try{const v=JSON.parse(localStorage.getItem("aurora-lang")
   const n=(navigator.languages&&navigator.languages[0])||navigator.language||"ja"; return /^ja/i.test(n)?"ja":"en"; })();
 const I18N={
  ja:{
+  nightsTitle:"この先3晩",toCal:"もっと先の旅行計画",nTap:"タップすると、その夜の時間ごとの数値が見られます。",
+  nLbl:["今夜","明日の夜","あさっての夜"],nBest:(a,b)=>"ねらい目 "+a+"〜"+b,nNoDark:"暗くなりません",nCloudOut:"雲は予報範囲外",nKpOut:"Kpは予報範囲外",
+  nMoon:p=>"月 "+p+"%",nNoMoon:"月なし",nCloud:c=>"雲 "+c+"%",nNone:"この先3日間は空が暗くなりません。",
+  alertTitle:"「いま外を見て！」速報",alertOn:"オンにする",alertOff:"オフにする",
+  alertDescOff:"オンにすると、アプリを開いている間にオーロラが出そうになったら、音と通知でお知らせします。",
+  alertDescOn:"オン：2分ごとに太陽風とオーロラの出現確率をチェックしています。アプリを閉じると止まります。",
+  alertNoNotif:"通知が許可されていないため、音と画面でお知らせします。",keepAwake:"画面をつけたままにする",
+  ncStrong:"いま外を見て！",ncSome:"チャンスあり：空をチェック",dirN:"北の空",dirS:"南の空",close:"閉じる",
+  notifStrong:p=>"いま外を見て！ "+p+"でオーロラのチャンスです",notifSome:p=>p+"でオーロラが出るかもしれません。空をチェック",
+  share:"画像で共有",shareTitle:"共有用の画像",shareHint:"画像を長押しして保存することもできます。",shareGo:"共有する",shareSave:"保存",shareCopy:"リンクをコピー",
+  shareCopied:"リンクをコピーしました",shareFail:"この端末では共有できません。保存するか、画像を長押しして保存してください。",shareMaking:"画像を作成しています…",
+  shareText:(p,s,v)=>p+"の今夜のオーロラ予報は "+s+"/100（"+v+"）",imgNight:d=>d+" の夜",imgFree:"無料のオーロラ予報アプリ",imgNext:"この先3晩",
+  calTitle:"旅行日えらび：暗さと月明かりカレンダー",calSub:"オーロラの強さは3日より先は予報できません。暗い時間が長く月明かりの少ない夜を選び、出発直前にKp予報を確認しましょう。日付をタップすると詳細が出ます。",
+  calPrev:"前の月",calNext:"次の月",calR:["好条件","良い","まずまず","不向き","白夜"],
+  calDark:(h,a,b)=>"暗い時間 "+h+"時間（"+a+"〜"+b+"）",calNoDark:"空が十分暗くなりません",
+  calMoon:(p,h)=>"月の輝面 "+p+"%・暗い時間のうち月が出ているのは "+h+"時間",calKp:k=>"NOAA 27日予報の最大Kp："+k+"（目安）",
+  lgCalQ:"緑が濃いほど暗く、月明かりが少ない",lgCalKp:"Kp：NOAA 27日予報の最大値（目安）",calDateFmt:{month:"long",day:"numeric",weekday:"short"},
   locLabel:"観測地",calc:"計算中…",loadingData:"データを読み込んでいます",stKp:"Kp予報",stSw:"太陽風",stCl:"雲量",refresh:"更新",
   lat:"緯度",lon:"経度",setCustom:"この地点で予報",kpAssumed:"Kp（仮定）",clAssumed:"雲量（仮定）",
   mapTitle:"いま、どこで見えている？",mapSub:"オーロラの出現確率に昼夜を重ねた地図です。タップした地点の状況が下に出ます。",
@@ -424,6 +546,23 @@ const I18N={
   badCoord:"緯度は −90〜90、経度は −180〜180 で入力してください。",title:"極光ナビ｜オーロラ予報・リアルタイム出現マップ"
  },
  en:{
+  nightsTitle:"Next 3 nights",toCal:"Plan further ahead",nTap:"Tap a night to see its hourly numbers.",
+  nLbl:["Tonight","Tomorrow night","In 2 nights"],nBest:(a,b)=>"Best "+a+"–"+b,nNoDark:"No darkness",nCloudOut:"No cloud forecast yet",nKpOut:"Beyond Kp forecast",
+  nMoon:p=>"Moon "+p+"%",nNoMoon:"No moon",nCloud:c=>"Cloud "+c+"%",nNone:"The sky won't get dark in the next 3 days.",
+  alertTitle:"“Look outside now!” alerts",alertOn:"Turn on",alertOff:"Turn off",
+  alertDescOff:"Turn on to get a sound and a notification while the app is open when aurora looks likely.",
+  alertDescOn:"On: checking solar wind and aurora probability every 2 minutes. It stops when you close the app.",
+  alertNoNotif:"Notifications aren't allowed, so alerts use sound and the screen.",keepAwake:"Keep screen on",
+  ncStrong:"Look outside now!",ncSome:"Possible now: check the sky",dirN:"Look north",dirS:"Look south",close:"Close",
+  notifStrong:p=>"Look outside! Aurora chance now at "+p,notifSome:p=>"Aurora possible at "+p+". Check the sky.",
+  share:"Share image",shareTitle:"Image to share",shareHint:"You can also press and hold the image to save it.",shareGo:"Share",shareSave:"Save",shareCopy:"Copy link",
+  shareCopied:"Link copied",shareFail:"Sharing isn't available here. Save the image or press and hold it.",shareMaking:"Making the image…",
+  shareText:(p,s,v)=>"Tonight's aurora forecast for "+p+": "+s+"/100 ("+v+")",imgNight:d=>"Night of "+d,imgFree:"Free aurora forecast app",imgNext:"Next 3 nights",
+  calTitle:"Pick your dates: darkness & moonlight",calSub:"Aurora strength can't be forecast more than 3 days ahead. Pick nights with long darkness and little moonlight, then check the Kp forecast just before you go. Tap a date for details.",
+  calPrev:"Previous month",calNext:"Next month",calR:["Great","Good","Fair","Poor","No darkness"],
+  calDark:(h,a,b)=>h+" h of darkness ("+a+"–"+b+")",calNoDark:"The sky doesn't get dark enough",
+  calMoon:(p,h)=>"Moon "+p+"% lit, up for "+h+" h of the dark hours",calKp:k=>"NOAA 27-day outlook max Kp: "+k+" (rough)",
+  lgCalQ:"Darker green = darker sky, less moonlight",lgCalKp:"Kp: NOAA 27-day outlook maximum (rough)",calDateFmt:{weekday:"short",day:"numeric",month:"long"},
   locLabel:"Location",calc:"Calculating…",loadingData:"Loading data",stKp:"Kp forecast",stSw:"Solar wind",stCl:"Clouds",refresh:"Refresh",
   lat:"Latitude",lon:"Longitude",setCustom:"Forecast here",kpAssumed:"Kp (assumed)",clAssumed:"Clouds (assumed)",
   mapTitle:"Where is the aurora right now?",mapSub:"Live aurora probability over day and night. Tap anywhere to see conditions there.",
@@ -587,7 +726,7 @@ async function fetchOvation(){
 }
 async function fetchCloud(loc){
   const u="https://api.open-meteo.com/v1/forecast?latitude="+loc.lat.toFixed(3)+"&longitude="+loc.lon.toFixed(3)+
-    "&hourly=cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high&timezone=auto&forecast_days=3&timeformat=unixtime";
+    "&hourly=cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high&timezone=auto&forecast_days=4&timeformat=unixtime";
   const j=await getJSON(u); const h=j.hourly||{};
   if(!Array.isArray(h.time)||!h.time.length) throw new Error("empty");
   return {time:h.time,total:h.cloud_cover,low:h.cloud_cover_low,mid:h.cloud_cover_mid,high:h.cloud_cover_high,tz:j.timezone};
@@ -616,10 +755,11 @@ function cloudAt(t){
     if(i>=0&&i<c.time.length){
       const tot=num(c.total&&c.total[i]);
       const eff=effCloud(num(c.low&&c.low[i]),num(c.mid&&c.mid[i]),num(c.high&&c.high[i]),tot);
-      if(eff!=null) return {eff,total:Number.isFinite(tot)?tot:eff};
+      if(eff!=null) return {eff,total:Number.isFinite(tot)?tot:eff,src:"data"};
     }
+    return {eff:S.manual.cloud,total:S.manual.cloud,src:"out"};
   }
-  return {eff:S.manual.cloud,total:S.manual.cloud};
+  return {eff:S.manual.cloud,total:S.manual.cloud,src:"manual"};
 }
 function effCloud(lo,mi,hi,tot){
   if([lo,mi,hi].every(Number.isFinite)) return 100*(1-(1-lo/100)*(1-0.85*mi/100)*(1-0.45*hi/100));
@@ -629,9 +769,10 @@ function geo(){
   const ml=Math.abs(magLat(S.loc.lat,S.loc.lon));
   return {ml,kpH:kpNeeded(ml+5),kpO:kpNeeded(ml)};
 }
-function buildHours(){
+function buildHours(N){
   const {lat,lon}=S.loc, G=geo(), start=Math.floor(Date.now()/HOUR)*HOUR, out=[];
-  for(let i=0;i<48;i++){
+  const kLast=S.kp&&S.kp.length?S.kp[S.kp.length-1].t+3*HOUR:null;
+  for(let i=0;i<(N||96);i++){
     const t=start+i*HOUR, tm=t+HOUR/2, d=days(tm);
     const sAlt=altOf(sunRaDec(d),d,lat,lon), mAlt=altOf(moonRaDec(d),d,lat,lon), ill=moonIllum(d);
     const kr=kpAt(tm); let kp=kr.kp, boost=0;
@@ -644,7 +785,7 @@ function buildHours(){
     const dark=clamp((-sAlt-5)/11,0,1);
     const cl=cloudAt(tm), clear=1-clamp(cl.eff,0,100)/100;
     const moonF=mAlt>0?1-0.3*ill*Math.min(1,mAlt/20):1;
-    out.push({t,kp,kpKind:kr.kind,boost,act,dark,clear,cloud:cl.eff,cloudTotal:cl.total,sAlt,mAlt,ill,moonF,score:100*act*dark*clear*moonF});
+    out.push({t,kp,kpKind:kr.kind,kpOut:kLast!=null&&tm>kLast,cloudSrc:cl.src,boost,act,dark,clear,cloud:cl.eff,cloudTotal:cl.total,sAlt,mAlt,ill,moonF,score:100*act*dark*clear*moonF});
   }
   return out;
 }
@@ -763,7 +904,7 @@ function renderDetail(H){
   const twi=twiOf(h.sAlt);
   const fact=(k,val,sub)=>'<div class="row"><span class="k">'+k+'</span><span class="v">'+val+(sub?"<small>"+sub+"</small>":"")+'</span></div>';
   $("#detail").innerHTML=
-    '<div class="d-head"><div class="d-time">'+esc(md(h.t))+' '+hm(h.t)+'〜'+hm(h.t+HOUR)+
+    '<div class="d-head"><div class="d-time">'+esc(md(h.t))+' '+hm(h.t)+(LANG==="en"?"–":"〜")+hm(h.t+HOUR)+
       '<small>'+(i===0?t("nowSlot"):i===S.bestI&&h.dark>0.05?t("bestSlot"):"")+'</small></div>'+
       '<div class="d-score"><span class="num">'+sc+'</span><span class="pill '+pc+'">'+v+'</span></div></div>'+
     '<div class="meters">'+
@@ -797,6 +938,135 @@ function renderNow(H){
   add(t("fMoon"),(h.mAlt>0?t("moonUp",h.mAlt.toFixed(0)):t("moonDown")),t("lit",Math.round(h.ill*100)));
   add(t("mlat"),G.ml.toFixed(1)+"°",t("mlatSub",G.kpH.toFixed(1),G.kpO.toFixed(1)));
   $("#now").innerHTML=rowsHtml.join("");
+}
+
+
+/* ---------- next 3 nights ---------- */
+function nightGroups(H){
+  const groups=[], byKey={};
+  for(let i=0;i<H.length;i++){
+    const key=ymd(H[i].t-12*HOUR);
+    if(!byKey[key]){ byKey[key]={key,idx:[]}; groups.push(byKey[key]); }
+    byKey[key].idx.push(i);
+  }
+  return groups.filter(g=>g.idx.some(i=>H[i].dark>0.05)).slice(0,3);
+}
+function nightSummary(H,g){
+  const dk=g.idx.filter(i=>H[i].dark>0.05);
+  let bi=dk[0]; for(const i of dk) if(H[i].score>H[bi].score) bi=i;
+  const b=H[bi], thr=b.score*0.7; let a=bi,c=bi;
+  while(dk.includes(a-1)&&H[a-1].score>=thr) a--; while(dk.includes(c+1)&&H[c+1].score>=thr) c++;
+  return {bi,best:b,a:H[a].t,b:H[c].t+HOUR,start:H[dk[0]].t};
+}
+function renderNights(H){
+  const el=$("#nights"), gs=nightGroups(H); S.nights=[];
+  if(!gs.length){ el.innerHTML='<p class="sub" style="grid-column:1/-1">'+t("nNone")+'</p>'; return; }
+  el.innerHTML=gs.map((g,n)=>{
+    const sm=nightSummary(H,g), b=sm.best, sc=Math.round(b.score), [v]=verdict(sc); S.nights.push(sm);
+    const warn=b.cloudSrc==="out"?t("nCloudOut"):b.kpOut?t("nKpOut"):"";
+    return '<button class="night" type="button" data-night="'+n+'"><span class="nl">'+t("nLbl")[n]+'</span><span class="nd">'+esc(md(sm.start))+'</span>'+
+      '<span class="ns" style="color:'+scoreColor(Math.max(sc,25))+'">'+sc+'</span><span class="nv">'+esc(v)+'</span>'+
+      '<span class="nw">'+(sc<5?"":t("nBest",hm(sm.a),hm(sm.b)))+'</span>'+
+      '<span class="nf"><span>'+t("nCloud",Math.round(b.cloud))+'</span><span>Kp '+b.kp.toFixed(1)+'</span><span>'+(b.mAlt>0?t("nMoon",Math.round(b.ill*100)):t("nNoMoon"))+'</span></span>'+
+      (warn?'<span class="nx">'+warn+'</span>':'')+'</button>';
+  }).join("");
+}
+$("#nights").addEventListener("click",e=>{
+  const b=e.target.closest("[data-night]"); if(!b) return;
+  const sm=S.nights[Number(b.dataset.night)]; if(!sm) return;
+  S.sel=S.hours[sm.bi].t; renderTimeline(S.hours.slice(0,48)); renderDetail(S.hours);
+  const sc=$("#tlScroll"); if(sm.bi<48) sc.scrollLeft=Math.max(0,40+(sm.bi-4)*16);
+  $("#detail").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"});
+});
+$("#toCal").addEventListener("click",()=>$("#calSec").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"}));
+
+/* ---------- darkness & moonlight calendar ---------- */
+const CAL={m:0,sel:null,kp27:null,cache:{}};
+function moonPhase(d){
+  const g=rad(357.529+0.98560028*d), q=280.459+0.98564736*d;
+  const sunL=q+1.915*Math.sin(g)+0.020*Math.sin(2*g);
+  const moonL=218.316+13.176396*d+6.289*Math.sin(rad(134.963+13.064993*d));
+  const el=((moonL-sunL)%360+360)%360;
+  return {k:(1-Math.cos(rad(el)))/2,waxing:el<180};
+}
+function nightInfo(y,m,dd){
+  const {lat,lon}=S.loc, noon=Date.UTC(y,m,dd,12)-lon/15*HOUR;
+  let dark=0,moonDark=0,first=null,last=null;
+  for(let i=0;i<48;i++){
+    const tt=noon+(i+0.5)*HOUR/2, d=days(tt);
+    if(altOf(sunRaDec(d),d,lat,lon)<-12){
+      dark+=0.5; if(first==null) first=tt-HOUR/4; last=tt+HOUR/4;
+      if(altOf(moonRaDec(d),d,lat,lon)>0) moonDark+=0.5;
+    }
+  }
+  const ph=moonPhase(days(noon+12*HOUR)), moonF=dark>0?ph.k*(moonDark/dark):0;
+  const q=dark>0?clamp(dark/8,0,1)*(1-0.7*moonF):0;
+  const r=dark===0?4:q>=0.7?0:q>=0.45?1:q>=0.2?2:3;
+  return {y,m,dd,dark,moonDark,first,last,k:ph.k,waxing:ph.waxing,q,r};
+}
+function monthInfo(off){
+  const now=new Date(), base=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth()+off,1));
+  const y=base.getUTCFullYear(), m=base.getUTCMonth(), key=S.loc.lat.toFixed(2)+","+S.loc.lon.toFixed(2)+":"+y+"-"+m;
+  if(!CAL.cache[key]){ const n=new Date(Date.UTC(y,m+1,0)).getUTCDate(), list=[]; for(let dd=1;dd<=n;dd++) list.push(nightInfo(y,m,dd)); CAL.cache[key]={y,m,list}; }
+  return CAL.cache[key];
+}
+function moonSVG(k,waxing,flip){
+  const r=8, cx=9, cy=9, rx=(r*Math.abs(1-2*k)).toFixed(2);
+  let w=waxing; if(flip) w=!w;
+  const outer=w?1:0, term=k<0.5?(w?0:1):(w?1:0);
+  const lit=k<0.02?"":k>0.98?'<circle cx="9" cy="9" r="8" fill="#e8edf5"/>':
+    '<path d="M'+cx+','+(cy-r)+' A'+r+','+r+' 0 0 '+outer+' '+cx+','+(cy+r)+' A'+rx+','+r+' 0 0 '+term+' '+cx+','+(cy-r)+' Z" fill="#e8edf5"/>';
+  return '<svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="#26334f"/>'+lit+'</svg>';
+}
+const dkey=(y,m,d)=>y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+function isoDay(ms){ try{ return new Intl.DateTimeFormat("en-CA",{timeZone:tz(),year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date(ms)); }catch(e){ return new Date(ms).toISOString().slice(0,10); } }
+function renderCal(){
+  const mi=monthInfo(CAL.m), first=new Date(Date.UTC(mi.y,mi.m,1));
+  $("#calMonth").textContent=new Intl.DateTimeFormat(LOCALE(),{year:"numeric",month:"long",timeZone:"UTC"}).format(first);
+  $("#calPrev").disabled=CAL.m<=0; $("#calNext").disabled=CAL.m>=11;
+  const startDow=LANG==="ja"?0:1, wdf=new Intl.DateTimeFormat(LOCALE(),{weekday:"short",timeZone:"UTC"});
+  let h=""; for(let i=0;i<7;i++) h+='<span class="wd">'+esc(wdf.format(new Date(Date.UTC(2026,1,1+((i+startDow)%7)))))+'</span>';
+  const lead=(first.getUTCDay()-startDow+7)%7; for(let i=0;i<lead;i++) h+='<span class="empty"></span>';
+  const today=isoDay(Date.now()), flip=S.loc.lat<0;
+  for(const n of mi.list){
+    const k=dkey(n.y,n.m,n.dd), past=k<today, kp=CAL.kp27&&CAL.kp27[k];
+    const bg=n.r===4?"transparent":"rgba(94,240,166,"+(0.06+n.q*0.42).toFixed(2)+")";
+    const kc=kp==null?"":kp>=7?"r":kp>=5?"y":"g";
+    h+='<button class="day'+(k===today?' today':'')+'" type="button" data-d="'+n.dd+'" aria-pressed="'+(CAL.sel===k?"true":"false")+'"'+(past?' disabled':'')+
+      ' style="background:'+bg+'" aria-label="'+esc(k+" "+t("calR")[n.r])+'"><span class="dn">'+n.dd+'</span>'+moonSVG(n.k,n.waxing,flip)+
+      (kp!=null?'<span class="kp '+kc+'">Kp'+kp+'</span>':'')+'</button>';
+  }
+  $("#cal").innerHTML=h;
+  renderCalInfo();
+}
+function renderCalInfo(){
+  const box=$("#calInfo"); if(!CAL.sel){box.hidden=true;return;}
+  const [y,m,d]=CAL.sel.split("-").map(Number), n=nightInfo(y,m-1,d), kp=CAL.kp27&&CAL.kp27[CAL.sel];
+  const date=new Intl.DateTimeFormat(LOCALE(),Object.assign({timeZone:"UTC"},t("calDateFmt"))).format(new Date(Date.UTC(y,m-1,d)));
+  const cls=n.r<=1?"s-vis":n.r===2?"s-dim":"s-none";
+  const row=(k,v)=>'<div class="row"><span class="k">'+k+'</span><span class="v" style="font-family:var(--f-body)">'+v+'</span></div>';
+  box.innerHTML='<div class="t-head"><b>'+esc(date)+'</b><span class="chip-s '+cls+'">'+t("calR")[n.r]+'</span></div><div class="facts" style="grid-template-columns:1fr">'+
+    row(t("mDark"),n.dark>0?t("calDark",n.dark.toFixed(1),hm(n.first),hm(n.last)):t("calNoDark"))+
+    row(t("fMoon"),t("calMoon",Math.round(n.k*100),n.moonDark.toFixed(1)))+
+    (kp!=null?row("Kp",t("calKp",kp)):"")+'</div>';
+  box.hidden=false;
+}
+$("#cal").addEventListener("click",e=>{
+  const b=e.target.closest("[data-d]"); if(!b||b.disabled) return;
+  const mi=monthInfo(CAL.m), k=dkey(mi.y,mi.m,Number(b.dataset.d));
+  CAL.sel=CAL.sel===k?null:k; renderCal();
+});
+$("#calPrev").addEventListener("click",()=>{ if(CAL.m>0){CAL.m--; renderCal();} });
+$("#calNext").addEventListener("click",()=>{ if(CAL.m<11){CAL.m++; renderCal();} });
+async function fetch27(){
+  const r=await fetch(SWPC+"/text/27-day-outlook.txt",{cache:"no-store"}); if(!r.ok) throw new Error("HTTP "+r.status);
+  const txt=await r.text(), M3={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11}, out={};
+  for(const line of txt.split("\n")){
+    const m=line.match(/^\s*(\d{4})\s+([A-Za-z]{3})\s+(\d{1,2})\s+(\d+)\s+(\d+)\s+(\d+)\s*$/);
+    if(m&&M3[m[2]]!=null) out[dkey(Number(m[1]),M3[m[2]],Number(m[3]))]=Number(m[6]);
+  }
+  if(!Object.keys(out).length) throw new Error("empty");
+  return out;
 }
 
 /* ---------- render: Kp chart ---------- */
@@ -1327,7 +1597,7 @@ function renderStatus(){
 }
 function renderAll(){
   const H=buildHours(); S.hours=H;
-  renderHero(H); renderSpots(); renderNear(); renderMap(); renderTap(); renderTimeline(H); renderDetail(H); renderNow(H); renderKp(); renderStatus();
+  renderHero(H); renderNights(H); renderNowcast(H); renderSpots(); renderNear(); renderMap(); renderTap(); renderTimeline(H.slice(0,48)); renderDetail(H); renderNow(H); renderKp(); renderStatus(); renderCal();
 }
 
 /* ---------- loading ---------- */
@@ -1340,6 +1610,7 @@ async function refresh(all){
     jobs.push(fetchKp().then(v=>{S.kp=v;S.status.kp="live"},()=>{S.status.kp="fail"}).then(renderAll));
     jobs.push(fetchSW().then(v=>{S.sw=v;S.status.sw="live"},()=>{S.status.sw="fail"}).then(renderAll));
     jobs.push(fetchOvation().then(v=>{S.ovGrid=v.grid;S.ovTime=v.time;S.status.ov="live";M.ovVer++},()=>{S.status.ov="fail"}).then(renderAll));
+    jobs.push(fetch27().then(v=>{CAL.kp27=v;},()=>{}).then(renderCal));
     jobs.push(fetchSpotClouds().then(v=>{M.spotCloud=v;M.spotT=Date.now()},()=>{if(Date.now()-M.spotT>3*HOUR) M.spotCloud=null}).then(renderAll));
   }
   S.status.cl="loading"; renderStatus();
@@ -1402,6 +1673,171 @@ $("#refresh").addEventListener("click",()=>refresh(true));
 $("#mKp").addEventListener("input",e=>{S.manual.kp=Number(e.target.value);$("#mKpOut").textContent=S.manual.kp.toFixed(1);renderAll();});
 $("#mCl").addEventListener("input",e=>{S.manual.cloud=Number(e.target.value);$("#mClOut").textContent=S.manual.cloud+"%";renderAll();});
 
+
+/* ---------- "look outside now" nowcast ---------- */
+const AL={on:!!load("aurora-alert"),dismissUntil:0,lastLv:0,lastNotify:{1:0,2:0},audio:null,wake:null,timer:null};
+function nowcastState(H){
+  const h=H[0]; if(!h) return {lv:0};
+  const A=auroraGrid(), cl=S.cloud?cloudAt(Date.now()).eff:null;
+  const e=evalPoint(S.loc.lat,S.loc.lon,cl,A.grid);
+  const bz=S.sw&&Number.isFinite(S.sw.bz)?S.sw.bz:null;
+  const dark=e.dark>=0.5, clearOk=cl==null||cl<60, clearMaybe=cl==null||cl<80;
+  const strong=e.aur>=35||(bz!=null&&bz<=-10&&e.aur>=10);
+  const some=e.aur>=15||(bz!=null&&bz<=-6&&e.aur>=5);
+  const lv=dark&&clearOk&&strong?2:dark&&clearMaybe&&some?1:0;
+  return {lv,aur:e.aur,bz,cl};
+}
+function renderNowcast(H){
+  const st=nowcastState(H), bar=$("#nowcast");
+  const show=st.lv>0&&Date.now()>AL.dismissUntil;
+  bar.hidden=!show; bar.dataset.lv=st.lv;
+  if(show){
+    $("#ncTitle").textContent=st.lv===2?t("ncStrong"):t("ncSome");
+    const parts=[S.loc.lat>=0?t("dirN"):t("dirS"),t("pr")+" "+Math.round(st.aur)+"%"];
+    if(st.bz!=null) parts.push("Bz "+(st.bz>0?"+":"")+st.bz.toFixed(1)+" nT");
+    if(st.cl!=null) parts.push(t("cl")+" "+Math.round(st.cl)+"%");
+    $("#ncWhy").textContent=parts.join(" · ");
+  }
+  document.body.style.paddingBottom=show?"96px":"";
+  if(AL.on&&st.lv>AL.lastLv&&Date.now()-AL.lastNotify[st.lv]>20*60000){ AL.lastNotify[st.lv]=Date.now(); fireAlert(st.lv); }
+  AL.lastLv=st.lv;
+  renderAlertBox();
+}
+function renderAlertBox(){
+  $("#alertBox").dataset.on=AL.on?"true":"false";
+  const b=$("#alertToggle"); b.textContent=AL.on?t("alertOff"):t("alertOn"); b.setAttribute("aria-pressed",AL.on?"true":"false");
+  let msg=AL.on?t("alertDescOn"):t("alertDescOff");
+  if(AL.on&&!(("Notification" in window)&&Notification.permission==="granted")) msg+=" "+t("alertNoNotif");
+  $("#alertState").textContent=msg;
+}
+function chime(lv){
+  try{
+    const ac=AL.audio; if(!ac) return; if(ac.state==="suspended") ac.resume();
+    const notes=lv===2?[660,880,1320]:[660,880];
+    notes.forEach((f,i)=>{ const o=ac.createOscillator(), g=ac.createGain(), t0=ac.currentTime+i*0.22;
+      o.type="sine"; o.frequency.value=f; g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(0.25,t0+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t0+0.5);
+      o.connect(g).connect(ac.destination); o.start(t0); o.stop(t0+0.55); });
+  }catch(e){}
+}
+function fireAlert(lv){
+  chime(lv);
+  try{ if(navigator.vibrate) navigator.vibrate(lv===2?[200,100,200,100,400]:[200,100,200]); }catch(e){}
+  const place=shortName(locLabel(S.loc)), body=lv===2?t("notifStrong",place):t("notifSome",place);
+  try{
+    if(("Notification" in window)&&Notification.permission==="granted"){
+      const opt={body,icon:"icon-192.png",badge:"icon-192.png",tag:"kyokko-nowcast",renotify:true};
+      if(navigator.serviceWorker&&navigator.serviceWorker.controller) navigator.serviceWorker.ready.then(r=>r.showNotification(t("title").split(/[｜|]/)[0].trim(),opt)).catch(()=>{});
+      else new Notification(t("title").split(/[｜|]/)[0].trim(),opt);
+    }
+  }catch(e){}
+}
+async function pollNow(){
+  if(document.hidden&&!AL.on) return;
+  const r=await Promise.allSettled([fetchSW(),fetchOvation()]);
+  if(r[0].status==="fulfilled"){S.sw=r[0].value;S.status.sw="live";}
+  if(r[1].status==="fulfilled"){S.ovGrid=r[1].value.grid;S.ovTime=r[1].value.time;S.status.ov="live";M.ovVer++;}
+  renderAll();
+}
+function setAlert(on){
+  AL.on=on; save("aurora-alert",on);
+  clearInterval(AL.timer); AL.timer=on?setInterval(()=>{ if(!loading) pollNow(); },2*60000):null;
+  renderAlertBox();
+}
+$("#alertToggle").addEventListener("click",async()=>{
+  if(AL.on){ setAlert(false); return; }
+  try{ AL.audio=AL.audio||new (window.AudioContext||window.webkitAudioContext)(); AL.audio.resume(); }catch(e){}
+  try{ if(("Notification" in window)&&Notification.permission==="default") await Notification.requestPermission(); }catch(e){}
+  AL.lastLv=0; setAlert(true); chime(1);
+});
+async function setWake(on){
+  try{
+    if(on){ if(navigator.wakeLock) AL.wake=await navigator.wakeLock.request("screen"); else $("#wakeChk").checked=false; }
+    else if(AL.wake){ await AL.wake.release(); AL.wake=null; }
+  }catch(e){ $("#wakeChk").checked=false; AL.wake=null; }
+}
+$("#wakeChk").addEventListener("change",e=>setWake(e.target.checked));
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden&&$("#wakeChk").checked&&!AL.wake) setWake(true); });
+$("#ncClose").addEventListener("click",()=>{ AL.dismissUntil=Date.now()+20*60000; renderNowcast(S.hours); });
+
+/* ---------- share image ---------- */
+const SH={blob:null,url:null};
+function appUrl(){ return /github\.io$/.test(location.hostname)?location.origin+location.pathname:"https://gaaasuu2013-prog.github.io/aurora/"; }
+function fitFont(g,text,weight,family,max,width){ let sz=max; do{ g.font=weight+" "+sz+"px "+family; if(g.measureText(text).width<=width) break; sz-=4; }while(sz>24); return sz; }
+async function makeShareImage(){
+  const F={disp:"'Zen Old Mincho','Hiragino Mincho ProN','Yu Mincho',serif",body:"'Zen Kaku Gothic New','Hiragino Sans','Noto Sans JP',sans-serif",data:"'IBM Plex Mono',ui-monospace,monospace"};
+  try{ await Promise.all(["900 80px 'Zen Old Mincho'","700 40px 'Zen Kaku Gothic New'","500 40px 'IBM Plex Mono'"].map(f=>document.fonts.load(f))); }catch(e){}
+  const W=1080,Hh=1920,c=document.createElement("canvas"); c.width=W; c.height=Hh; const g=c.getContext("2d");
+  const bg=g.createLinearGradient(0,0,0,Hh); bg.addColorStop(0,"#050a16"); bg.addColorStop(.55,"#0c1730"); bg.addColorStop(1,"#0a1122"); g.fillStyle=bg; g.fillRect(0,0,W,Hh);
+  let sd=11; const rnd=()=>{sd=(sd*16807)%2147483647; return sd/2147483647;};
+  for(let i=0;i<220;i++){ g.fillStyle="rgba(232,237,245,"+(0.2+rnd()*0.6)+")"; g.beginPath(); g.arc(rnd()*W,rnd()*Hh*0.7,rnd()*2.2+0.5,0,6.283); g.fill(); }
+  const H=S.hours, sc0=H.length?Math.round(Math.max(...H.slice(0,24).map(h=>h.score))):0, I=clamp(0.25+sc0/110,0.25,1);
+  const oc=document.createElement("canvas"); oc.width=W; oc.height=Hh; const og=oc.getContext("2d"); og.globalCompositeOperation="lighter";
+  for(let k=0;k<2;k++) for(let x=0;x<=W;x+=3){
+    const u=x/W, top=Hh*(0.05+k*0.06)+Hh*0.04*Math.sin(u*5.2+k*2.1)+Hh*0.015*Math.sin(u*17-k);
+    const ray=0.55+0.45*Math.sin(u*90+k*3)*Math.sin(u*37+1.3), L=Hh*0.32*(0.55+0.45*(0.5+0.5*Math.sin(u*23+k)));
+    const a=(k?0.18:0.32)*I*Math.max(0.15,ray), gr=og.createLinearGradient(0,top-60,0,top+L);
+    gr.addColorStop(0,"rgba(185,140,255,0)"); gr.addColorStop(0.08,"rgba(170,140,255,"+(a*0.6)+")"); gr.addColorStop(0.22,"rgba(94,240,166,"+a+")"); gr.addColorStop(1,"rgba(94,240,166,0)");
+    og.fillStyle=gr; og.fillRect(x,top-60,5,L+60);
+  }
+  g.globalCompositeOperation="lighter";
+  try{ g.filter="blur(5px)"; g.drawImage(oc,0,0); g.filter="none"; g.globalAlpha=0.45; g.drawImage(oc,0,0); g.globalAlpha=1; }catch(e){ g.drawImage(oc,0,0); }
+  g.globalCompositeOperation="source-over";
+  const fade=g.createLinearGradient(0,Hh*0.25,0,Hh*0.55); fade.addColorStop(0,"rgba(10,17,34,0)"); fade.addColorStop(1,"rgba(10,17,34,.85)"); g.fillStyle=fade; g.fillRect(0,Hh*0.25,W,Hh*0.75);
+  const X=96, txt=(s,x,y,font,col,align)=>{ g.font=font; g.fillStyle=col; g.textAlign=align||"left"; g.fillText(s,x,y); };
+  txt("極光ナビ",X,230,"700 40px "+F.disp,"#e8edf5"); g.font="700 40px "+F.disp; const bw=g.measureText("極光ナビ").width;
+  txt("KYOKKO NAVI",X+bw+20,230,"500 26px "+F.body,"#a9b6cc");
+  const place=shortName(locLabel(S.loc)), gs=nightGroups(H), sm=gs.length?nightSummary(H,gs[0]):null;
+  const sz=fitFont(g,place,"900",F.disp,96,W-2*X); txt(place,X,560,"900 "+sz+"px "+F.disp,"#e8edf5");
+  const nd=sm?t("imgNight",md(sm.start)):""; txt(nd,X,630,"500 38px "+F.body,"#a9b6cc");
+  const sc=sm?Math.round(sm.best.score):0, [v]=verdict(sc);
+  g.font="500 300px "+F.data; g.fillStyle=scoreColor(Math.max(sc,25)); g.textAlign="left"; g.shadowColor="rgba(94,240,166,.45)"; g.shadowBlur=40; g.fillText(String(sc),X-10,960); g.shadowBlur=0;
+  const sw=g.measureText(String(sc)).width; txt("/ 100",X+sw+10,960,"500 54px "+F.data,"#8f9cb5");
+  const vs=fitFont(g,v,"900",F.disp,104,W-2*X); txt(v,X,1100,"900 "+vs+"px "+F.disp,"#e8edf5");
+  if(sm&&sc>=5) txt(t("win",hm(sm.a),hm(sm.b)),X,1180,"500 44px "+F.body,"#e8edf5");
+  txt(t("imgNext"),X,1320,"700 34px "+F.body,"#a9b6cc");
+  const cw=(W-2*X-40)/3;
+  gs.forEach((gr,i)=>{
+    const s2=nightSummary(H,gr), x=X+i*(cw+20), y=1350, s3=Math.round(s2.best.score);
+    g.fillStyle="rgba(16,26,48,.92)"; g.strokeStyle="#26334f"; g.lineWidth=2; g.beginPath(); g.roundRect(x,y,cw,190,24); g.fill(); g.stroke();
+    txt(t("nLbl")[i],x+24,y+50,"700 30px "+F.body,"#e8edf5"); txt(md(s2.start),x+24,y+88,"400 24px "+F.body,"#8f9cb5");
+    txt(String(s3),x+24,y+160,"500 64px "+F.data,scoreColor(Math.max(s3,25)));
+  });
+  txt(t("imgFree"),W/2,1690,"700 38px "+F.body,"#e8edf5","center");
+  txt(appUrl().replace(/^https?:\/\//,"").replace(/\/$/,""),W/2,1745,"500 30px "+F.data,"#5ef0a6","center");
+  return await new Promise(r=>c.toBlob(r,"image/png"));
+}
+async function openShare(){
+  $("#shareMsg").textContent=t("shareMaking"); $("#shareModal").hidden=false;
+  try{
+    SH.blob=await makeShareImage(); if(SH.url) URL.revokeObjectURL(SH.url); SH.url=URL.createObjectURL(SH.blob);
+    $("#shareImg").src=SH.url; $("#shareImg").alt=t("shareTitle"); $("#shareMsg").textContent="";
+  }catch(e){ $("#shareMsg").textContent=t("shareFail"); }
+  $("#shareClose").focus();
+}
+function shareMsgText(){ const gs=nightGroups(S.hours), sm=gs.length?nightSummary(S.hours,gs[0]):null, sc=sm?Math.round(sm.best.score):0;
+  return t("shareText",shortName(locLabel(S.loc)),sc,verdict(sc)[0]); }
+$("#shareBtn").addEventListener("click",openShare);
+$("#shareClose").addEventListener("click",()=>{ $("#shareModal").hidden=true; $("#shareBtn").focus(); });
+$("#shareModal").addEventListener("click",e=>{ if(e.target.id==="shareModal") $("#shareClose").click(); });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("#shareModal").hidden) $("#shareClose").click(); });
+$("#shareGo").addEventListener("click",async()=>{
+  const url=appUrl()+"?utm_campaign=share", text=shareMsgText()+" #極光ナビ";
+  try{
+    const file=SH.blob?new File([SH.blob],"kyokko-navi.png",{type:"image/png"}):null;
+    if(file&&navigator.canShare&&navigator.canShare({files:[file]})){ await navigator.share({files:[file],text:text+"\n"+url}); return; }
+    if(navigator.share){ await navigator.share({title:t("title"),text,url}); return; }
+    $("#shareMsg").textContent=t("shareFail");
+  }catch(e){ if(e&&e.name!=="AbortError") $("#shareMsg").textContent=t("shareFail"); }
+});
+$("#shareSave").addEventListener("click",()=>{
+  if(!SH.url) return; const a=document.createElement("a"); a.href=SH.url; a.download="kyokko-navi-"+ymd(Date.now()).replace(/\D/g,"")+".png";
+  document.body.appendChild(a); a.click(); a.remove();
+});
+$("#shareCopy").addEventListener("click",async()=>{
+  const v=shareMsgText()+" "+appUrl()+"?utm_campaign=share";
+  try{ await navigator.clipboard.writeText(v); $("#shareMsg").textContent=t("shareCopied"); }catch(e){ $("#shareMsg").textContent=v; }
+});
+
 /* ---------- sky canvas ---------- */
 const cv=$("#sky"), ctx=cv.getContext("2d");
 const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1445,6 +1881,7 @@ if(saved&&typeof saved.lat==="number"&&typeof saved.lon==="number")
   S.loc=PRESETS.find(p=>p.id===saved.id)||{id:saved.id||"custom",name:saved.name||I18N.ja.custom,en:saved.en||(saved.id==="custom"||!saved.id?I18N.en.custom:saved.name),lat:saved.lat,lon:saved.lon,tz:saved.tz||null};
 if(load("aurora-map")==="local") M.mode="local";
 applyLang(); requestAnimationFrame(loop);
+if(AL.on) setAlert(true);
 refresh(true);
 setInterval(()=>{ if(!document.hidden) refresh(true); },10*60*1000);
 setInterval(()=>{

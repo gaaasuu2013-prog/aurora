@@ -22,6 +22,10 @@ NOAA（米国海洋大気庁）の宇宙天気データと雲量予報をもと�
 - **近くで見えやすい場所**：観測地のまわり約200 kmの雲量予報から、いま〜3時間後に晴れていて見えやすい場所を5か所まで提案します。Googleマップですぐに道案内できます。
 - **世界の代表的な観測地34か所の「いま」**：フィンランド、ノルウェー、アイスランド、カナダ、アラスカ、北海道、ニュージーランドなどです。
 - **Kp指数 3日予報**、太陽風（Bz・速度）の現在値。
+- **この先3晩の予報カード**：今夜・明日・あさっての夜のスコアとねらい目の時間。
+- **旅行日えらびカレンダー**：数か月先まで、暗い時間の長さと月明かりで良い夜を表示（NOAA 27日予報の最大Kpつき）。
+- **「いま外を見て！」速報**：暗く晴れていて、オーロラの兆候が強いときに画面と音・通知で知らせます（アプリを開いている間）。
+- **画像で共有**：今夜の予報をストーリーズ向けの画像にして、そのまま共有・保存できます。
 
 ## 使い方
 
@@ -60,6 +64,7 @@ A free web app, in English and Japanese, that estimates how likely you are to se
 - Live aurora map (NOAA OVATION) with day/night, clouds and a "view line" for seeing aurora low on the horizon
 - Nearby clear-sky finder: the best spots within about 200 km, now or in up to 3 hours, with Google Maps links
 - Status of 34 well-known aurora destinations, a 48-hour outlook and a 3-day Kp forecast
+- Next-3-nights cards, a months-ahead darkness and moonlight calendar for picking travel dates, "look outside now" alerts while the app is open, and a shareable forecast image
 - No sign-up and no server. Your location never leaves your device.
 
 Data: NOAA SWPC, Open-Meteo (CC BY 4.0), Natural Earth. The score is a guide for comparing conditions, not a probability.
