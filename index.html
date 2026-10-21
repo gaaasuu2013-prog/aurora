@@ -72,7 +72,11 @@ select{background:rgba(10,17,34,.75);border:1px solid var(--line);border-radius:
 .score{display:flex;align-items:baseline;gap:6px}
 .score .num{font-size:64px;line-height:1;font-weight:500;color:var(--oxygen);text-shadow:0 0 24px rgba(94,240,166,.35)}
 .score .of{font-family:var(--f-data);color:var(--mute);font-size:16px}
-#verdict{font-family:var(--f-display);font-weight:900;font-size:30px;line-height:1.3}
+#verdict{font-family:var(--f-display);font-weight:900;font-size:30px;line-height:1.3;margin:0}
+.brandbar{display:flex;align-items:baseline;flex-wrap:wrap;gap:2px 10px}
+.brand-h1{font-family:var(--f-display);font-weight:900;font-size:22px;margin:0}
+.brand-h1 .en-name{font-family:var(--f-body);font-weight:400;font-size:12px;letter-spacing:.12em;color:var(--mute);margin-left:8px}
+.tagline{margin:0;font-size:12px;color:var(--mute);flex-basis:100%}
 #window{margin:2px 0 0;font-size:15px}
 #reason{margin:0;color:var(--mute);font-size:14px}
 .hero[data-level="low"] .score .num{color:var(--mute);text-shadow:none}
@@ -253,6 +257,10 @@ footer a{color:var(--snow)}
 
 
 <div class="wrap">
+  <div class="brandbar">
+    <h1 class="brand-h1">極光ナビ<span class="en-name">KYOKKO NAVI</span></h1>
+    <p class="tagline" data-i18n="tagline">今夜オーロラは見える？ 無料のオーロラ予報とリアルタイム出現マップ</p>
+  </div>
   <header class="hero" id="hero" data-level="maybe">
     <canvas id="sky" aria-hidden="true"></canvas>
     <div class="hero-in">
@@ -266,7 +274,7 @@ footer a{color:var(--snow)}
       </div>
       <p class="eyebrow" id="nightLabel" data-i18n="calc">計算中…</p>
       <div class="score"><span class="num" id="score">--</span><span class="of">/ 100</span></div>
-      <h1 id="verdict" data-i18n="loadingData">データを読み込んでいます</h1>
+      <p id="verdict" data-i18n="loadingData">データを読み込んでいます</p>
       <p id="window"></p>
       <p id="reason"></p>
       <div class="hero-act">
@@ -500,6 +508,7 @@ let LANG=(function(){ try{const v=JSON.parse(localStorage.getItem("aurora-lang")
   const n=(navigator.languages&&navigator.languages[0])||navigator.language||"ja"; return /^ja/i.test(n)?"ja":"en"; })();
 const I18N={
  ja:{
+  tagline:"今夜オーロラは見える？ 無料のオーロラ予報とリアルタイム出現マップ",
   invTitle:"オーロラ、見えましたか？",invText:"見えたら、写真や今夜の予報を #極光ナビ をつけてSNSに投稿してもらえるとうれしいです。次に旅する人がチャンスを見つける助けになります。",
   invImg:"予報を画像で共有",invX:"Xでポスト",invThreads:"Threadsで投稿",invLine:"LINEで送る",invCopy:"ハッシュタグをコピー",invCopied:"ハッシュタグをコピーしました",
   tags:"#極光ナビ #KyokkoNavi #オーロラ #northernlights",shareTagHint:"投稿するときは #極光ナビ をつけてもらえるとうれしいです",
@@ -571,6 +580,7 @@ const I18N={
   badCoord:"緯度は −90〜90、経度は −180〜180 で入力してください。",title:"極光ナビ｜オーロラ予報・リアルタイム出現マップ"
  },
  en:{
+  tagline:"Will you see the aurora tonight? Free aurora forecast and live aurora map",
   invTitle:"Did you see the aurora?",invText:"If you did, we'd love you to post your photos or tonight's forecast with #KyokkoNavi. It helps the next travelers catch the show.",
   invImg:"Share forecast image",invX:"Post on X",invThreads:"Post on Threads",invLine:"Send on LINE",invCopy:"Copy hashtags",invCopied:"Hashtags copied",
   tags:"#KyokkoNavi #northernlights #aurora #極光ナビ",shareTagHint:"When you post, please add #KyokkoNavi",
