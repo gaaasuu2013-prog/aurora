@@ -1,7 +1,7 @@
-// 極光ナビ service worker: always try the network first so updates show up at once,
-// and fall back to the saved copy when offline. Data from NOAA / Open-Meteo is never cached here.
-const CACHE = "kyokko-navi-v1";
-const ASSETS = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./favicon-32.png"];
+// 極光ナビ service worker: network first so updates show at once; saved copy when offline.
+// Data from NOAA / Open-Meteo is never cached here.
+const CACHE = "kyokko-navi-v2";
+const ASSETS = ["./", "./index.html", "./en.html", "./app.js", "./app.css", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png", "./favicon-32.png"];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
 });

@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Rovaniemi Aurora Forecast Tonight – Northern Lights | Kyokko Navi</title>
+<meta name="description" content="Will you see the northern lights in Rovaniemi, Finland tonight? Free aurora forecast scoring Kp, clouds, darkness and moonlight, with the best viewing time, the next 3 nights, clear spots nearby and local viewing tips.">
+<link rel="canonical" href="https://gaaasuu2013-prog.github.io/aurora/en-rovaniemi.html">
+<link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/rovaniemi.html">
+<link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-rovaniemi.html">
+<link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-rovaniemi.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Kyokko Navi">
+<meta property="og:title" content="Rovaniemi Aurora Forecast Tonight – Northern Lights | Kyokko Navi">
+<meta property="og:description" content="Will you see the northern lights in Rovaniemi, Finland tonight? Free aurora forecast scoring Kp, clouds, darkness and moonlight, with the best viewing time, the next 3 nights, clear spots nearby and local viewing tips.">
+<meta property="og:url" content="https://gaaasuu2013-prog.github.io/aurora/en-rovaniemi.html">
+<meta property="og:image" content="https://gaaasuu2013-prog.github.io/aurora/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a1122">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="極光ナビ">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Kyokko Navi", "alternateName": "極光ナビ", "url": "https://gaaasuu2013-prog.github.io/aurora/en-rovaniemi.html", "description": "Will you see the northern lights in Rovaniemi, Finland tonight? Free aurora forecast scoring Kp, clouds, darkness and moonlight, with the best viewing time, the next 3 nights, clear spots nearby and local viewing tips.", "applicationCategory": "WeatherApplication", "operatingSystem": "Any", "inLanguage": "en", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;700&family=Zen+Old+Mincho:wght@700;900&display=swap">
+<link rel="stylesheet" href="app.css">
+<script>window.KN_PAGE={"lang": "en", "alt": "rovaniemi.html", "loc": "rovaniemi"};</script>
+<script data-goatcounter="https://gaaasuu2013.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script>if("serviceWorker" in navigator&&location.protocol==="https:"){addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="brandbar">
+    <h1 class="brand-h1">Rovaniemi Aurora Forecast<span class="en-name">KYOKKO NAVI</span></h1>
+    <p class="tagline">Will you see the northern lights in Rovaniemi, Finland tonight?</p>
+  </div>
+  <header class="hero" id="hero" data-level="maybe">
+    <canvas id="sky" aria-hidden="true"></canvas>
+    <div class="hero-in">
+      <div class="loc-row">
+        <label for="loc" data-i18n="locLabel">Location</label>
+        <select id="loc"></select>
+        <div class="seg lang-seg" id="langSeg" role="group" aria-label="Language">
+          <button type="button" data-setlang="ja" aria-pressed="true" lang="ja">日本語</button>
+          <button type="button" data-setlang="en" aria-pressed="false" lang="en">EN</button>
+        </div>
+      </div>
+      <p class="eyebrow" id="nightLabel" data-i18n="calc">Calculating…</p>
+      <div class="score"><span class="num" id="score">--</span><span class="of">/ 100</span></div>
+      <p id="verdict" data-i18n="loadingData">Loading data</p>
+      <p id="window"></p>
+      <p id="reason"></p>
+      <div class="hero-act">
+        <button class="btn share" id="shareBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg><span data-i18n="share">Share image</span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="status" id="status">
+    <span class="chip" data-s="loading" id="st-kp"><span class="dot"></span><span data-i18n="stKp">Kp forecast</span></span>
+    <span class="chip" data-s="loading" id="st-sw"><span class="dot"></span><span data-i18n="stSw">Solar wind</span></span>
+    <span class="chip" data-s="loading" id="st-ov"><span class="dot"></span>OVATION</span>
+    <span class="chip" data-s="loading" id="st-cl"><span class="dot"></span><span data-i18n="stCl">Clouds</span></span>
+    <span id="updated" class="mono"></span>
+    <button class="btn" id="refresh" type="button" data-i18n="refresh">Refresh</button>
+  </div>
+
+  <div class="custom" id="customBox" hidden>
+    <label for="lat"><span data-i18n="lat">Latitude</span><input id="lat" type="number" step="0.01" min="-90" max="90" inputmode="decimal" placeholder="66.50"></label>
+    <label for="lon"><span data-i18n="lon">Longitude</span><input id="lon" type="number" step="0.01" min="-180" max="180" inputmode="decimal" placeholder="25.73"></label>
+    <button class="btn" id="setCustom" type="button" data-i18n="setCustom">Forecast here</button>
+    <p class="msg" id="customMsg"></p>
+  </div>
+
+  <section id="nightsSec">
+    <div class="sec-head">
+      <h2 data-i18n="nightsTitle">Next 3 nights</h2>
+      <button class="btn sm" id="toCal" type="button" data-i18n="toCal">Plan further ahead</button>
+    </div>
+    <div class="nights" id="nights"></div>
+    <p class="sub" data-i18n="nTap">Tap a night to see its hourly numbers.</p>
+    <div class="alertbox" id="alertBox" data-on="false">
+      <div class="ab-text"><b data-i18n="alertTitle">“Look outside now!” alerts</b><span class="sub" id="alertState"></span></div>
+      <div class="ab-ctl">
+        <button class="btn" id="alertToggle" type="button" aria-pressed="false"></button>
+        <label class="chk" for="wakeChk"><input type="checkbox" id="wakeChk"><span data-i18n="keepAwake">Keep screen on</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="guide" id="guide">
+    <h2>Seeing the aurora in Rovaniemi</h2>
+    <p>Rovaniemi is the capital of Finnish Lapland, right on the Arctic Circle. It sits just south of the main aurora zone, but in the dark season the northern lights often appear in the northern sky even on moderately active nights.</p>
+    <dl class="gfacts">
+      <div><dt>Season</dt><dd>September–March</dd></div>
+      <div><dt>Kp needed (rough)</dt><dd>Kp 2–3</dd></div>
+      <div><dt>Best time (local)</dt><dd>about 22:00–02:00</dd></div>
+    </dl>
+    <ul><li>Leave the city lights behind: lakeshores, forests or the Ounasvaara hill give a much darker sky.</li><li>Winter nights can drop below −20 °C. Dress warmly and keep your phone battery warm.</li><li>On cloudy nights, use “Best spots nearby” on this page to find clearer skies.</li></ul>
+  </section>
+
+  <section class="manual" id="manual" hidden>
+    <p id="manualNote" data-i18n="manualSome">Some live data couldn't be loaded. The slider values are used instead.</p>
+    <div class="slider" id="kpSlider"><label for="mKp" data-i18n="kpAssumed">Kp (assumed)</label><input id="mKp" type="range" min="0" max="9" step="0.33" value="3"><output id="mKpOut" for="mKp">3.0</output></div>
+    <div class="slider" id="clSlider"><label for="mCl" data-i18n="clAssumed">Clouds (assumed)</label><input id="mCl" type="range" min="0" max="100" step="5" value="30"><output id="mClOut" for="mCl">30%</output></div>
+  </section>
+
+  <section id="mapSec">
+    <div class="map-head">
+      <div>
+        <h2 data-i18n="mapTitle">Where is the aurora right now?</h2>
+        <p class="sub" id="mapSub" data-i18n="mapSub">Live aurora probability over day and night. Tap anywhere to see conditions there.</p>
+      </div>
+      <div class="seg" id="mapMode" role="group" aria-label="Map area" data-i18n-aria="ariaMapArea">
+        <button type="button" data-m="north" aria-pressed="false" data-i18n="north">North</button>
+        <button type="button" data-m="south" aria-pressed="false" data-i18n="south">South</button>
+        <button type="button" data-m="local" aria-pressed="false" data-i18n="local">Around location</button>
+      </div>
+    </div>
+    <p class="map-now" id="mapNow"></p>
+    <div class="map-wrap">
+      <canvas id="map" aria-label="Aurora probability map. Tap to see conditions at a point" data-i18n-aria="ariaMap"></canvas>
+      <p class="map-src" id="mapSrc"></p>
+      <div class="map-ctl" role="group" aria-label="Map controls" data-i18n-aria="ariaMapCtl">
+        <button type="button" data-z="in" aria-label="Zoom in" title="Zoom in" data-i18n-aria="zIn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+        <button type="button" data-z="out" aria-label="Zoom out" title="Zoom out" data-i18n-aria="zOut"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+        <button type="button" data-z="rl" aria-label="Rotate left" title="Rotate left" data-i18n-aria="zRl"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4h4"/></svg></button>
+        <button type="button" data-z="rr" aria-label="Rotate right" title="Rotate right" data-i18n-aria="zRr"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v4h-4"/></svg></button>
+        <button type="button" data-z="home" aria-label="Center on location" title="Center on location" data-i18n-aria="zHome"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></button>
+        <button type="button" data-z="cloud" aria-label="Show clouds" title="Show clouds" data-i18n-aria="zCloud" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .4-7.98A6 6 0 0 0 5.9 9.3 4.4 4.4 0 0 0 7 18z"/></svg></button>
+      </div>
+    </div>
+    <p class="map-hint" data-i18n="mapHint">Drag to move · pinch (or scroll) to zoom · twist with two fingers to rotate · double-tap to zoom in</p>
+    <div class="legend">
+      <span class="ramp"><i></i><span class="mono">10→50→90%</span></span>
+      <span><span class="dash"></span><span data-i18n="lgView">View line (low on the horizon)</span></span>
+      <span><i style="background:#c9d3e6;opacity:.45"></i><span data-i18n="lgDay">Daylight</span></span>
+      <span><span class="ringdot" style="background:var(--oxygen)"></span><span data-i18n="lgVis">Likely visible</span></span>
+      <span><span class="ringdot" style="border:2px solid var(--warn)"></span><span data-i18n="lgDim">Aurora, but cloudy or bright</span></span>
+      <span><i style="background:#d6dce8;opacity:.6"></i><span data-i18n="lgCloud">Clouds (whiter = thicker)</span></span>
+      <span><span class="ringdot" style="background:var(--snow);color:var(--night);font-size:8px;text-align:center;line-height:10px;font-weight:700">1</span><span data-i18n="lgCand">Nearby spots</span></span>
+    </div>
+    <div class="tapinfo" id="tapInfo" hidden></div>
+
+    <h3 class="h3" data-i18n="nearTitle">Best spots nearby</h3>
+    <p class="sub" id="nearSub"></p>
+    <div class="near-ctl">
+      <div class="seg" id="nearTime" role="group" aria-label="Time" data-i18n-aria="ariaTime">
+        <button type="button" data-k="0" aria-pressed="true" data-i18n="kNow">Now</button>
+        <button type="button" data-k="1" aria-pressed="false" data-i18n="k1">In 1 h</button>
+        <button type="button" data-k="2" aria-pressed="false" data-i18n="k2">In 2 h</button>
+        <button type="button" data-k="3" aria-pressed="false" data-i18n="k3">In 3 h</button>
+      </div>
+      <div class="seg" id="nearRad" role="group" aria-label="Search radius" data-i18n-aria="ariaRad">
+        <button type="button" data-r="50" aria-pressed="false" data-i18n="r50">≤50 km</button>
+        <button type="button" data-r="100" aria-pressed="true" data-i18n="r100">≤100 km</button>
+        <button type="button" data-r="200" aria-pressed="false" data-i18n="r200">≤200 km</button>
+      </div>
+      <button class="btn sm" id="nearHere" type="button" data-i18n="nearHere">Search around map center</button>
+    </div>
+    <p class="map-now" id="nearBase"></p>
+    <div class="spots" id="nearList"></div>
+
+    <h3 class="h3" data-i18n="spotsTitle">Where it's likely visible now</h3>
+    <p class="sub" id="spotSub"></p>
+    <div class="spots" id="spots"></div>
+    <button class="btn more" id="spotMore" type="button"></button>
+  </section>
+
+  <section>
+    <h2 data-i18n="tlTitle">48-hour outlook</h2>
+    <p class="sub" data-i18n="tlSub">Hourly score. Shaded bands are dark hours; the lower strip shows cloud. Tap a bar to see that hour's numbers.</p>
+    <div class="scroll" id="tlScroll"><svg id="timeline" aria-label="48-hour aurora score" data-i18n-aria="ariaTl"></svg></div>
+    <div class="detail" id="detail" aria-live="polite"></div>
+    <div class="legend">
+      <span><i style="background:var(--oxygen)"></i><span data-i18n="lgScore">Score</span></span>
+      <span><i style="background:var(--panel2);border:1px solid var(--line)"></i><span data-i18n="lgDark">Dark hours</span></span>
+      <span><i style="background:var(--mute)"></i><span data-i18n="lgCloud2">Clouds (darker = more)</span></span>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-i18n="nowTitle">Space weather and sky now</h2>
+    <div class="now" id="now"></div>
+  </section>
+
+  <section>
+    <h2 data-i18n="kpTitle">3-day Kp forecast</h2>
+    <p class="sub" id="kpSub" data-i18n="kpSub">Geomagnetic activity in 3-hour blocks. The dotted line marks the Kp at which aurora starts to show low on the horizon here.</p>
+    <div class="scroll"><svg id="kpchart" role="img" aria-label="3-day Kp forecast" data-i18n-aria="ariaKp"></svg></div>
+    <div class="legend">
+      <span><i style="background:var(--oxygen)"></i>Kp 0–4</span>
+      <span><i style="background:var(--warn)"></i><span data-i18n="lgKp5">Kp 5–6 (storm G1–G2)</span></span>
+      <span><i style="background:var(--bad)"></i><span data-i18n="lgKp7">Kp 7+ (G3+)</span></span>
+      <span><i style="background:var(--oxygen);opacity:.45"></i><span data-i18n="lgObs">Observed / estimated</span></span>
+    </div>
+  </section>
+
+  <section id="calSec">
+    <h2 data-i18n="calTitle">Pick your dates: darkness &amp; moonlight</h2>
+    <p class="sub" data-i18n="calSub">Aurora strength can't be forecast more than 3 days ahead. Pick nights with long darkness and little moonlight, then check the Kp forecast just before you go. Tap a date for details.</p>
+    <div class="cal-nav">
+      <button class="btn sm" id="calPrev" type="button" data-i18n-aria="calPrev" aria-label="Previous month">‹</button>
+      <b id="calMonth"></b>
+      <button class="btn sm" id="calNext" type="button" data-i18n-aria="calNext" aria-label="Next month">›</button>
+    </div>
+    <div class="cal" id="cal"></div>
+    <div class="legend">
+      <span><i style="background:var(--oxygen);opacity:.5"></i><span data-i18n="lgCalQ">Darker green = darker sky, less moonlight</span></span>
+      <span><i style="background:var(--warn)"></i><span data-i18n="lgCalKp">Kp: NOAA 27-day outlook maximum (rough)</span></span>
+    </div>
+    <div class="tapinfo" id="calInfo" hidden></div>
+  </section>
+
+  <nav class="locnav" aria-label="Aurora forecasts by place">
+    <h2>Aurora forecasts by place</h2>
+    <ul><li><a href="en.html">Kyokko Navi home</a></li><li><a href="en-rovaniemi.html" aria-current="page">Rovaniemi, Finland</a></li><li><a href="en-saariselka.html">Saariselkä, Finland</a></li><li><a href="en-helsinki.html">Helsinki, Finland</a></li><li><a href="en-tromso.html">Tromsø, Norway</a></li><li><a href="en-abisko.html">Abisko, Sweden</a></li><li><a href="en-reykjavik.html">Reykjavík, Iceland</a></li><li><a href="en-fairbanks.html">Fairbanks, Alaska</a></li><li><a href="en-yellowknife.html">Yellowknife, Canada</a></li><li><a href="en-rikubetsu.html">Rikubetsu, Hokkaido, Japan</a></li><li><a href="rovaniemi.html" hreflang="ja" lang="ja">日本語版</a></li></ul>
+  </nav>
+
+  <section class="invite" id="invite">
+    <h2 data-i18n="invTitle">Did you see the aurora?</h2>
+    <p data-i18n="invText">If you did, we'd love you to post your photos or tonight's forecast with #KyokkoNavi. It helps the next travelers catch the show.</p>
+    <span class="tags" id="invTags" data-i18n="tags">#KyokkoNavi #northernlights #aurora #極光ナビ</span>
+    <div class="acts">
+      <button class="btn sm" id="invImg" type="button" data-i18n="invImg">Share forecast image</button>
+      <a class="btn sm" id="invX" href="https://twitter.com/intent/tweet" target="_blank" rel="noopener" data-i18n="invX">Post on X</a>
+      <a class="btn sm" id="invThreads" href="https://www.threads.net/intent/post" target="_blank" rel="noopener" data-i18n="invThreads">Post on Threads</a>
+      <a class="btn sm" id="invLine" href="https://line.me/R/share" target="_blank" rel="noopener" data-i18n="invLine">Send on LINE</a>
+      <button class="btn sm" id="invCopy" type="button" data-i18n="invCopy">Copy hashtags</button>
+    </div>
+    <p class="msg" id="invMsg" aria-live="polite"></p>
+  </section>
+
+  <details>
+    <summary><span data-lang="ja">スコアの考え方</span><span data-lang="en">How the score works</span></summary>
+    <div data-lang="ja">
+      <p>今夜の見えやすさ（0〜100）は、次の4つを掛け合わせた目安です。確率ではありません。</p>
+      <ul>
+        <li><b>磁気活動</b>：NOAAのKp予報を、観測地の地磁気緯度で「地平線に見える目安のKp」「真上に来る目安のKp」と比べます。直近2時間は太陽風の磁場Bzが南向きなら上乗せします。</li>
+        <li><b>暗さ</b>：太陽高度を端末内で計算し、−5°より暗くなるほど加点、−16°以下で満点です。</li>
+        <li><b>晴れ</b>：Open-Meteoの低層・中層・上層雲を重み付けして実効雲量にします（低い雲ほど強く遮る）。</li>
+        <li><b>月明かり</b>：月が出ていて明るいほど少し減点します。</li>
+      </ul>
+      <p>オーロラは数十分単位で急に変わるため、あくまで出かける判断の目安です。</p>
+      <p>地図の「いま見えていそう」は別の判定です。OVATIONの出現確率（真上、または極側8°以内の値の6割）が10%以上あり、太陽が十分沈んでいて、現在の雲量が多すぎない地点を表示しています。OVATIONを取得できないときは、Kpから推定したオーロラ帯で代用します。</p>
+      <p>「近くで見えやすい場所」は、基準点のまわり約±220kmを約44km間隔で区切った121地点の雲量予報（Open-Meteo、1時間ごと）を使います。陸地の地点だけを対象に、「出現確率 × 暗さ × 晴れの割合」を見える度（0〜100）として比べます。陸地の判定は簡易的なため、海岸近くや湖の多い地域では誤差があります。</p>
+    </div>
+    <div data-lang="en">
+      <p>Tonight's score (0–100) multiplies four factors. It is a guide for comparing conditions, not a probability.</p>
+      <ul>
+        <li><b>Geomagnetic activity</b>: NOAA's Kp forecast is compared with the Kp needed for aurora to appear low on the horizon and overhead at your magnetic latitude. For the next two hours, a southward solar-wind Bz adds a boost.</li>
+        <li><b>Darkness</b>: the sun's altitude is calculated on your device. The score rises once the sun is more than 5° below the horizon and is full at −16° or lower.</li>
+        <li><b>Clear sky</b>: Open-Meteo's low, mid and high cloud are weighted into an effective cloud cover (low cloud blocks the most).</li>
+        <li><b>Moonlight</b>: a bright moon above the horizon lowers the score a little.</li>
+      </ul>
+      <p>Aurora can change within minutes, so use the score to decide whether it's worth heading out.</p>
+      <p>"Likely visible" on the map is a separate check: OVATION probability of 10% or more (overhead, or 60% of the highest value within 8° poleward), the sun well below the horizon, and not too much cloud right now. If OVATION is unavailable, an aurora oval estimated from Kp is used instead.</p>
+      <p>"Best spots nearby" uses hourly cloud forecasts (Open-Meteo) for 121 points about 44 km apart, within roughly ±220 km of the search point. Land points only are ranked by probability × darkness × clear sky. The land check is approximate near coasts and in lake country.</p>
+    </div>
+  </details>
+
+  <footer>
+    <p data-lang="ja">データ：<a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener">NOAA SWPC</a>（Kp予報・リアルタイム太陽風・OVATION）、<a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>（雲量、<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>）。地図の陸地は <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a>。太陽・月の位置と地磁気緯度は端末内で計算。アクセス数の集計に <a href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a> を使用しています（Cookieなし・個人は特定しません）。位置情報と選んだ観測地は送信しません。</p>
+    <p data-lang="en">Data: <a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener">NOAA SWPC</a> (Kp forecast, real-time solar wind, OVATION), <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (clouds, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>). Map land from <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a>. Sun, moon and magnetic latitude are calculated on your device. Visits are counted with <a href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a> (no cookies, no personal data). Your location and chosen place are never sent anywhere.</p>
+  </footer>
+</div>
+
+<div class="nowcast" id="nowcast" hidden role="alert" data-lv="0">
+  <div class="nc-in"><div><b id="ncTitle"></b><span id="ncWhy"></span></div><button class="nc-x" id="ncClose" type="button" data-i18n-aria="close" aria-label="Close">×</button></div>
+</div>
+<div class="modal" id="shareModal" hidden role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+  <div class="modal-in">
+    <div class="modal-head"><b id="shareTitle" data-i18n="shareTitle">Image to share</b><button class="nc-x" id="shareClose" type="button" data-i18n-aria="close" aria-label="Close">×</button></div>
+    <img id="shareImg" alt="">
+    <p class="sub" data-i18n="shareHint">You can also press and hold the image to save it.</p>
+    <p class="sub" style="color:var(--oxygen)" data-i18n="shareTagHint">When you post, please add #KyokkoNavi</p>
+    <div class="modal-act">
+      <button class="btn" id="shareGo" type="button" data-i18n="shareGo">Share</button>
+      <button class="btn" id="shareSave" type="button" data-i18n="shareSave">Save</button>
+      <button class="btn" id="shareCopy" type="button" data-i18n="shareCopy">Copy link</button>
+    </div>
+    <p class="msg" id="shareMsg"></p>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>

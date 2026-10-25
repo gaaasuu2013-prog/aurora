@@ -4,6 +4,10 @@
 
 **▶ アプリを開く：https://gaaasuu2013-prog.github.io/aurora/**
 
+**▶ English: https://gaaasuu2013-prog.github.io/aurora/en.html**
+
+観測地別のページ：[ロヴァニエミ](https://gaaasuu2013-prog.github.io/aurora/rovaniemi.html)・[サーリセルカ](https://gaaasuu2013-prog.github.io/aurora/saariselka.html)・[ヘルシンキ](https://gaaasuu2013-prog.github.io/aurora/helsinki.html)・[トロムソ](https://gaaasuu2013-prog.github.io/aurora/tromso.html)・[アビスコ](https://gaaasuu2013-prog.github.io/aurora/abisko.html)・[レイキャビク](https://gaaasuu2013-prog.github.io/aurora/reykjavik.html)・[フェアバンクス](https://gaaasuu2013-prog.github.io/aurora/fairbanks.html)・[イエローナイフ](https://gaaasuu2013-prog.github.io/aurora/yellowknife.html)・[陸別](https://gaaasuu2013-prog.github.io/aurora/rikubetsu.html)
+
 極光ナビは、オーロラが「今夜その場所で見えるか」を予測する無料のWebアプリです。インストールやアカウント登録は不要で、スマホのブラウザですぐに使えます。
 
 NOAA（米国海洋大気庁）の宇宙天気データと雲量予報をもとに、見えやすさを0〜100の目安で表示します。あわせて、オーロラがいまどこに出ているかを示すリアルタイムの地図と、近くで晴れている場所の候補も出します。
@@ -49,7 +53,7 @@ NOAA（米国海洋大気庁）の宇宙天気データと雲量予報をもと�
 
 ## しくみ
 
-1つのHTMLファイルだけで動いており、サーバーは使っていません。各データは、利用者のブラウザがNOAAとOpen-Meteoから直接取得します。位置情報や選んだ観測地は端末の中だけで使われ、どこにも送信されません。アクセス数の集計には [GoatCounter](https://www.goatcounter.com/) を使っています（Cookieは使わず、個人を特定する情報も保存しません）。
+HTMLとJavaScriptだけで動いており、サーバーは使っていません。各データは、利用者のブラウザがNOAAとOpen-Meteoから直接取得します。位置情報や選んだ観測地は端末の中だけで使われ、どこにも送信されません。アクセス数の集計には [GoatCounter](https://www.goatcounter.com/) を使っています（Cookieは使わず、個人を特定する情報も保存しません）。
 
 ご意見や不具合の報告は [Issues](../../issues) からどうぞ。
 
@@ -57,7 +61,9 @@ NOAA（米国海洋大気庁）の宇宙天気データと雲量予報をもと�
 
 ## Kyokkō Navi — Will I see the aurora tonight?
 
-**Open the app: https://gaaasuu2013-prog.github.io/aurora/**
+**Open the app: https://gaaasuu2013-prog.github.io/aurora/en.html**
+
+Forecasts by place: [Rovaniemi](https://gaaasuu2013-prog.github.io/aurora/en-rovaniemi.html) · [Saariselkä](https://gaaasuu2013-prog.github.io/aurora/en-saariselka.html) · [Helsinki](https://gaaasuu2013-prog.github.io/aurora/en-helsinki.html) · [Tromsø](https://gaaasuu2013-prog.github.io/aurora/en-tromso.html) · [Abisko](https://gaaasuu2013-prog.github.io/aurora/en-abisko.html) · [Reykjavík](https://gaaasuu2013-prog.github.io/aurora/en-reykjavik.html) · [Fairbanks](https://gaaasuu2013-prog.github.io/aurora/en-fairbanks.html) · [Yellowknife](https://gaaasuu2013-prog.github.io/aurora/en-yellowknife.html) · [Rikubetsu](https://gaaasuu2013-prog.github.io/aurora/en-rikubetsu.html)
 
 A free web app, in English and Japanese, that estimates how likely you are to see the northern or southern lights tonight. It rates your location from 0 to 100 using NOAA's Kp forecast, real-time solar wind and the OVATION aurora model, together with cloud forecasts, darkness and moonlight.
 

@@ -1,0 +1,1449 @@
+(function(){
+"use strict";
+const $=s=>document.querySelector(s);
+const rad=d=>d*Math.PI/180, deg=r=>r*180/Math.PI;
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const sig=x=>1/(1+Math.exp(-x));
+const HOUR=3600000;
+
+/* ---------- language ---------- */
+const PAGE=window.KN_PAGE||null;
+let LANG=(function(){ if(PAGE&&(PAGE.lang==="ja"||PAGE.lang==="en")) return PAGE.lang; try{const v=JSON.parse(localStorage.getItem("aurora-lang")); if(v==="ja"||v==="en") return v;}catch(e){}
+  const n=(navigator.languages&&navigator.languages[0])||navigator.language||"ja"; return /^ja/i.test(n)?"ja":"en"; })();
+const I18N={
+ ja:{
+  tagline:"今夜オーロラは見える？ 無料のオーロラ予報とリアルタイム出現マップ",
+  invTitle:"オーロラ、見えましたか？",invText:"見えたら、写真や今夜の予報を #極光ナビ をつけてSNSに投稿してもらえるとうれしいです。次に旅する人がチャンスを見つける助けになります。",
+  invImg:"予報を画像で共有",invX:"Xでポスト",invThreads:"Threadsで投稿",invLine:"LINEで送る",invCopy:"ハッシュタグをコピー",invCopied:"ハッシュタグをコピーしました",
+  tags:"#極光ナビ #KyokkoNavi #オーロラ #northernlights",shareTagHint:"投稿するときは #極光ナビ をつけてもらえるとうれしいです",
+  nightsTitle:"この先3晩",toCal:"もっと先の旅行計画",nTap:"タップすると、その夜の時間ごとの数値が見られます。",
+  nLbl:["今夜","明日の夜","あさっての夜"],nBest:(a,b)=>"ねらい目 "+a+"〜"+b,nNoDark:"暗くなりません",nCloudOut:"雲は予報範囲外",nKpOut:"Kpは予報範囲外",
+  nMoon:p=>"月 "+p+"%",nNoMoon:"月なし",nCloud:c=>"雲 "+c+"%",nNone:"この先3日間は空が暗くなりません。",
+  alertTitle:"「いま外を見て！」速報",alertOn:"オンにする",alertOff:"オフにする",
+  alertDescOff:"オンにすると、アプリを開いている間にオーロラが出そうになったら、音と通知でお知らせします。",
+  alertDescOn:"オン：2分ごとに太陽風とオーロラの出現確率をチェックしています。アプリを閉じると止まります。",
+  alertNoNotif:"通知が許可されていないため、音と画面でお知らせします。",keepAwake:"画面をつけたままにする",
+  ncStrong:"いま外を見て！",ncSome:"チャンスあり：空をチェック",dirN:"北の空",dirS:"南の空",close:"閉じる",
+  notifStrong:p=>"いま外を見て！ "+p+"でオーロラのチャンスです",notifSome:p=>p+"でオーロラが出るかもしれません。空をチェック",
+  share:"画像で共有",shareTitle:"共有用の画像",shareHint:"画像を長押しして保存することもできます。",shareGo:"共有する",shareSave:"保存",shareCopy:"リンクをコピー",
+  shareCopied:"リンクをコピーしました",shareFail:"この端末では共有できません。保存するか、画像を長押しして保存してください。",shareMaking:"画像を作成しています…",
+  shareText:(p,s,v)=>p+"の今夜のオーロラ予報は "+s+"/100（"+v+"）",imgNight:d=>d+" の夜",imgFree:"無料のオーロラ予報アプリ",imgNext:"この先3晩",
+  calTitle:"旅行日えらび：暗さと月明かりカレンダー",calSub:"オーロラの強さは3日より先は予報できません。暗い時間が長く月明かりの少ない夜を選び、出発直前にKp予報を確認しましょう。日付をタップすると詳細が出ます。",
+  calPrev:"前の月",calNext:"次の月",calR:["好条件","良い","まずまず","不向き","白夜"],
+  calDark:(h,a,b)=>"暗い時間 "+h+"時間（"+a+"〜"+b+"）",calNoDark:"空が十分暗くなりません",
+  calMoon:(p,h)=>"月の輝面 "+p+"%・暗い時間のうち月が出ているのは "+h+"時間",calKp:k=>"NOAA 27日予報の最大Kp："+k+"（目安）",
+  lgCalQ:"緑が濃いほど暗く、月明かりが少ない",lgCalKp:"Kp：NOAA 27日予報の最大値（目安）",calDateFmt:{month:"long",day:"numeric",weekday:"short"},
+  locLabel:"観測地",calc:"計算中…",loadingData:"データを読み込んでいます",stKp:"Kp予報",stSw:"太陽風",stCl:"雲量",refresh:"更新",
+  lat:"緯度",lon:"経度",setCustom:"この地点で予報",kpAssumed:"Kp（仮定）",clAssumed:"雲量（仮定）",
+  mapTitle:"いま、どこで見えている？",mapSub:"オーロラの出現確率に昼夜を重ねた地図です。タップした地点の状況が下に出ます。",
+  ariaMapArea:"地図の範囲",north:"北半球",south:"南半球",local:"観測地まわり",ariaMap:"オーロラ出現確率の地図。タップで地点の状況を表示",
+  ariaMapCtl:"地図の操作",zIn:"拡大",zOut:"縮小",zRl:"左に回転",zRr:"右に回転",zHome:"観測地を中心に",zCloud:"雲の表示",
+  mapHint:"ドラッグで移動・ピンチ（PCはホイール）で拡大縮小・2本指でひねると回転・ダブルタップで拡大",
+  lgView:"地平線に見える目安ライン",lgDay:"昼の地域",lgVis:"見えていそうな地点",lgDim:"出ているが曇り・明るい",lgCloud:"雲（白いほど厚い）",lgCand:"近くの候補地",
+  nearTitle:"近くで見えやすい場所",ariaTime:"時刻",kNow:"いま",k1:"1時間後",k2:"2時間後",k3:"3時間後",ariaRad:"探す範囲",r50:"〜50km",r100:"〜100km",r200:"〜200km",
+  nearHere:"地図の中心で探す",spotsTitle:"いま見えていそうな場所",
+  tlTitle:"48時間の見込み",tlSub:"1時間ごとのスコア。濃い帯が暗い時間帯、下段は雲の多さ。棒をタップすると、その時間の数値が下に出ます。",ariaTl:"48時間のオーロラ見込みスコア",
+  lgScore:"見込みスコア",lgDark:"暗い時間帯",lgCloud2:"雲（濃いほど多い）",nowTitle:"いまの宇宙天気と空",
+  kpTitle:"Kp指数 3日予報",kpSub:"3時間ごとの地磁気活動。点線はこの地点で地平線近くに見え始める目安。",ariaKp:"Kp指数の3日予報",
+  lgKp5:"Kp 5–6（磁気嵐 G1–G2）",lgKp7:"Kp 7以上（G3以上）",lgObs:"観測・推定値",
+  vGreat:"見えるチャンス大",vGood:"可能性あり",vMaybe:"条件しだい",vLow:"きびしそう",
+  noDarkLbl:"48時間以内",noDarkV:"空が暗くなりません",noDarkW:"白夜や薄明が続く時期です。",
+  nightNow:(e,p)=>"いまから "+e+" ごろまで・"+p, nightLater:(a,e,p)=>"今夜 "+a+"〜"+e+"・"+p,
+  noChance:"今夜は目立ったチャンスがありません。",win:(a,b)=>"ねらい目は "+a+"〜"+b+" ごろ",
+  fAct:(k,n)=>"磁気活動が弱め（Kp予報 "+k+"、この地点の目安 "+n+" 以上）",fClear:c=>"雲が多い予報（実効雲量 "+c+"%）",fDark:a=>"空が暗くなりきらない（太陽高度 "+a+"°）",
+  neck:x=>"ネック："+x,allGood:"活動・晴れ・暗さの条件がそろっています",moonNote:p=>" ／ 月明かりあり（輝面 "+p+"%）",
+  tlCloud:"雲",now:"いま",scoreLbl:(d,s)=>d+" スコア "+s,
+  kind:{observed:"観測値",estimated:"推定値",predicted:"予報値",manual:"仮定値"},kindS:{observed:"観測",estimated:"推定",predicted:"予報",manual:"仮定"},
+  twi:["完全に暗い（夜）","天文薄明","航海薄明","市民薄明","昼間"],twi2:["真っ暗","十分暗い","やや明るい","薄明","昼間"],
+  nowSlot:"いまの時間帯",bestSlot:"今夜のねらい目",mAct:"磁気活動",mClear:"晴れ",mDark:"暗さ",mMoon:"月明かりの影響の少なさ",
+  fKp:"Kp指数",boost:b=>"（Bz南向きで +"+b+" 補正）",need:n=>"・目安 "+n+" 以上",fCloud:"雲量",effTot:n=>"実効値（全雲量 "+n+"%）",assumed:"仮定値",
+  fSun:"太陽高度",fMoon:"月",moonUp:a=>"高度 "+a+"°",moonDown:"沈んでいる",lit:p=>"輝面 "+p+"%",
+  kpNow:"Kp指数（いま）",storm:"磁気嵐",block3:"・3時間枠",bz:"磁場 Bz",bzS:"南向き：オーロラが出やすい",bzN:"北向き：出にくい",na:"取得できませんでした",
+  wind:"太陽風速度",windFast:"速い：活発化しやすい",windNorm:"ふつう",ovP:"OVATION 出現確率",ovVals:(a,b)=>"真上 "+a+"% / 極側 "+b+"%",ovFor:t=>"予測時刻 "+t,
+  cloudHr:"雲量（この1時間）",effLow:"実効値（低い雲を重視）",mlat:"地磁気緯度",mlatSub:(a,b)=>"地平線の目安 Kp "+a+"／真上 Kp "+b,
+  kp9:"この地点では Kp 9 超の大磁気嵐が必要",kpLine:k=>"地平線の目安 Kp "+k,
+  st:{none:"出ていない",bright:"出ているが明るい",cloud:"出ているが曇り",vis:"見えていそう（頭上）",vish:"見えていそう（地平線）"},
+  dirs:["北","北東","東","南東","南","南西","西","北西"],
+  mapCenter:"地図の中心",gridLoading:"周辺の雲の情報を読み込んでいます…",gridFail:"周辺の雲の情報を取得できませんでした。通信状態を確認して「更新」を押してください。",
+  when:k=>k?k+"時間後":"いま",baseWhen:(n,w)=>n+"（"+w+"）",visIdx:n=>"見える度 "+n,cl:"雲",pr:"確率",sun:"太陽",
+  nearMsg:(r,n,w)=>"半径"+r+"km以内の陸地"+n+"地点を比べています。雲と暗さは"+w+"、オーロラの強さは現在の予測です。",
+  nearBright:" この時刻はまだ空が明るいため、雲の少ない場所の順に並べています。暗くなる時刻（1〜3時間後）に切り替えて確認してください。",
+  nearWeak:" いまはこの周辺のオーロラの出現確率が低いため、晴れている場所の順に並べています。",nearSame:" 近くの候補とここの条件はほぼ同じです。",
+  candDir:(d,km)=>d+"へ "+km+" km",showMap:"地図で見る",gmaps:"Googleマップ",noCand:"この範囲に候補の陸地がありません。距離を広げてください。",
+  candName:(n,d,km)=>"候補"+n+"（"+d+"へ "+km+" km）",me:"観測地",
+  srcOv:t=>"OVATION 出現確率"+(t?"・予測時刻 "+t:""),srcKp:k=>"OVATIONを取得できないため、Kp "+k+" から推定",srcCloud:w=>"・雲 "+w,
+  place:(n,a)=>n+"（"+a+"）",
+  spotVis:(n,v)=>"代表的な観測地"+n+"か所のうち "+v+" か所で見えていそうです。",spotNone:n=>"代表的な観測地"+n+"か所で、いま見えていそうな場所はありません。",
+  spotCl:"雲は現在の予報値です。",spotNoCl:"雲量を取得できていないため、雲は考慮していません。",spotGo:"ここの予報",top8:"上位8か所だけ表示",all:n=>"すべて表示（"+n+"か所）",
+  latlon:(la,lo)=>(la>=0?"北緯 ":"南緯 ")+Math.abs(la).toFixed(1)+"° "+(lo>=0?"東経 ":"西経 ")+Math.abs(lo).toFixed(1)+"°",
+  fetching:"取得中…",pOver:"出現確率（真上）",pHor:"極側8°以内の最大",pHorSub:"地平線付近に見える目安",cloudNow:"雲量（現在）",tapGo:"この地点の予報を見る",
+  updated:t=>"更新 "+t,manualAll:"この表示環境では外部データに接続できないため、Kpと雲量は仮定値です。太陽・月の位置と暗さは実際の計算です。つまみで条件を変えて試せます。",
+  manualSome:"一部のライブデータを取得できませんでした。つまみの値で補っています。",
+  useGeo:"現在地を使う",enterCoord:"緯度・経度を入力",customOpt:(a,b)=>"指定地点（"+a+", "+b+"）",custom:"指定地点",
+  noGeo:"位置情報を使えません。緯度・経度を入力してください。",gettingGeo:"現在地を取得しています…",geoFail:"現在地を取得できませんでした。緯度・経度を入力してください。",
+  badCoord:"緯度は −90〜90、経度は −180〜180 で入力してください。",title:"極光ナビ｜オーロラ予報・リアルタイム出現マップ"
+ },
+ en:{
+  tagline:"Will you see the aurora tonight? Free aurora forecast and live aurora map",
+  invTitle:"Did you see the aurora?",invText:"If you did, we'd love you to post your photos or tonight's forecast with #KyokkoNavi. It helps the next travelers catch the show.",
+  invImg:"Share forecast image",invX:"Post on X",invThreads:"Post on Threads",invLine:"Send on LINE",invCopy:"Copy hashtags",invCopied:"Hashtags copied",
+  tags:"#KyokkoNavi #northernlights #aurora #極光ナビ",shareTagHint:"When you post, please add #KyokkoNavi",
+  nightsTitle:"Next 3 nights",toCal:"Plan further ahead",nTap:"Tap a night to see its hourly numbers.",
+  nLbl:["Tonight","Tomorrow night","In 2 nights"],nBest:(a,b)=>"Best "+a+"–"+b,nNoDark:"No darkness",nCloudOut:"No cloud forecast yet",nKpOut:"Beyond Kp forecast",
+  nMoon:p=>"Moon "+p+"%",nNoMoon:"No moon",nCloud:c=>"Cloud "+c+"%",nNone:"The sky won't get dark in the next 3 days.",
+  alertTitle:"“Look outside now!” alerts",alertOn:"Turn on",alertOff:"Turn off",
+  alertDescOff:"Turn on to get a sound and a notification while the app is open when aurora looks likely.",
+  alertDescOn:"On: checking solar wind and aurora probability every 2 minutes. It stops when you close the app.",
+  alertNoNotif:"Notifications aren't allowed, so alerts use sound and the screen.",keepAwake:"Keep screen on",
+  ncStrong:"Look outside now!",ncSome:"Possible now: check the sky",dirN:"Look north",dirS:"Look south",close:"Close",
+  notifStrong:p=>"Look outside! Aurora chance now at "+p,notifSome:p=>"Aurora possible at "+p+". Check the sky.",
+  share:"Share image",shareTitle:"Image to share",shareHint:"You can also press and hold the image to save it.",shareGo:"Share",shareSave:"Save",shareCopy:"Copy link",
+  shareCopied:"Link copied",shareFail:"Sharing isn't available here. Save the image or press and hold it.",shareMaking:"Making the image…",
+  shareText:(p,s,v)=>"Tonight's aurora forecast for "+p+": "+s+"/100 ("+v+")",imgNight:d=>"Night of "+d,imgFree:"Free aurora forecast app",imgNext:"Next 3 nights",
+  calTitle:"Pick your dates: darkness & moonlight",calSub:"Aurora strength can't be forecast more than 3 days ahead. Pick nights with long darkness and little moonlight, then check the Kp forecast just before you go. Tap a date for details.",
+  calPrev:"Previous month",calNext:"Next month",calR:["Great","Good","Fair","Poor","No darkness"],
+  calDark:(h,a,b)=>h+" h of darkness ("+a+"–"+b+")",calNoDark:"The sky doesn't get dark enough",
+  calMoon:(p,h)=>"Moon "+p+"% lit, up for "+h+" h of the dark hours",calKp:k=>"NOAA 27-day outlook max Kp: "+k+" (rough)",
+  lgCalQ:"Darker green = darker sky, less moonlight",lgCalKp:"Kp: NOAA 27-day outlook maximum (rough)",calDateFmt:{weekday:"short",day:"numeric",month:"long"},
+  locLabel:"Location",calc:"Calculating…",loadingData:"Loading data",stKp:"Kp forecast",stSw:"Solar wind",stCl:"Clouds",refresh:"Refresh",
+  lat:"Latitude",lon:"Longitude",setCustom:"Forecast here",kpAssumed:"Kp (assumed)",clAssumed:"Clouds (assumed)",
+  mapTitle:"Where is the aurora right now?",mapSub:"Live aurora probability over day and night. Tap anywhere to see conditions there.",
+  ariaMapArea:"Map area",north:"North",south:"South",local:"Around location",ariaMap:"Aurora probability map. Tap to see conditions at a point",
+  ariaMapCtl:"Map controls",zIn:"Zoom in",zOut:"Zoom out",zRl:"Rotate left",zRr:"Rotate right",zHome:"Center on location",zCloud:"Show clouds",
+  mapHint:"Drag to move · pinch (or scroll) to zoom · twist with two fingers to rotate · double-tap to zoom in",
+  lgView:"View line (low on the horizon)",lgDay:"Daylight",lgVis:"Likely visible",lgDim:"Aurora, but cloudy or bright",lgCloud:"Clouds (whiter = thicker)",lgCand:"Nearby spots",
+  nearTitle:"Best spots nearby",ariaTime:"Time",kNow:"Now",k1:"In 1 h",k2:"In 2 h",k3:"In 3 h",ariaRad:"Search radius",r50:"≤50 km",r100:"≤100 km",r200:"≤200 km",
+  nearHere:"Search around map center",spotsTitle:"Where it's likely visible now",
+  tlTitle:"48-hour outlook",tlSub:"Hourly score. Shaded bands are dark hours; the lower strip shows cloud. Tap a bar to see that hour's numbers.",ariaTl:"48-hour aurora score",
+  lgScore:"Score",lgDark:"Dark hours",lgCloud2:"Clouds (darker = more)",nowTitle:"Space weather and sky now",
+  kpTitle:"3-day Kp forecast",kpSub:"Geomagnetic activity in 3-hour blocks. The dotted line marks the Kp at which aurora starts to show low on the horizon here.",ariaKp:"3-day Kp forecast",
+  lgKp5:"Kp 5–6 (storm G1–G2)",lgKp7:"Kp 7+ (G3+)",lgObs:"Observed / estimated",
+  vGreat:"Great chance",vGood:"Good chance",vMaybe:"Possible",vLow:"Unlikely",
+  noDarkLbl:"Next 48 hours",noDarkV:"The sky won't get dark",noDarkW:"It's the season of midnight sun or constant twilight.",
+  nightNow:(e,p)=>"Now until about "+e+" · "+p, nightLater:(a,e,p)=>"Tonight "+a+"–"+e+" · "+p,
+  noChance:"No real chance tonight.",win:(a,b)=>"Best window: about "+a+"–"+b,
+  fAct:(k,n)=>"Weak activity (Kp forecast "+k+"; this place needs about "+n+"+)",fClear:c=>"Cloudy forecast (effective cloud "+c+"%)",fDark:a=>"Sky not fully dark (sun at "+a+"°)",
+  neck:x=>"Main limit: "+x,allGood:"Activity, clear skies and darkness line up",moonNote:p=>" / Moonlight ("+p+"% lit)",
+  tlCloud:"Cloud",now:"Now",scoreLbl:(d,s)=>d+" score "+s,
+  kind:{observed:"Observed",estimated:"Estimated",predicted:"Forecast",manual:"Assumed"},kindS:{observed:"observed",estimated:"estimated",predicted:"forecast",manual:"assumed"},
+  twi:["Fully dark","Astronomical twilight","Nautical twilight","Civil twilight","Daytime"],twi2:["Fully dark","Dark enough","A bit bright","Twilight","Daytime"],
+  nowSlot:"Current hour",bestSlot:"Tonight's best window",mAct:"Activity",mClear:"Clear sky",mDark:"Darkness",mMoon:"Little moonlight",
+  fKp:"Kp index",boost:b=>" (+"+b+" for southward Bz)",need:n=>" · needs "+n+"+",fCloud:"Cloud cover",effTot:n=>"Effective (total "+n+"%)",assumed:"Assumed",
+  fSun:"Sun altitude",fMoon:"Moon",moonUp:a=>a+"° up",moonDown:"Below horizon",lit:p=>p+"% lit",
+  kpNow:"Kp index (now)",storm:"Storm",block3:" · 3-hour block",bz:"IMF Bz",bzS:"Southward: favors aurora",bzN:"Northward: less likely",na:"Unavailable",
+  wind:"Solar wind speed",windFast:"Fast: activity likely",windNorm:"Normal",ovP:"OVATION probability",ovVals:(a,b)=>"Overhead "+a+"% / poleward "+b+"%",ovFor:t=>"Forecast for "+t,
+  cloudHr:"Cloud (this hour)",effLow:"Effective (low cloud weighted)",mlat:"Magnetic latitude",mlatSub:(a,b)=>"Horizon Kp "+a+" / overhead Kp "+b,
+  kp9:"Needs an extreme storm (Kp 9+) here",kpLine:k=>"Horizon line: Kp "+k,
+  st:{none:"No aurora",bright:"Aurora, but too bright",cloud:"Aurora, but cloudy",vis:"Likely visible (overhead)",vish:"Likely visible (horizon)"},
+  dirs:["N","NE","E","SE","S","SW","W","NW"],
+  mapCenter:"Map center",gridLoading:"Loading cloud data for the area…",gridFail:"Couldn't load cloud data for the area. Check your connection and tap Refresh.",
+  when:k=>k?"in "+k+" h":"now",baseWhen:(n,w)=>n+" ("+w+")",visIdx:n=>"Visibility "+n,cl:"Cloud",pr:"Prob.",sun:"Sun",
+  nearMsg:(r,n,w)=>"Comparing "+n+" land points within "+r+" km. Cloud and darkness are for "+w+"; aurora strength is the current forecast.",
+  nearBright:" It's still light at this time, so places are sorted by clearest sky. Switch to a later time (1–3 h) to check after dark.",
+  nearWeak:" Aurora probability is low around here right now, so places are sorted by clearest sky.",nearSame:" Nearby spots are about the same as here.",
+  candDir:(d,km)=>km+" km "+d,showMap:"Show on map",gmaps:"Google Maps",noCand:"No land points in this range. Try a larger distance.",
+  candName:(n,d,km)=>"Spot "+n+" ("+km+" km "+d+")",me:"Location",
+  srcOv:t=>"OVATION probability"+(t?" · for "+t:""),srcKp:k=>"OVATION unavailable · estimated from Kp "+k,srcCloud:w=>" · clouds "+w,
+  place:(n,a)=>n+", "+a,
+  spotVis:(n,v)=>"Likely visible at "+v+" of "+n+" well-known aurora spots.",spotNone:n=>"None of "+n+" well-known aurora spots is likely to see it right now.",
+  spotCl:" Clouds are current forecasts.",spotNoCl:" Cloud data unavailable, so clouds aren't considered.",spotGo:"Forecast",top8:"Show top 8 only",all:n=>"Show all ("+n+")",
+  latlon:(la,lo)=>Math.abs(la).toFixed(1)+"°"+(la>=0?"N":"S")+" "+Math.abs(lo).toFixed(1)+"°"+(lo>=0?"E":"W"),
+  fetching:"Loading…",pOver:"Probability overhead",pHor:"Max within 8° poleward",pHorSub:"Guide for aurora low on the horizon",cloudNow:"Cloud (now)",tapGo:"Forecast for this point",
+  updated:t=>"Updated "+t,manualAll:"Live data can't be reached in this view, so Kp and clouds are assumed values. Sun, moon and darkness are calculated. Use the sliders to try conditions.",
+  manualSome:"Some live data couldn't be loaded. The slider values are used instead.",
+  useGeo:"Use my location",enterCoord:"Enter coordinates",customOpt:(a,b)=>"Custom point ("+a+", "+b+")",custom:"Custom point",
+  noGeo:"Location isn't available. Enter latitude and longitude.",gettingGeo:"Getting your location…",geoFail:"Couldn't get your location. Enter latitude and longitude.",
+  badCoord:"Latitude must be −90 to 90 and longitude −180 to 180.",title:"Kyokko Navi | Aurora forecast & live map"
+ }
+};
+function t(k,...a){ const v=(I18N[LANG]&&I18N[LANG][k]!==undefined)?I18N[LANG][k]:I18N.ja[k]; return typeof v==="function"?v(...a):v; }
+const LOCALE=()=>LANG==="ja"?"ja-JP":"en-GB";
+function locLabel(l){ return LANG==="en"?(l.en||l.name):l.name; }
+function shortName(n){ return String(n).replace(/（.*）/,"").replace(/,.*$/,""); }
+function twiOf(a,key){ const L=t(key||"twi"); return a<=-18?L[0]:a<=-12?L[1]:a<=-6?L[2]:a<0?L[3]:L[4]; }
+
+const PRESETS=[
+  {id:"rovaniemi",en:"Rovaniemi, Finland",name:"ロヴァニエミ（フィンランド）",lat:66.50,lon:25.73,tz:"Europe/Helsinki"},
+  {id:"saariselka",en:"Saariselkä, Finland",name:"サーリセルカ（フィンランド）",lat:68.42,lon:27.41,tz:"Europe/Helsinki"},
+  {id:"helsinki",en:"Helsinki, Finland",name:"ヘルシンキ（フィンランド）",lat:60.17,lon:24.94,tz:"Europe/Helsinki"},
+  {id:"tromso",en:"Tromsø, Norway",name:"トロムソ（ノルウェー）",lat:69.65,lon:18.96,tz:"Europe/Oslo"},
+  {id:"abisko",en:"Abisko, Sweden",name:"アビスコ（スウェーデン）",lat:68.35,lon:18.83,tz:"Europe/Stockholm"},
+  {id:"reykjavik",en:"Reykjavík, Iceland",name:"レイキャビク（アイスランド）",lat:64.15,lon:-21.94,tz:"Atlantic/Reykjavik"},
+  {id:"fairbanks",en:"Fairbanks, Alaska",name:"フェアバンクス（アラスカ）",lat:64.84,lon:-147.72,tz:"America/Anchorage"},
+  {id:"yellowknife",en:"Yellowknife, Canada",name:"イエローナイフ（カナダ）",lat:62.45,lon:-114.37,tz:"America/Edmonton"},
+  {id:"rikubetsu",en:"Rikubetsu, Hokkaido",name:"陸別（北海道）",lat:43.47,lon:143.74,tz:"Asia/Tokyo"}
+];
+
+const S={loc:PRESETS[0],kp:null,sw:null,ovGrid:null,ovTime:null,cloud:null,
+  manual:{kp:3,cloud:30},status:{kp:"loading",sw:"loading",ov:"loading",cl:"loading"},updated:null,hours:[],intensity:.3,
+  sel:null,bestI:0};
+
+/* ---------- storage (per-viewer convenience only) ---------- */
+function load(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}}
+function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
+
+/* ---------- astronomy ---------- */
+function days(ms){return ms/86400000-10957.5}
+function sunRaDec(d){
+  const g=rad(357.529+0.98560028*d), q=280.459+0.98564736*d;
+  const L=rad(q+1.915*Math.sin(g)+0.020*Math.sin(2*g)), e=rad(23.439-0.00000036*d);
+  return {ra:Math.atan2(Math.cos(e)*Math.sin(L),Math.cos(L)),dec:Math.asin(Math.sin(e)*Math.sin(L))};
+}
+function moonRaDec(d){
+  const e=rad(23.4397), L=rad(218.316+13.176396*d), M=rad(134.963+13.064993*d), F=rad(93.272+13.229350*d);
+  const l=L+rad(6.289)*Math.sin(M), b=rad(5.128)*Math.sin(F);
+  return {ra:Math.atan2(Math.sin(l)*Math.cos(e)-Math.tan(b)*Math.sin(e),Math.cos(l)),
+          dec:Math.asin(Math.sin(b)*Math.cos(e)+Math.cos(b)*Math.sin(e)*Math.sin(l))};
+}
+function altOf(c,d,lat,lon){
+  const gmst=280.46061837+360.98564736629*d;
+  const ha=rad(gmst+lon)-c.ra, p=rad(lat);
+  return deg(Math.asin(Math.sin(p)*Math.sin(c.dec)+Math.cos(p)*Math.cos(c.dec)*Math.cos(ha)));
+}
+function moonIllum(d){
+  const s=sunRaDec(d), m=moonRaDec(d);
+  const phi=Math.acos(clamp(Math.sin(s.dec)*Math.sin(m.dec)+Math.cos(s.dec)*Math.cos(m.dec)*Math.cos(s.ra-m.ra),-1,1));
+  const inc=Math.atan2(149598000*Math.sin(phi),385000-149598000*Math.cos(phi));
+  return (1+Math.cos(inc))/2;
+}
+/* 双極子近似の地磁気緯度（地磁気北極 80.8°N, 72.6°W） */
+function magLat(lat,lon){
+  const pl=rad(80.8), pn=rad(-72.6);
+  return deg(Math.asin(Math.sin(rad(lat))*Math.sin(pl)+Math.cos(rad(lat))*Math.cos(pl)*Math.cos(rad(lon)-pn)));
+}
+/* オーバル赤道側境界がこの地磁気緯度まで下がるのに必要なKp */
+function kpNeeded(b){
+  if(b>=66.5) return 0;
+  if(b>=54.2) return (66.5-b)/2.05;
+  return Math.min(9.9,6+(54.2-b)/4.5);
+}
+
+/* ---------- data parsing ---------- */
+function rows(j){
+  if(!Array.isArray(j)) return [];
+  if(Array.isArray(j[0])){const h=j[0];return j.slice(1).map(r=>{const o={};h.forEach((k,i)=>o[k]=r[i]);return o;});}
+  return j;
+}
+function parseT(s){
+  if(typeof s!=="string") return NaN;
+  let x=s.trim().replace(" ","T");
+  if(!/(Z|[+-]\d\d:?\d\d)$/i.test(x)) x+="Z";
+  return Date.parse(x);
+}
+const num=v=>v===null||v===undefined||v===""?NaN:Number(v);
+
+async function getJSON(url,ms){
+  const c=new AbortController(); const id=setTimeout(()=>c.abort(),ms||20000);
+  try{const r=await fetch(url,{signal:c.signal,cache:"no-store"}); if(!r.ok) throw new Error("HTTP "+r.status); return await r.json();}
+  finally{clearTimeout(id)}
+}
+const SWPC="https://services.swpc.noaa.gov";
+
+async function fetchKp(){
+  const j=await getJSON(SWPC+"/products/noaa-planetary-k-index-forecast.json");
+  const out=rows(j).map(r=>({t:parseT(r.time_tag||r.time||r.TimeTag),kp:num(r.kp??r.Kp??r.kp_index),
+    kind:String(r.observed??r.status??"predicted").toLowerCase()})).filter(r=>isFinite(r.t)&&isFinite(r.kp));
+  if(!out.length) throw new Error("empty");
+  out.sort((a,b)=>a.t-b.t); return out;
+}
+function lastMean(list,key,n){
+  const v=list.map(r=>num(r[key])).filter(Number.isFinite);
+  if(!v.length) return NaN; const s=v.slice(-n); return s.reduce((a,b)=>a+b,0)/s.length;
+}
+async function fetchSW(){
+  const [m,p]=await Promise.allSettled([getJSON(SWPC+"/products/solar-wind/mag-2-hour.json"),getJSON(SWPC+"/products/solar-wind/plasma-2-hour.json")]);
+  const mr=m.status==="fulfilled"?rows(m.value):[], pr=p.status==="fulfilled"?rows(p.value):[];
+  const sw={bz:lastMean(mr,"bz_gsm",20),bt:lastMean(mr,"bt",20),speed:lastMean(pr,"speed",20),density:lastMean(pr,"density",20)};
+  if(!isFinite(sw.bz)&&!isFinite(sw.speed)) throw new Error("empty");
+  return sw;
+}
+async function fetchOvation(){
+  const j=await getJSON(SWPC+"/json/ovation_aurora_latest.json",30000);
+  const g=new Float32Array(360*181).fill(NaN);
+  for(const c of (j.coordinates||[])){
+    const lo=((Math.round(c[0])%360)+360)%360, la=Math.round(c[1]);
+    if(la>=-90&&la<=90) g[lo*181+la+90]=c[2];
+  }
+  return {grid:g,time:parseT(j["Forecast Time"]||j["Observation Time"]||"")};
+}
+async function fetchCloud(loc){
+  const u="https://api.open-meteo.com/v1/forecast?latitude="+loc.lat.toFixed(3)+"&longitude="+loc.lon.toFixed(3)+
+    "&hourly=cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high&timezone=auto&forecast_days=4&timeformat=unixtime";
+  const j=await getJSON(u); const h=j.hourly||{};
+  if(!Array.isArray(h.time)||!h.time.length) throw new Error("empty");
+  return {time:h.time,total:h.cloud_cover,low:h.cloud_cover_low,mid:h.cloud_cover_mid,high:h.cloud_cover_high,tz:j.timezone};
+}
+
+/* ---------- model ---------- */
+function ovAt(lat,lon){
+  if(!S.ovGrid) return null;
+  const g=S.ovGrid, lo=((Math.round(lon)%360)+360)%360, la=Math.round(lat), dir=lat>=0?1:-1;
+  const get=(o,a)=>{if(a<-90||a>90) return NaN; return g[(((o%360)+360)%360)*181+a+90];};
+  let over=get(lo,la), hor=0;
+  for(let dl=1;dl<=8;dl++) for(let dx=-2;dx<=2;dx++){const v=get(lo+dx,la+dir*dl); if(v>hor) hor=v;}
+  return {over:isFinite(over)?over:0,hor:Math.max(hor,isFinite(over)?over:0)};
+}
+function kpAt(t){
+  const k=S.kp;
+  if(!k) return {kp:S.manual.kp,kind:"manual"};
+  for(const r of k) if(t>=r.t&&t<r.t+3*HOUR) return r;
+  let nb=k[0]; for(const r of k) if(Math.abs(r.t+1.5*HOUR-t)<Math.abs(nb.t+1.5*HOUR-t)) nb=r;
+  return nb;
+}
+function cloudAt(t){
+  const c=S.cloud;
+  if(c){
+    const i=Math.floor((t/1000-c.time[0])/3600);
+    if(i>=0&&i<c.time.length){
+      const tot=num(c.total&&c.total[i]);
+      const eff=effCloud(num(c.low&&c.low[i]),num(c.mid&&c.mid[i]),num(c.high&&c.high[i]),tot);
+      if(eff!=null) return {eff,total:Number.isFinite(tot)?tot:eff,src:"data"};
+    }
+    return {eff:S.manual.cloud,total:S.manual.cloud,src:"out"};
+  }
+  return {eff:S.manual.cloud,total:S.manual.cloud,src:"manual"};
+}
+function effCloud(lo,mi,hi,tot){
+  if([lo,mi,hi].every(Number.isFinite)) return 100*(1-(1-lo/100)*(1-0.85*mi/100)*(1-0.45*hi/100));
+  return Number.isFinite(tot)?tot:null;
+}
+function geo(){
+  const ml=Math.abs(magLat(S.loc.lat,S.loc.lon));
+  return {ml,kpH:kpNeeded(ml+5),kpO:kpNeeded(ml)};
+}
+function buildHours(N){
+  const {lat,lon}=S.loc, G=geo(), start=Math.floor(Date.now()/HOUR)*HOUR, out=[];
+  const kLast=S.kp&&S.kp.length?S.kp[S.kp.length-1].t+3*HOUR:null;
+  for(let i=0;i<(N||96);i++){
+    const t=start+i*HOUR, tm=t+HOUR/2, d=days(tm);
+    const sAlt=altOf(sunRaDec(d),d,lat,lon), mAlt=altOf(moonRaDec(d),d,lat,lon), ill=moonIllum(d);
+    const kr=kpAt(tm); let kp=kr.kp, boost=0;
+    if(i<2&&S.sw&&Number.isFinite(S.sw.bz)&&S.sw.bz<-3){
+      const sp=Number.isFinite(S.sw.speed)?S.sw.speed:400;
+      const k2=Math.min(9,kp+Math.min(1.5,(-S.sw.bz-3)/6*Math.max(0.7,sp/450)));
+      boost=k2-kp; kp=k2;
+    }
+    const act=0.75*sig(2*(kp-G.kpH-0.3))+0.25*sig(2*(kp-G.kpO));
+    const dark=clamp((-sAlt-5)/11,0,1);
+    const cl=cloudAt(tm), clear=1-clamp(cl.eff,0,100)/100;
+    const moonF=mAlt>0?1-0.3*ill*Math.min(1,mAlt/20):1;
+    out.push({t,kp,kpKind:kr.kind,kpOut:kLast!=null&&tm>kLast,cloudSrc:cl.src,boost,act,dark,clear,cloud:cl.eff,cloudTotal:cl.total,sAlt,mAlt,ill,moonF,score:100*act*dark*clear*moonF});
+  }
+  return out;
+}
+
+/* ---------- formatting ---------- */
+function tz(){return (S.cloud&&S.cloud.tz)||S.loc.tz||Intl.DateTimeFormat().resolvedOptions().timeZone}
+function fmt(t,opt){try{return new Intl.DateTimeFormat(LOCALE(),Object.assign({timeZone:tz()},opt)).format(new Date(t))}catch(e){return new Intl.DateTimeFormat(LOCALE(),opt).format(new Date(t))}}
+const hm=t=>fmt(t,{hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
+const hh=t=>String(Number(fmt(t,{hour:"numeric",hourCycle:"h23"}).replace(/\D/g,"")));
+const md=t=>fmt(t,{month:"numeric",day:"numeric",weekday:"short"});
+const ymd=t=>fmt(t,{year:"numeric",month:"2-digit",day:"2-digit"});
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function mix(a,b,f){const p=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));const A=p(a),B=p(b);return "rgb("+A.map((v,i)=>Math.round(v+(B[i]-v)*f)).join(",")+")"}
+const scoreColor=s=>s>=75?mix("#5ef0a6","#b98cff",clamp((s-75)/25,0,1)):mix("#34405c","#5ef0a6",clamp(s/60,0,1));
+
+/* ---------- render: hero ---------- */
+function verdict(s){
+  if(s>=60) return [t("vGreat"),"great"];
+  if(s>=35) return [t("vGood"),"good"];
+  if(s>=15) return [t("vMaybe"),"maybe"];
+  return [t("vLow"),"low"];
+}
+function renderHero(H){
+  const G=geo(), hero=$("#hero");
+  let i0=H.findIndex(h=>h.dark>0.05);
+  if(i0<0){
+    $("#nightLabel").textContent=t("noDarkLbl");
+    $("#score").textContent="0"; $("#verdict").textContent=t("noDarkV");
+    $("#window").textContent=t("noDarkW");
+    $("#reason").textContent=""; hero.dataset.level="low"; S.intensity=.12; S.bestI=0; return;
+  }
+  let i1=i0; while(i1+1<H.length&&H[i1+1].dark>0.05) i1++;
+  const night=H.slice(i0,i1+1);
+  let bi=i0; for(let i=i0;i<=i1;i++) if(H[i].score>H[bi].score) bi=i;
+  S.bestI=bi;
+  const best=H[bi], thr=best.score*0.7; let a=bi,b=bi;
+  while(a-1>=i0&&H[a-1].score>=thr) a--; while(b+1<=i1&&H[b+1].score>=thr) b++;
+  const endT=H[i1].t+HOUR;
+  const pn=shortName(locLabel(S.loc));
+  $("#nightLabel").textContent=i0===0?t("nightNow",hm(endT),pn):t("nightLater",hm(H[i0].t),hm(endT),pn);
+  const sc=Math.round(best.score), [v,lvl]=verdict(sc);
+  $("#score").textContent=sc; $("#verdict").textContent=v; hero.dataset.level=lvl;
+  $("#window").textContent=sc<5?t("noChance"):t("win",hm(H[a].t),hm(H[b].t+HOUR));
+  const f=[
+    ["act",best.act,t("fAct",best.kp.toFixed(1),G.kpH.toFixed(1))],
+    ["clear",best.clear,t("fClear",Math.round(best.cloud))],
+    ["dark",best.dark,t("fDark",best.sAlt.toFixed(0))]
+  ].sort((x,y)=>x[1]-y[1]);
+  let r=f[0][1]<0.6?t("neck",f[0][2]):t("allGood");
+  if(best.mAlt>10&&best.ill>0.6) r+=t("moonNote",Math.round(best.ill*100));
+  $("#reason").textContent=r;
+  S.intensity=clamp(0.12+best.score/100,0.12,1);
+}
+
+/* ---------- render: timeline ---------- */
+const SVGNS="http://www.w3.org/2000/svg";
+function svgEl(tag,attrs,parent,text){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;parent&&parent.appendChild(e);return e}
+function selIndex(H){
+  let i=S.sel!=null?H.findIndex(h=>h.t===S.sel):-1;
+  if(i<0) i=Math.min(S.bestI||0,H.length-1);
+  return i;
+}
+function renderTimeline(H){
+  const svg=$("#timeline"); svg.innerHTML="";
+  const bw=16, x0=40, W=x0+H.length*bw+16, top=22, ch=130, base=top+ch, cy=base+10, Ht=base+56;
+  svg.setAttribute("width",W); svg.setAttribute("height",Ht); svg.setAttribute("viewBox","0 0 "+W+" "+Ht);
+  H.forEach((h,i)=>{ if(h.dark>0.05) svgEl("rect",{x:x0+i*bw,y:top-6,width:bw,height:ch+6,fill:"#16213b","fill-opacity":(0.35+0.65*h.dark).toFixed(2)},svg); });
+  const si=selIndex(H);
+  svgEl("rect",{x:x0+si*bw+0.5,y:top-8,width:bw-1,height:cy+14-(top-8),rx:3,fill:"#5ef0a6","fill-opacity":0.10,stroke:"#5ef0a6","stroke-opacity":0.7},svg);
+  [25,50,75,100].forEach(v=>{const y=base-v/100*ch; svgEl("line",{x1:x0,x2:W-16,y1:y,y2:y,stroke:"#26334f","stroke-width":1},svg); svgEl("text",{x:x0-6,y:y+4,"text-anchor":"end"},svg,v);});
+  svgEl("line",{x1:x0,x2:W-16,y1:base,y2:base,stroke:"#3a4866"},svg);
+  H.forEach((h,i)=>{
+    const v=Math.max(h.score,0.6), hgt=v/100*ch;
+    svgEl("rect",{x:x0+i*bw+3,y:base-hgt,width:bw-6,height:hgt,rx:2,fill:scoreColor(h.score)},svg);
+    svgEl("rect",{x:x0+i*bw+1,y:cy,width:bw-2,height:12,rx:2,fill:"#8f9cb5","fill-opacity":(clamp(h.cloud,0,100)/100*0.85+0.05).toFixed(2)},svg);
+    const hr=Number(hh(h.t));
+    if(hr%3===0){ svgEl("text",{x:x0+i*bw+bw/2,y:cy+28,"text-anchor":"middle",class:hr===0?"lbl-strong":""},svg,hr); }
+    if(hr===0||i===0){ svgEl("text",{x:x0+i*bw+2,y:Ht-4,class:"lbl-strong"},svg,md(h.t)); if(i>0) svgEl("line",{x1:x0+i*bw,x2:x0+i*bw,y1:top-6,y2:cy+14,stroke:"#3a4866","stroke-dasharray":"2 3"},svg); }
+  });
+  svgEl("text",{x:x0-6,y:cy+10,"text-anchor":"end"},svg,t("tlCloud"));
+  const nx=x0+((Date.now()%HOUR)/HOUR)*bw;
+  svgEl("line",{x1:nx,x2:nx,y1:top-10,y2:base,stroke:"#e8edf5","stroke-width":1.5},svg);
+  svgEl("text",{x:nx+4,y:top-10,class:"lbl-strong"},svg,t("now"));
+  H.forEach((h,i)=>{
+    const lbl=t("scoreLbl",md(h.t)+" "+hm(h.t),Math.round(h.score));
+    const r=svgEl("rect",{x:x0+i*bw,y:0,width:bw,height:Ht,fill:"#000","fill-opacity":0,"pointer-events":"all",
+      class:"hit",tabindex:0,role:"button","data-i":i,"aria-label":lbl,"aria-pressed":i===si?"true":"false"},svg);
+    svgEl("title",{},r,lbl);
+  });
+}
+function selectHour(i,refocus){
+  const H=S.hours; if(!H[i]) return;
+  S.sel=H[i].t; renderTimeline(H); renderDetail(H);
+  if(refocus){const r=$('#timeline .hit[data-i="'+i+'"]'); if(r) r.focus();}
+}
+const tl=$("#timeline");
+tl.addEventListener("click",e=>{const r=e.target.closest&&e.target.closest(".hit"); if(r) selectHour(Number(r.dataset.i),false);});
+tl.addEventListener("keydown",e=>{
+  const r=e.target.closest&&e.target.closest(".hit"); if(!r) return;
+  const i=Number(r.dataset.i);
+  if(e.key==="Enter"||e.key===" "){e.preventDefault();selectHour(i,true);}
+  else if(e.key==="ArrowRight"){e.preventDefault();selectHour(Math.min(i+1,S.hours.length-1),true);}
+  else if(e.key==="ArrowLeft"){e.preventDefault();selectHour(Math.max(i-1,0),true);}
+});
+
+/* ---------- render: selected hour detail ---------- */
+function meter(label,v,note){
+  const p=Math.round(clamp(v,0,1)*100);
+  return '<div class="meter"><div class="lab"><span>'+label+'</span><b>'+p+'%</b></div><div class="bar"><i style="width:'+p+'%;background:'+scoreColor(p)+'"></i></div>'+(note?'<div class="lab"><span>'+note+'</span></div>':'')+'</div>';
+}
+function renderDetail(H){
+  const i=selIndex(H), h=H[i], G=geo(); if(!h) return;
+  const sc=Math.round(h.score), [v,lvl]=verdict(sc);
+  const pc={great:"good",good:"good",maybe:"warn",low:""}[lvl];
+  const kindJ=t("kind")[h.kpKind]||t("kind").predicted;
+  const twi=twiOf(h.sAlt);
+  const fact=(k,val,sub)=>'<div class="row"><span class="k">'+k+'</span><span class="v">'+val+(sub?"<small>"+sub+"</small>":"")+'</span></div>';
+  $("#detail").innerHTML=
+    '<div class="d-head"><div class="d-time">'+esc(md(h.t))+' '+hm(h.t)+(LANG==="en"?"–":"〜")+hm(h.t+HOUR)+
+      '<small>'+(i===0?t("nowSlot"):i===S.bestI&&h.dark>0.05?t("bestSlot"):"")+'</small></div>'+
+      '<div class="d-score"><span class="num">'+sc+'</span><span class="pill '+pc+'">'+v+'</span></div></div>'+
+    '<div class="meters">'+
+      meter(t("mAct"),h.act,"")+meter(t("mClear"),h.clear,"")+meter(t("mDark"),h.dark,"")+meter(t("mMoon"),h.moonF,"")+
+    '</div>'+
+    '<div class="facts">'+
+      fact(t("fKp"),h.kp.toFixed(1),kindJ+(h.boost>0.05?t("boost",h.boost.toFixed(1)):"")+t("need",G.kpH.toFixed(1)))+
+      fact(t("fCloud"),Math.round(h.cloud)+"%",S.cloud?t("effTot",Math.round(h.cloudTotal)):t("assumed"))+
+      fact(t("fSun"),h.sAlt.toFixed(1)+"°",twi)+
+      fact(t("fMoon"),h.mAlt>0?t("moonUp",h.mAlt.toFixed(0)):t("moonDown"),t("lit",Math.round(h.ill*100)))+
+    '</div>';
+}
+
+/* ---------- render: now ---------- */
+function renderNow(H){
+  const G=geo(), h=H[0], k=kpAt(Date.now()), sw=S.sw, ov=ovAt(S.loc.lat,S.loc.lon);
+  const rowsHtml=[];
+  const add=(k,v,sub)=>rowsHtml.push('<div class="row"><span class="k">'+k+'</span><span class="v">'+v+(sub?"<small>"+sub+"</small>":"")+"</span></div>");
+  const kindJ=t("kind")[k.kind]||t("kind").predicted;
+  add(t("kpNow"),k.kp.toFixed(2)+(k.kp>=5?'<span class="pill warn">'+t("storm")+'</span>':""),kindJ+t("block3"));
+  if(sw&&Number.isFinite(sw.bz)){
+    const c=sw.bz<=-5?"good":sw.bz<0?"":"warn";
+    add(t("bz"),'<span class="'+c+'">'+(sw.bz>0?"+":"")+sw.bz.toFixed(1)+" nT</span>",sw.bz<0?t("bzS"):t("bzN"));
+  } else add(t("bz"),"—",t("na"));
+  if(sw&&Number.isFinite(sw.speed)) add(t("wind"),Math.round(sw.speed)+" km/s",sw.speed>=500?t("windFast"):t("windNorm"));
+  else add(t("wind"),"—","");
+  if(ov) add(t("ovP"),t("ovVals",Math.round(ov.over),Math.round(ov.hor)),S.ovTime?t("ovFor",hm(S.ovTime)):"");
+  else add(t("ovP"),"—",t("na"));
+  add(t("cloudHr"),Math.round(h.cloud)+"%",S.cloud?t("effLow"):t("assumed"));
+  add(t("fSun"),h.sAlt.toFixed(1)+"°",twiOf(h.sAlt));
+  add(t("fMoon"),(h.mAlt>0?t("moonUp",h.mAlt.toFixed(0)):t("moonDown")),t("lit",Math.round(h.ill*100)));
+  add(t("mlat"),G.ml.toFixed(1)+"°",t("mlatSub",G.kpH.toFixed(1),G.kpO.toFixed(1)));
+  $("#now").innerHTML=rowsHtml.join("");
+}
+
+
+/* ---------- next 3 nights ---------- */
+function nightGroups(H){
+  const groups=[], byKey={};
+  for(let i=0;i<H.length;i++){
+    const key=ymd(H[i].t-12*HOUR);
+    if(!byKey[key]){ byKey[key]={key,idx:[]}; groups.push(byKey[key]); }
+    byKey[key].idx.push(i);
+  }
+  return groups.filter(g=>g.idx.some(i=>H[i].dark>0.05)).slice(0,3);
+}
+function nightSummary(H,g){
+  const dk=g.idx.filter(i=>H[i].dark>0.05);
+  let bi=dk[0]; for(const i of dk) if(H[i].score>H[bi].score) bi=i;
+  const b=H[bi], thr=b.score*0.7; let a=bi,c=bi;
+  while(dk.includes(a-1)&&H[a-1].score>=thr) a--; while(dk.includes(c+1)&&H[c+1].score>=thr) c++;
+  return {bi,best:b,a:H[a].t,b:H[c].t+HOUR,start:H[dk[0]].t};
+}
+function renderNights(H){
+  const el=$("#nights"), gs=nightGroups(H); S.nights=[];
+  if(!gs.length){ el.innerHTML='<p class="sub" style="grid-column:1/-1">'+t("nNone")+'</p>'; return; }
+  el.innerHTML=gs.map((g,n)=>{
+    const sm=nightSummary(H,g), b=sm.best, sc=Math.round(b.score), [v]=verdict(sc); S.nights.push(sm);
+    const warn=b.cloudSrc==="out"?t("nCloudOut"):b.kpOut?t("nKpOut"):"";
+    return '<button class="night" type="button" data-night="'+n+'"><span class="nl">'+t("nLbl")[n]+'</span><span class="nd">'+esc(md(sm.start))+'</span>'+
+      '<span class="ns" style="color:'+scoreColor(Math.max(sc,25))+'">'+sc+'</span><span class="nv">'+esc(v)+'</span>'+
+      '<span class="nw">'+(sc<5?"":t("nBest",hm(sm.a),hm(sm.b)))+'</span>'+
+      '<span class="nf"><span>'+t("nCloud",Math.round(b.cloud))+'</span><span>Kp '+b.kp.toFixed(1)+'</span><span>'+(b.mAlt>0?t("nMoon",Math.round(b.ill*100)):t("nNoMoon"))+'</span></span>'+
+      (warn?'<span class="nx">'+warn+'</span>':'')+'</button>';
+  }).join("");
+}
+$("#nights").addEventListener("click",e=>{
+  const b=e.target.closest("[data-night]"); if(!b) return;
+  const sm=S.nights[Number(b.dataset.night)]; if(!sm) return;
+  S.sel=S.hours[sm.bi].t; renderTimeline(S.hours.slice(0,48)); renderDetail(S.hours);
+  const sc=$("#tlScroll"); if(sm.bi<48) sc.scrollLeft=Math.max(0,40+(sm.bi-4)*16);
+  $("#detail").scrollIntoView({behavior:reduce?"auto":"smooth",block:"center"});
+});
+$("#toCal").addEventListener("click",()=>$("#calSec").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"}));
+
+/* ---------- darkness & moonlight calendar ---------- */
+const CAL={m:0,sel:null,kp27:null,cache:{}};
+function moonPhase(d){
+  const g=rad(357.529+0.98560028*d), q=280.459+0.98564736*d;
+  const sunL=q+1.915*Math.sin(g)+0.020*Math.sin(2*g);
+  const moonL=218.316+13.176396*d+6.289*Math.sin(rad(134.963+13.064993*d));
+  const el=((moonL-sunL)%360+360)%360;
+  return {k:(1-Math.cos(rad(el)))/2,waxing:el<180};
+}
+function nightInfo(y,m,dd){
+  const {lat,lon}=S.loc, noon=Date.UTC(y,m,dd,12)-lon/15*HOUR;
+  let dark=0,moonDark=0,first=null,last=null;
+  for(let i=0;i<48;i++){
+    const tt=noon+(i+0.5)*HOUR/2, d=days(tt);
+    if(altOf(sunRaDec(d),d,lat,lon)<-12){
+      dark+=0.5; if(first==null) first=tt-HOUR/4; last=tt+HOUR/4;
+      if(altOf(moonRaDec(d),d,lat,lon)>0) moonDark+=0.5;
+    }
+  }
+  const ph=moonPhase(days(noon+12*HOUR)), moonF=dark>0?ph.k*(moonDark/dark):0;
+  const q=dark>0?clamp(dark/8,0,1)*(1-0.7*moonF):0;
+  const r=dark===0?4:q>=0.7?0:q>=0.45?1:q>=0.2?2:3;
+  return {y,m,dd,dark,moonDark,first,last,k:ph.k,waxing:ph.waxing,q,r};
+}
+function monthInfo(off){
+  const now=new Date(), base=new Date(Date.UTC(now.getUTCFullYear(),now.getUTCMonth()+off,1));
+  const y=base.getUTCFullYear(), m=base.getUTCMonth(), key=S.loc.lat.toFixed(2)+","+S.loc.lon.toFixed(2)+":"+y+"-"+m;
+  if(!CAL.cache[key]){ const n=new Date(Date.UTC(y,m+1,0)).getUTCDate(), list=[]; for(let dd=1;dd<=n;dd++) list.push(nightInfo(y,m,dd)); CAL.cache[key]={y,m,list}; }
+  return CAL.cache[key];
+}
+function moonSVG(k,waxing,flip){
+  const r=8, cx=9, cy=9, rx=(r*Math.abs(1-2*k)).toFixed(2);
+  let w=waxing; if(flip) w=!w;
+  const outer=w?1:0, term=k<0.5?(w?0:1):(w?1:0);
+  const lit=k<0.02?"":k>0.98?'<circle cx="9" cy="9" r="8" fill="#e8edf5"/>':
+    '<path d="M'+cx+','+(cy-r)+' A'+r+','+r+' 0 0 '+outer+' '+cx+','+(cy+r)+' A'+rx+','+r+' 0 0 '+term+' '+cx+','+(cy-r)+' Z" fill="#e8edf5"/>';
+  return '<svg viewBox="0 0 18 18" aria-hidden="true"><circle cx="9" cy="9" r="8" fill="#26334f"/>'+lit+'</svg>';
+}
+const dkey=(y,m,d)=>y+"-"+String(m+1).padStart(2,"0")+"-"+String(d).padStart(2,"0");
+function isoDay(ms){ try{ return new Intl.DateTimeFormat("en-CA",{timeZone:tz(),year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date(ms)); }catch(e){ return new Date(ms).toISOString().slice(0,10); } }
+function renderCal(){
+  const mi=monthInfo(CAL.m), first=new Date(Date.UTC(mi.y,mi.m,1));
+  $("#calMonth").textContent=new Intl.DateTimeFormat(LOCALE(),{year:"numeric",month:"long",timeZone:"UTC"}).format(first);
+  $("#calPrev").disabled=CAL.m<=0; $("#calNext").disabled=CAL.m>=11;
+  const startDow=LANG==="ja"?0:1, wdf=new Intl.DateTimeFormat(LOCALE(),{weekday:"short",timeZone:"UTC"});
+  let h=""; for(let i=0;i<7;i++) h+='<span class="wd">'+esc(wdf.format(new Date(Date.UTC(2026,1,1+((i+startDow)%7)))))+'</span>';
+  const lead=(first.getUTCDay()-startDow+7)%7; for(let i=0;i<lead;i++) h+='<span class="empty"></span>';
+  const today=isoDay(Date.now()), flip=S.loc.lat<0;
+  for(const n of mi.list){
+    const k=dkey(n.y,n.m,n.dd), past=k<today, kp=CAL.kp27&&CAL.kp27[k];
+    const bg=n.r===4?"transparent":"rgba(94,240,166,"+(0.06+n.q*0.42).toFixed(2)+")";
+    const kc=kp==null?"":kp>=7?"r":kp>=5?"y":"g";
+    h+='<button class="day'+(k===today?' today':'')+'" type="button" data-d="'+n.dd+'" aria-pressed="'+(CAL.sel===k?"true":"false")+'"'+(past?' disabled':'')+
+      ' style="background:'+bg+'" aria-label="'+esc(k+" "+t("calR")[n.r])+'"><span class="dn">'+n.dd+'</span>'+moonSVG(n.k,n.waxing,flip)+
+      (kp!=null?'<span class="kp '+kc+'">Kp'+kp+'</span>':'')+'</button>';
+  }
+  $("#cal").innerHTML=h;
+  renderCalInfo();
+}
+function renderCalInfo(){
+  const box=$("#calInfo"); if(!CAL.sel){box.hidden=true;return;}
+  const [y,m,d]=CAL.sel.split("-").map(Number), n=nightInfo(y,m-1,d), kp=CAL.kp27&&CAL.kp27[CAL.sel];
+  const date=new Intl.DateTimeFormat(LOCALE(),Object.assign({timeZone:"UTC"},t("calDateFmt"))).format(new Date(Date.UTC(y,m-1,d)));
+  const cls=n.r<=1?"s-vis":n.r===2?"s-dim":"s-none";
+  const row=(k,v)=>'<div class="row"><span class="k">'+k+'</span><span class="v" style="font-family:var(--f-body)">'+v+'</span></div>';
+  box.innerHTML='<div class="t-head"><b>'+esc(date)+'</b><span class="chip-s '+cls+'">'+t("calR")[n.r]+'</span></div><div class="facts" style="grid-template-columns:1fr">'+
+    row(t("mDark"),n.dark>0?t("calDark",n.dark.toFixed(1),hm(n.first),hm(n.last)):t("calNoDark"))+
+    row(t("fMoon"),t("calMoon",Math.round(n.k*100),n.moonDark.toFixed(1)))+
+    (kp!=null?row("Kp",t("calKp",kp)):"")+'</div>';
+  box.hidden=false;
+}
+$("#cal").addEventListener("click",e=>{
+  const b=e.target.closest("[data-d]"); if(!b||b.disabled) return;
+  const mi=monthInfo(CAL.m), k=dkey(mi.y,mi.m,Number(b.dataset.d));
+  CAL.sel=CAL.sel===k?null:k; renderCal();
+});
+$("#calPrev").addEventListener("click",()=>{ if(CAL.m>0){CAL.m--; renderCal();} });
+$("#calNext").addEventListener("click",()=>{ if(CAL.m<11){CAL.m++; renderCal();} });
+async function fetch27(){
+  const r=await fetch(SWPC+"/text/27-day-outlook.txt",{cache:"no-store"}); if(!r.ok) throw new Error("HTTP "+r.status);
+  const txt=await r.text(), M3={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11}, out={};
+  for(const line of txt.split("\n")){
+    const m=line.match(/^\s*(\d{4})\s+([A-Za-z]{3})\s+(\d{1,2})\s+(\d+)\s+(\d+)\s+(\d+)\s*$/);
+    if(m&&M3[m[2]]!=null) out[dkey(Number(m[1]),M3[m[2]],Number(m[3]))]=Number(m[6]);
+  }
+  if(!Object.keys(out).length) throw new Error("empty");
+  return out;
+}
+
+/* ---------- render: Kp chart ---------- */
+function renderKp(){
+  const svg=$("#kpchart"); svg.innerHTML="";
+  const G=geo();
+  let list=S.kp;
+  if(!list){
+    const st=Math.floor(Date.now()/(3*HOUR))*3*HOUR;
+    list=Array.from({length:24},(_,i)=>({t:st+i*3*HOUR,kp:S.manual.kp,kind:"manual"}));
+  } else {
+    const from=Date.now()-24*HOUR; list=list.filter(r=>r.t+3*HOUR>=from).slice(0,32);
+  }
+  const bw=24,x0=36,top=16,ch=126,base=top+ch,W=x0+list.length*bw+16,Ht=base+44;
+  svg.setAttribute("width",W); svg.setAttribute("height",Ht); svg.setAttribute("viewBox","0 0 "+W+" "+Ht);
+  [0,3,5,7,9].forEach(v=>{const y=base-v/9*ch; svgEl("line",{x1:x0,x2:W-16,y1:y,y2:y,stroke:"#26334f"},svg); svgEl("text",{x:x0-6,y:y+4,"text-anchor":"end"},svg,v);});
+  list.forEach((r,i)=>{
+    const hgt=Math.max(r.kp,0.08)/9*ch, col=r.kp>=7?"#ff7a7a":r.kp>=5?"#f2c14e":"#5ef0a6";
+    const op=(r.kind==="observed"||r.kind==="estimated")?0.45:(r.kind==="manual"?0.3:1);
+    const b=svgEl("rect",{x:x0+i*bw+3,y:base-hgt,width:bw-6,height:hgt,rx:2,fill:col,"fill-opacity":op},svg);
+    svgEl("title",{},b,md(r.t)+" "+hm(r.t)+"–  Kp "+r.kp.toFixed(2)+" ("+(t("kindS")[r.kind]||r.kind)+")");
+    const hr=Number(hh(r.t));
+    if(i%2===0) svgEl("text",{x:x0+i*bw+bw/2,y:base+14,"text-anchor":"middle"},svg,hr);
+    const prev=i>0?ymd(list[i-1].t):null;
+    if(i===0||ymd(r.t)!==prev) svgEl("text",{x:x0+i*bw+2,y:Ht-6,class:"lbl-strong"},svg,md(r.t));
+  });
+  const yH=base-Math.min(G.kpH,9)/9*ch;
+  svgEl("line",{x1:x0,x2:W-16,y1:yH,y2:yH,stroke:"#b98cff","stroke-width":1.5,"stroke-dasharray":"5 4"},svg);
+  svgEl("text",{x:x0+4,y:yH-5,fill:"#b98cff",style:"fill:#b98cff"},svg,G.kpH>=9.5?t("kp9"):t("kpLine",G.kpH.toFixed(1)));
+  const nowI=list.findIndex(r=>Date.now()>=r.t&&Date.now()<r.t+3*HOUR);
+  if(nowI>=0){const nx=x0+nowI*bw+((Date.now()-list[nowI].t)/(3*HOUR))*bw; svgEl("line",{x1:nx,x2:nx,y1:top-8,y2:base,stroke:"#e8edf5","stroke-width":1.5},svg);}
+}
+
+/* ---------- live map ---------- */
+const LAND=("-298,-400,-1,-3,-2,-2,-10,1,-11,-1,-7,2,-2,2,11,0,11,-1,3,2,3,2,5,-2|-796,-397,-10,-1,-6,2,-3,1,0,1,-4,1,3,2,10,-1,5,-1,4,-2,1,-2|-226,-390,6,-2,3,-3,0,-3,0,-2,-7,-2,-9,-1,-9,-1,-10,-1,-12,0,-7,2,1,2,11,1,4,2,3,2,2,2,3,2,4,2,2,0,8,1,7,-1|-606,-368,6,0,6,1,-2,-2,-5,-1,-7,0,-5,2,1,1,6,-1|-628,-367,8,-2,-3,0,-7,0,-6,2,3,1,5,-1|-495,-360,6,0,5,0,3,-3,-4,1,-6,0,-6,0,-7,-1,-5,1,-3,3,3,0,7,0,7,-1|-342,-355,0,-2,-1,-2,-1,-2,-6,-1,-5,-1,-7,1,3,2,-6,-1,-6,-1,-4,2,0,2,5,2,4,0,6,0,1,3,0,1,0,4,3,3,5,1,2,-2,2,-2,2,-2,1,-3,2,-2|-293,-321,-2,-1,-4,1,-4,-1,-3,-1,-4,-1,-3,-1,0,-2,0,-2,2,-2,-3,-1,-5,-1,-2,-1,-3,-2,-4,-2,0,-2,1,-2,3,-1,4,-2,4,-1,2,-2,1,-2,2,-2,2,-2,1,-1,1,-5,2,-2,0,-2,2,-2,-1,-2,-3,-3,-3,-1,-6,-1,-3,-2,-3,-1,-7,-2,-7,-1,-6,-1,-7,-1,-4,-2,-8,0,-9,0,-8,-1,-8,0,1,-2,8,0,6,-2,3,-2,-6,-1,-8,0,-8,-1,0,-2,0,-2,6,-2,1,-1,6,-2,11,-1,9,-1,7,-2,9,-2,12,0,13,-2,8,-1,10,-2,4,-2,3,-2,6,2,8,1,9,2,10,1,9,1,13,0,12,0,10,-1,3,2,7,1,13,0,10,1,9,1,10,1,12,1,7,1,-3,2,-2,2,0,2,-10,0,-10,-1,-10,0,-2,2,1,3,2,1,8,2,8,1,6,1,6,2,5,2,6,1,7,0,4,1,7,0,8,0,6,1,6,2,5,1,7,1,5,2,4,2,2,1,-5,2,1,2,4,1,5,1,5,1,6,2,3,2,3,2,4,2,5,-1,3,-1,6,0,0,1,3,2,5,0,1,-2,6,0,7,1,6,0,6,0,2,-2,5,1,5,1,6,1,6,1,5,1,5,1,5,1,3,2,3,-2,6,1,3,-2,3,-2,6,1,2,2,5,1,7,0,2,-2,4,2,5,0,6,1,5,0,6,-1,5,0,3,-2,3,-1,5,0,6,1,6,0,5,0,5,0,6,1,4,1,5,1,5,1,4,1,3,3,2,1,6,0,2,-2,4,-1,5,0,4,-2,3,-1,5,1,2,2,5,1,5,2,5,1,6,1,3,1,5,1,4,1,4,-1,5,2,3,2,5,-1,4,2,1,1,4,2,4,1,5,1,5,0,4,0,5,-1,4,-1,0,-2,5,-2,3,-1,6,-1,3,-1,4,-2,5,0,4,1,4,2,5,-1,5,-1,5,0,4,-1,5,0,5,-5,-1,-1,0,-2,-5,-2,-4,-2,1,-1,5,0,0,-2,-3,-2,-2,-2,4,-2,5,0,6,1,3,2,2,1,2,2,3,1,2,2,2,3,3,0,6,0,5,1,5,1,3,2,1,2,4,1,4,2,5,1,2,1,3,1,4,1,5,-1,4,1,5,1,6,-1,3,2,3,3,2,-1,2,-3,4,-1,5,0,5,0,5,0,5,0,3,0,4,0,4,-1,4,1,6,0,4,0,6,0,3,1,2,2,4,1,6,4,3,-1,4,-1,4,-2,6,-3,5,0,4,0,6,1,5,1,4,1,4,1,5,1,4,1,4,-1,2,-2,4,-1,5,0,4,-2,6,-1,6,0,5,0,4,2,4,1,4,1,5,-1,5,-1,5,1,4,0,4,0,5,-1,5,1,5,1,5,0,6,0,4,1,5,0,1,2,0,2,3,-1,1,-2,2,-2,2,-2,4,-1,6,1,7,0,4,0,7,0,4,0,7,0,5,-1,4,-1,-1,-2,3,-1,6,-2,5,-1,7,-1,6,-1,6,0,5,0,3,1,5,-1,4,-2,4,-1,6,0,6,-1,2,-2,6,-1,4,-2,5,-1,6,0,6,0,6,0,6,0,5,-1,5,-1,6,-1,3,-1,-1,-2,-2,-2,-2,-2,-2,-2,-3,-2,-6,-1,-3,-2,-7,-1,-2,-2,-3,-2,-4,-1,-2,-2,-1,-2,-1,-2,0,-2,3,-2,1,-2,3,-2,9,-1,2,-2,-9,-1,-8,-1,-9,0,-4,-3,-1,-2,-2,-2,-3,-2,7,-1,2,-2,4,-2,7,-2,6,-2,8,-1,11,-2,3,-2,14,-1,1,-1,4,-1,14,1,11,-1,9,-2,0,-26,-1800,0,0,26,5,3,9,-1,2,0,1,1,2,0,1,1,0,-1,1,0,7,-2,6,2,2,1,14,1,5,-2,2,0,8,-2,14,-1,11,-2,20,-1,14,2,21,-1,12,-2,14,1,13,2,2,2,-20,0,-16,2,-5,1,-13,2,1,2,2,2,2,2,-1,2,-9,1,-3,2,-8,1,12,0,12,1,7,-2,9,2,8,2,4,1,-2,2,-6,2,-8,1,-10,1,-9,0,-10,1,-3,2,-6,1,-4,2,-2,6,3,-1,4,-2,8,1,8,1,4,-2,8,0,7,1,6,1,6,2,7,1,0,1,-1,2,1,2,6,1,3,-2,8,1,6,2,7,0,7,0,6,1,6,1,6,1,4,0,3,0,8,0,6,0,7,0,7,0,7,0,7,-1,7,1,7,0,8,-1,6,1,6,1,6,1,6,-1,6,1,5,1,4,-1,1,-2,4,-2,5,2,6,-2,6,-1,6,-1,7,0,7,1,7,0,7,-1,7,-1,2,3,-3,1,-2,2,-7,0,-3,2,-1,2,-1,4,3,-1,7,0,6,0,6,-1,5,-1,3,-2,6,0,7,1,7,1,6,0,5,-1,7,0,4,4,4,-2,6,-1,6,1,4,-2,7,-1,6,0,6,-1,4,2,2,1,5,-2,6,1,5,-1,4,-2,7,1,5,1,5,1,6,1,7,0,6,1,5,1,3,2,1,2,0,2,-2,2,-2,2,-1,2,-1,1,-1,2,1,2,2,2,2,2,1,2,-1,2,-1,2,3,3,2,1,4,2,3,2,4,1,2,2,3,2,3,1,5,0,3,2,3,1,5,0,3,1,3,2,4,1,3,-2,-2,-1,-5,-2|-339,-269,7,-3,7,-2,-3,-2,-4,0,-3,2,-1,-3,-5,-1,-5,1,-4,1,-5,1,-6,3,-5,2,-7,6,4,-1,7,-4,6,-1,3,2,2,3,4,2,4,0,2,-3,2,-3|-293,-256,4,-2,-1,-2,-7,-1,-2,2,-5,-3,-2,3,6,3,4,-2,3,2|351,-249,-7,0,0,3,0,2,1,1,3,-2,5,0,0,-1,-2,-3|727,-204,5,-2,3,1,3,1,3,0,1,-6,-2,-2,0,-4,-2,1,-4,-3,-1,0,-3,0,-3,5,-1,3,-2,4,0,2,3,0|865,-205,1,-2,4,2,1,-2,0,-2,-2,-2,-3,-4,-2,-2,1,-2,-3,0,-5,-2,-1,-3,-3,-6,-4,-2,-2,-1,-5,0,-3,2,-6,0,0,2,2,3,7,5,3,1,3,2,5,3,3,2,2,4,2,1,0,3,4,3,1,-3|873,-181,4,-5,0,3,2,-1,1,-4,4,-1,3,-1,3,2,3,0,-2,-5,-1,-3,-4,0,-1,-1,0,-2,-1,-1,-1,-3,-3,-3,-4,-2,-1,1,-2,1,3,4,-1,2,-6,2,0,2,4,2,1,4,-1,3,-2,3,1,1,-3,2,-4,5,-2,3,2,1,3,-3,4,-1,1,-5|836,-111,-2,-1,-3,1,-4,3,-3,2,-3,4,-1,1,2,0,3,-1,2,-2,2,-1,4,-4,3,-2|892,-87,2,-1,-1,-3,-3,0,-3,0,-1,2,2,2,3,-1,1,1|897,-84,-3,-1,-1,2,2,1,2,0,3,2,0,-3,-3,-1|-900,-83,0,3,1,0,-1,-3|839,-82,-1,-1,-2,2,0,2,3,-3|836,-75,0,-4,-1,1,-1,0,-1,1,0,4,3,-2|250,-68,1,-6,1,-2,0,-3,-1,-1,-2,3,-1,-2,1,-3,0,-2,-2,-2,0,-4,-2,-6,-2,-6,-3,-10,-2,-7,-3,-6,-4,-1,-4,-2,-3,1,-4,2,-1,3,-1,4,-1,4,-1,4,1,3,2,1,0,2,3,4,0,3,-1,2,-1,3,0,5,2,3,0,3,3,0,3,1,1,1,3,0,2,3,5,3,1,3,-1,2,2,-1,3,4,0,3,2,2,2,-2,1,-2,1,-4|718,-69,2,-4,3,2,1,-2,3,-2,-1,-2,1,-4,1,-3,1,-1,2,-4,-1,-2,2,-4,5,-2,4,-3,3,-2,0,-1,2,-3,2,-6,2,1,2,-2,2,1,0,-5,4,-3,2,-2,4,-4,2,-4,0,-3,-1,-3,3,-5,0,-4,-1,-2,-2,-5,0,-3,-1,-3,-2,-5,-3,-2,-2,-4,-2,-3,-1,-4,-2,-2,-2,-4,0,-4,0,-1,-3,-2,-5,0,-5,-2,-2,-2,-3,-2,-5,2,-3,1,1,3,-3,-1,-4,-4,-4,1,-3,1,-3,0,-5,2,-3,3,-1,4,-1,2,-3,2,-4,1,1,2,-1,4,-2,-3,-5,-1,3,2,1,3,1,3,0,3,-4,-4,-3,-1,-2,-4,-4,2,0,2,-3,4,-3,2,1,1,-6,3,-4,0,-4,3,-9,-1,-7,-2,-5,-1,-5,0,-6,-3,-4,-1,-1,-2,-2,-2,-4,-1,-3,0,-5,1,-3,-1,-4,0,-3,-3,-1,1,-2,-2,-3,-1,-4,0,-3,0,-5,3,-3,1,0,3,3,1,1,1,-1,1,1,4,-1,3,-2,5,-1,3,0,3,-2,3,0,1,-2,2,-1,4,-3,4,0,2,2,-2,-2,5,3,-2,1,-1,0,2,-2,4,-1,2,-1,1,1,3,1,1,0,3,0,3,2,3,0,-4,2,4,4,2,3,2,4,1,2,1,1,-1,4,2,3,1,1,1,1,0,3,0,5,2,3,2,1,2,3,3,0,2,1,3,3,4,2,-4,2,1,-1,2,1,2,2,-1,1,4,3,3,1,2,2,0,0,2,3,-1,0,2,2,0,2,1,4,-2,3,-3,3,0,3,-1,-1,3,2,4,3,1,-1,1,2,3,3,2,3,-1,4,1,0,3,-4,2,3,0,3,-1,3,-2,4,-1,1,0,3,-1,3,1,2,0,1,1,3,-3,-2,-2,-1,-2,-2,-1,0,-2,-1,-2,-2,-3,1,-1,3,-3,4,-1,3,-2,4,-3,1,0,3,-1,0,-2,5,-2,3,2,1,3,1,2,1,3,2,4,-1,2,0,2,0,3,0,3,1,1,-1,2,2,3,1,2,0,2,2,2,1,-3,0,-3,2,-1,0,-2,2,-2,0,-3,0,-2|811,-52,1,-2,-3,0,-2,3,3,-1,1,0|604,-51,-3,0,-6,3,5,1,2,-1,2,-2,0,-1|804,-49,-2,0,-3,0,-1,1,1,2,3,-1,1,-1,1,-1|808,-48,0,-1,-4,4,-1,3,2,0,1,-4,2,-2|622,-51,-4,-1,-1,1,1,1,2,4,5,2,0,1,5,1,3,0,2,1,2,-1,-2,-1,-5,-3,-5,-1,-3,-4|590,-40,1,-2,3,1,2,-3,-6,-1,-4,0,-2,0,1,3,3,0,2,2|615,-40,-1,-3,-8,-2,-6,1,0,2,4,1,3,-2,3,1,5,2|799,-42,1,-1,-4,2,-3,2,-2,2,1,0,2,-1,4,-2,1,-2|788,-37,-1,0,-2,1,-3,2,1,1,3,-2,2,-2|543,-34,10,0,1,2,9,-3,2,-3,7,-1,7,-3,-6,-2,-6,2,-4,0,-5,0,-5,1,-6,2,-4,1,-2,-1,-9,2,-1,2,-4,1,3,5,6,-1,4,-2,2,0,1,-2|674,-31,-3,-3,0,3,0,2,1,2,2,-2,0,-2|779,-34,-1,-1,-2,2,-2,3,-1,4,0,1,1,-2,1,-1,3,-3,2,-2,-1,-1|760,-27,-3,-1,0,-1,-3,-1,-3,-2,-2,0,-5,2,-2,1,0,2,4,-1,3,0,1,3,1,0,0,-3,3,1,1,1,3,2,0,3,3,0,1,-1,0,-2,-2,-3|636,-17,-2,-2,-3,1,-1,2,5,0,1,-1|652,-15,2,-4,-4,2,-4,0,-3,0,-4,0,2,3,6,0,5,-1|766,-22,-2,-2,-1,3,-1,2,-2,2,-3,2,-4,1,2,1,2,-1,2,-1,2,-1,2,-2,2,-2,1,-2|671,-6,1,-8,5,-3,4,5,6,3,5,0,4,-1,4,-2,5,-1,9,-3,9,-3,3,-3,3,-2,1,-3,8,-3,1,-3,-4,-1,1,-3,4,-3,4,-6,3,1,-1,-3,4,0,-1,-1,5,-2,-1,-2,-3,0,-1,1,-4,1,-5,0,-4,4,-3,2,-3,5,-6,2,-5,-2,-3,-1,1,-4,-4,-2,-3,1,-5,0,-4,5,-5,1,-2,-2,-6,0,2,4,3,1,-1,6,-2,4,-10,4,-4,1,-8,4,-1,-2,-2,-1,-1,2,0,2,-4,3,5,2,4,0,-1,1,-7,0,-2,3,-4,1,-2,2,6,2,3,1,8,-2,1,-2|626,7,-4,-5,-4,-1,-4,1,-9,0,-4,-1,-1,-4,5,-4,2,2,10,2,-1,-2,-2,0,-2,-3,-4,-2,4,-6,-1,-2,5,-5,0,-4,-3,-1,-2,2,3,4,-5,-2,-2,1,1,2,-4,3,1,5,-3,-2,0,-5,0,-8,-3,0,-2,1,1,5,-1,5,-2,0,-1,3,2,3,1,4,2,8,1,2,4,4,4,-2,7,-1,5,1,5,3,1,-1|643,6,0,-5,-2,1,-1,-3,2,-3,-1,0,-3,3,-1,6,1,4,2,2,0,-3,3,0,0,-2|529,-29,-5,0,-5,4,-6,4,-2,3,-4,4,-2,4,-4,7,-5,4,-1,4,-2,4,-5,3,-2,5,-4,2,-5,6,-1,2,4,0,7,-1,5,-5,4,-3,2,-2,5,-6,5,0,4,-3,3,-4,4,-2,-2,-5,3,-1,2,0,1,-4,1,-3,4,0,3,-3,-2,-7,0,-7|589,9,6,-4,-6,-1,-2,-3,1,-5,-5,-3,0,-5,-2,-8,-1,2,-6,-3,-2,4,-3,0,-3,1,-6,-1,-1,2,-4,0,-4,0,-1,7,-2,1,-3,5,0,4,0,5,3,3,4,-2,4,1,1,4,2,1,6,2,4,3,2,4,2,2,4,2,4,4,3,4,2,0,2,-3,0,-2,4,-1,4,-2,0,-2,-4,0,1,-3,-4,-1,-2,-5,3,-5,-1,-2|632,42,0,-3,1,-3,-2,-5,-2,5,-2,-2,1,-4,-1,-2,-6,3,-1,3,1,3,-3,2,-2,-2,-2,0,-4,-3,0,2,2,4,3,2,2,1,2,-2,4,2,1,2,3,0,0,4,4,-3,1,-2,0,-2|406,31,-4,-1,-3,4,-1,7,3,8,3,-3,3,-3,2,-5,-1,-6,-2,-1|-305,51,-4,-1,-1,0,2,2,0,2,2,0,2,0,-1,-3|620,51,-2,-1,-1,-3,-2,-2,-3,4,1,1,1,1,1,3,2,1,0,-4,3,5,0,-5|593,47,-7,-5,2,3,4,3,3,4,3,5,0,-4,-3,-3,-2,-3|609,59,3,-1,4,0,0,-2,-3,-2,-3,-2,0,3,0,2,-1,2|628,61,1,-6,-4,2,0,-2,1,-3,-2,-1,0,3,-2,0,0,3,2,0,0,2,-3,4,5,0,2,-2|608,65,-2,-4,-2,3,-2,3,4,0,2,-2|607,93,3,-2,1,1,1,-1,-1,-2,2,-4,-2,-4,-3,-1,0,-4,1,-4,2,-1,3,1,6,-3,-1,-3,2,-1,-1,-2,-4,2,-1,3,-2,-2,-3,3,-4,-1,-3,1,0,2,2,2,-2,1,0,-2,-3,3,0,2,-1,5,2,-2,1,8,2,5,3,0|-328,91,-1,-1,-4,0,-3,0,0,2,0,1,5,0,2,-1,1,-1|-385,89,-1,0,-3,0,-3,2,1,1,2,1,1,-1,4,0,2,-1,1,-2,-4,0|-363,99,4,0,1,0,4,0,3,-1,1,0,1,-2,3,1,0,-2,2,0,2,-2,-1,-2,-3,1,-2,0,-2,0,-1,-1,-2,0,0,1,-2,-1,-2,-3,-1,1,-1,1,-3,1,-2,0,-3,0,-3,-1,-2,2,0,1,5,0,4,-1,1,1,-2,3,0,1,-3,1,1,2,3,-1|552,93,-5,-2,-4,2,0,4,3,2,5,2,3,-1,1,-2,-2,-2,-1,-3|-778,95,-2,0,0,2,0,2,1,1,-1,1,1,0,2,-1,1,0,1,-1,1,-1,0,-1,-2,-1,-2,-1|-780,103,-2,0,-1,1,-1,0,0,1,1,0,2,0,1,-1,0,-1|-784,106,0,-1,-3,0,1,1,2,0|-788,107,-1,-1,-2,1,0,1,1,1,0,-1,2,-1|-797,110,0,-1,-2,1,0,1,1,0,1,0,0,-1|-398,114,2,-2,4,1,2,-2,4,-3,3,-2,2,0,3,-1,0,-1,3,-1,4,-2,0,-1,-4,0,-3,-1,-4,1,-7,-1,4,3,-2,1,-4,1,-1,1,-2,3,-2,0,-5,1,-2,1,-6,1,-2,1,2,1,-5,0,-3,-2,-3,0,0,-1,-3,-1,-2,0,3,2,1,2,2,1,3,1,3,0,2,1,4,0,4,0,5,-2|-388,119,-1,0,-1,2,-2,2,1,3,2,0,1,-4,0,-3|606,114,-2,-4,-3,4,0,4,2,5,4,3,3,-1,-1,-3,-3,-8|-389,133,-6,-1,0,2,2,0,4,0,0,-1|-385,133,-1,-4,-1,1,0,3,-2,2,4,-2|673,171,1,-2,-3,-3,-2,2,-3,-2,-1,-2,-3,1,0,2,3,3,2,0,3,2,3,-1|173,178,-3,-2,0,-1,-5,-2,-3,1,-1,2,3,0,1,1,3,0,5,1|118,179,3,-2,4,0,4,0,0,-1,2,0,0,-1,-7,0,-6,1,0,3|78,191,-2,-4,1,-1,-2,-3,-3,2,-3,1,-7,2,1,3,6,-1,5,1,4,0|46,206,3,-3,-1,-7,-2,0,-2,-1,-2,1,0,6,-1,3,3,-1,2,2|705,186,-2,-4,1,-3,-3,-3,-6,-3,-9,0,-7,-6,-3,2,-1,4,-8,-1,-6,-2,-6,-1,5,-3,-3,-9,-4,-2,-2,2,1,5,-3,1,-2,3,5,2,2,3,5,3,4,3,10,2,5,-1,6,9,3,-3,7,5,3,2,3,6,-1,6,3,3,5,1,3,-7,-1,-4,-4,-5,0,-5|48,211,-2,-4,-2,1,-1,3,1,2,3,2,1,-4|720,221,3,-1,4,2,1,-6,-8,-1,-4,-5,-8,3,-3,-5,-5,0,-1,5,3,4,5,0,1,7,2,4,6,-5,4,-2|-318,233,3,-1,5,0,-3,-2,-1,0,-7,2,-1,2,2,1,2,-2|-309,246,-2,-1,-7,2,-5,2,2,1,7,-1,5,-3|-618,243,-2,-1,-8,2,-2,2,-4,2,-1,1,-5,1,-2,3,0,1,5,-1,4,-1,4,-1,2,-1,2,-3,5,-2,2,-2|-281,253,-3,-4,3,2,4,-1,-2,-2,4,-1,3,1,5,-2,-2,-3,4,0,0,-2,2,-3,-2,-5,-3,0,-3,1,1,4,-1,1,-6,-5,-3,1,4,2,-5,1,-6,0,-9,0,-1,1,3,2,-2,2,4,3,5,8,3,2,5,2,2,0,-1,-1,-3,-4|-664,270,5,1,-1,-6,4,-4,-2,0,-3,2,-2,3,-2,1,-1,2,0,2,2,-1|718,254,5,-9,-7,2,-3,-8,5,-5,0,-3,-4,3,-4,-4,0,4,0,5,0,5,1,4,0,7,-3,5,0,7,5,2,-2,2,2,1,2,-3,1,-5,0,-5,2,-5|-34,261,-9,-3,-7,1,4,5,-2,5,6,4,4,3,4,0,6,-3,-3,-4,1,-3,-4,-5|63,278,-3,-4,-5,3,0,2,7,2,1,-3|-765,286,-5,-2,-3,1,0,2,4,2,3,1,3,0,2,-2,-4,-2|-15,293,-5,-5,5,0,5,0,-1,-4,-5,-4,6,0,4,-7,4,-1,3,-5,1,-2,6,-1,0,-4,-3,-1,2,-3,-4,-2,-7,0,-8,-1,-3,0,-3,-2,-5,1,-3,-2,-3,1,7,5,5,1,-8,1,-1,2,5,2,-3,2,1,3,8,0,0,3,-3,3,-6,1,-1,1,1,3,-1,1,-3,-2,0,4,-3,3,2,5,4,4,4,0,6,0|-828,300,-3,-1,-3,1,-3,1,5,1,4,-1,0,-1|-396,311,-2,-3,-2,1,-2,1,2,2,2,0,2,-1|-409,314,-6,-3,-4,0,-1,1,4,3,7,0,0,-1|-859,319,3,-1,4,0,4,-1,5,-1,-1,0,-4,-1,-3,1,-2,1,-5,0,-1,0,0,2|-426,328,1,-2,3,1,3,-1,5,-2,6,-2,0,-2,4,0,3,-1,-4,-2,-8,1,-3,3,-5,-3,-7,-3,-1,3,-7,0,4,2,1,4,2,5,3,-1|-73,332,-1,-3,6,-3,-7,-4,-14,-4,-4,-1,-7,1,-14,2,5,2,-11,2,9,1,0,2,-11,1,4,3,7,1,8,-3,8,2,6,-1,8,3,8,-1|-379,336,-6,-1,-1,3,2,3,5,0,3,-1,0,-2,0,-1,-3,-1|-875,333,3,-1,-1,3,14,0,10,-5,-5,-2,-9,-1,0,-5,-2,-1,-4,0,-4,2,-7,2,-1,2,-5,1,-6,-1,-3,2,2,2,-6,-2,2,-2,-3,-2,0,20,12,-4,13,-5,0,-3|-478,346,-3,-2,-7,1,-4,0,-7,2,4,2,4,2,5,-2,3,-1,2,-1,3,-1|900,354,-5,0,-1,1,6,3,0,-4|-893,354,-7,0,0,4,1,0,4,0,7,-2,-5,-2|-453,347,0,-5,7,4,6,-3,-2,-4,5,-3,5,4,4,4,0,5,7,0,8,-1,7,-2,0,-3,-4,-2,4,-3,-1,-2,-10,-4,-7,-1,-5,2,-1,-3,-5,-4,-2,-2,-5,-4,-8,0,-4,-2,0,-3,-6,-1,-6,-4,-5,-6,-2,-3,0,-6,7,-1,2,-5,3,-4,7,1,9,-2,5,-2,3,-2,7,-1,5,-2,8,-1,6,0,-1,-5,1,-5,4,-5,7,-5,4,2,3,5,-3,8,-3,2,8,3,6,3,2,4,0,3,-4,4,-6,4,6,5,-2,5,-2,8,4,1,9,-2,5,0,4,1,4,-1,7,-3,1,-2,9,-1,0,-4,2,-6,4,-1,4,-3,7,3,5,5,3,3,4,-5,6,-6,6,-6,-2,-3,7,-3,4,-3,8,-1,3,-2,2,-4,4,-1,2,-2,1,-5,-4,-2,-4,-2,-8,-2,-6,-4,-9,-1,-10,1,-8,0,-5,0,-4,-3,-7,-3,-7,-6,-6,-5,5,1,8,7,10,4,8,0,4,-2,-5,-4,2,-5,2,-4,6,-2,8,0,5,6,1,-4,3,-1,-6,-4,-11,-3,-5,-2,-6,-3,-4,0,0,4,9,4,-8,0,-6,0,1,-2,-5,-2,-5,-2,-6,-2,-2,-3,-1,-1,0,-2,2,-3,2,0,-1,2,2,-1,-1,-2,-3,-1,-3,0,-3,0,-2,-1,-3,0,-5,-1,8,1,1,-1,-7,-2,-3,0,0,1,-1,-2,1,0,-1,-3,-4,-4,0,1,-1,0,-2,1,1,-2,2,-1,0,-2,-2,-2,-3,-4,1,4,-2,2,-1,4,-1,-2,1,-4,-3,1,3,-1,1,-5,1,-1,1,-1,0,-5,-3,-4,-5,-1,-3,-3,-3,-1,-2,-2,-1,-1,-6,-3,-2,-3,-3,-3,0,-3,0,-4,2,-4,2,-4,0,-2,3,-6,0,-3,-1,-2,-1,-3,-1,-1,-3,1,-1,2,-2,1,-2,5,-3,3,0,2,1,4,-2,3,-4,4,-1,0,-6,-2,-3,3,-3,1,-6,-1,-4,1,-4,0,-2,-1,1,-2,0,-2,1,-1,-1,0,-2,1,-2,-1,-3,0,-4,2,-4,0,-4,1,-3,0,-4,-2,-5,-3,-5,-2,-3,-3,-1,-2,0,-4,0,-2,1,-2,-2,-4,-1,-4,0,-6,0,-3,1,-3,1,-2,1,-4,3,-4,2,-2,1,-3,6,-1,2,-2,4,1,4,1,4,1,3,0,3,2,1,3,1,5,1,1,3,1,5,1,5,0,3,1,1,-1,0,-3,-3,-3,-1,-3,1,-1,-1,-2,-1,-4,-1,2,-1,0,0,-1,0,-2,0,-2,0,-1,-1,-1,1,-1,-1,-2,-1,-2,-1,0,-1,-2,2,0,2,0,0,-1,1,1,2,0,1,0,2,0,3,0,1,0,1,1,2,0,1,-1,1,1,1,0,2,-1,1,0,2,-1,1,-1,2,-1,1,-1,0,-1,0,-1,0,-1,-1,-2,-1,-2,0,-2,1,-2,0,-2,-1,0,-1,-3,1,-1,-1,-1,0,-1,1,-1,1,-3,2,-2,2,-2,2,-2,0,-1,2,0,2,-1,2,0,2,2,3,1,2,1,3,0,0,-1,2,0,3,-1,1,-1,2,-2,3,0,4,4,2,0,0,2,1,4,2,2,4,1,0,1,4,-1,4,3,2,1,2,2,2,0,1,-1,-1,-2,0,-1,-3,-1,2,-2,0,-3,-2,-3,2,-4,2,1,1,3,-2,2,0,4,6,2,0,2,1,2,2,-4,4,0,3,-3,0,-1,5,0,5,0,3,-2,4,-1,2,2,0,1,7,1,6,0,-5,-2,2,-2,4,-1,4,-2,1,-4,2,0,2,-1,3,-2,4,-3,0,-3,2,0,2,-2,2,-2,6,-1,1,1,4,0,5,-1,2,-1,4,-1,5,-4,1,-2,1,0,2,-3,2,-8,3,-1,0,-4,-3,-4,1,-1,9,-1,0,-5,4,3,6,-2,8,-3,3,-3,-1,-2,6,1,10,-3,7,1,7,-5,7,-5,4,-2,4,0,2,-1,2,-7,0,-3,-2,-8,-2,-3,-7,-7,-3,-6,-4,-4,-1,0,-2,-4,1,-9,-2,-8,0,-3,-2,-2,-1,-7,-5,-7,-1,-5,-4,-2,-1,-3,-5,0,-8,-2,-4,-2,-5,-1,-6,-4,-4,-5,-1,-4,1,-3,-1,-5,-1,-2,-4,-3,-5,-9,-5,-4,-3,-2,-3,-5,-3,-3,-2,-3,-6,-3,-3,1,-3,0,-5,2,-3,0,-3,2,0,-2,6,-4,-1,-4,3,-2,0,-3,-5,-6,-7,-3,-10,-1,-6,1,1,-3,-1,-4,1,-2,-3,-2,-5,-1,-5,2,-2,-1,1,-5,3,-2,3,2,2,-3,-5,-1,-4,-3,-1,-6,-1,-2,-5,0,-3,-3,-2,-4,5,-3,5,-1,-2,-5,-6,-2,-3,-6,-5,-2,-2,-3,2,-5,3,-3,-2,1,-4,0,-3,-2,-4,-1,-1,-5,-2,0,-6,1,-6,4,-6,3,-1,3,1,3,-2,3,-1,9,2,4,5,4,-7,2,5,4,1,8,6,-1,2,10,-3,1,-2,-6,-3,1,2,7,2,9,2,4,-2,5,0,5,2,0,3,8,4,8,2,8,-1,7,1,5,0,6,2,6,1,9,2,11,2,11,-1,8,-1,7,-5,3,0,2,-10,5,-9,6,-4,3,-2,4,1,1,-5,7,-4,9,-5,10,-2,2,-2,4,-4,3,-3,2,1,3,-2,4,2,4,3,3,3,4,-1,2,-2,-2,-3,2,1,1,-1,5,2,0,1,4,2,3,0,2,2,1,4,2,-1,1,2,1,0,2,1,2,2,0,2,4,2,2,-1,1,0,3,-1,5,1,1,0,4,-2,3,-2,2,-1,2,1,2,-1,0,-1,2,-3,1,-2,0,-1,-2,-2,-1,-1,-1,0,-1,2,-2,-1,-1,-1,-1,-2,0,-1,3,-1,-1,-2,1,-1,2,-2,0,-1,0,-2,0,0,-1,-1,1,-3,1,-1,1,1,1,0,1,-2,1,-2,1,-1,1,-1,2,-1,0,0,-1,-1,-1,-1,1,-1,1,-1,1,0,1,1,2,-2,0,1,1,-1,2,-3,2,-1,2,-2,1,-2,3,1,0,0,1,-2,1,-1,-1,-2,0,-2,0,-2,1,-3,1,-1,1,-3,1,-3,0,-2,1,-3,2,-6,5,-2,2,-4,1,-3,0,-4,-2,-3,-1,-3,2,-4,1,-5,2,-3,1,-6,2,-4,2,-2,2,-2,0,-6,1,-2,3,-5,3,-2,3,-2,2,2,1,-1,1,2,1,0,2,-2,2,0,2,-2,3,-5,5,-5,4,-2,3,-4,2,-1,1,1,3,-3,1,-3,3,-1,3,-3,1,-3,2,-2,3,0,1,-3,4,-2,4,0,2,-3,2,-2,0,-3,1,-1,-2,1,-2,1,-4,1,-2,4,-4,1,-1,1,0,0,-2,1,0,1,-3,2,-1,1,-2,3,-3,2,-4,1,-3,1,-2,1,-3,2,0,2,-2,2,-2,0,-1,-2,-2,-1,0,-1,3,-4,3,-3,2,-3,2,0,3,-1,3,-2,2,-3,2,-1,-1,-1,2,-3,1,-3,3,2,0,2,2,0,2,-4,3,-3,2,-1,3,-2,3,-3,4,-2,5,0,2,-4,3,-2,1,-1,1,-2,0,-2,2,-5,0,-1,1,-1,3,-5,5,-4,7,0,1,-2,2,-4,4,0,4,-3,3,1,4,0,4,-2,4,2,5,2,9,-1,6,-2,5,-1,2,0,1,7,-2,3,-5,1,2,0,4,-2,4,-1,0,-10,5,-3,2,-9,2,-3,5,1,3,-7,2,-1,4,-6,3,0,3,-2,2,-5,1,-1,5,-7,4,-2,5,-5,0,-8,0,-6,2,-10,5,-5,1,-9,1,-7,0,-10,2,-6,2,-5,-1,1,-3,-3,0,-6,-1,-4,-2,-6,-1,0,3,2,5,5,1,-1,1,-6,-2,-4,-4,-7,-3,4,-3,-5,-3,-6,-2,-5,-2,-1,-2,-8,-3,-1,-2,-6,-2,-3,0,-5,-1,-5,-2,-4,-2,-9,-1,-1,1,6,2,5,2,5,2,6,1,3,2,7,3,1,1,3,2,1,4,3,3,-6,-2,-2,1,-2,-2,-4,3,-1,-2,-2,2,-5,-2,-3,0,0,3,1,2,-4,2,-6,-1,-4,2,-4,2,0,2,-4,3,2,2,4,3,2,3,4,0,4,-1,4,3,3,-1,4,2,-1,2,-3,1,4,2,-3,0,-5,-1,-2,-1,-4,1,-7,-1,-7,1,-2,2,-7,3,7,2,12,3,4,0,-1,-3,11,1,-4,3,-7,2,-3,2,-5,2,-7,2,3,2,9,1,6,2,1,2,5,3,5,0,10,2,4,0,8,3,8,-1,3,-3,2,1,9,0,0,-1,7,-1,5,1,11,-2,10,0,3,-1,7,1,8,-2,5,0,9,-2,8,-2,5,-1,5,3,6,1,7,0,8,2,8,1,3,-2,4,1,1,2,4,0,8,-5,7,4,1,-4,6,1,2,1,6,0,7,-2,12,-2,7,-1,5,1,7,-3,-8,-2,10,-2,13,1,4,1,6,-3,5,2,-5,3,3,1,6,1,4,0,4,-1,5,-3,6,0,9,-2,7,1,8,0,-1,3,5,1,7,-2,0,-5,4,4,4,0,2,5,-6,3,-5,2,0,6,6,4,7,-1,5,-2,6,-6,-4,-2,9,-2|-571,366,-2,-3,11,2,7,-3,5,3,5,-2,4,-5,3,2,-4,5,4,1,5,-1,6,-2,3,-5,2,-3,8,-3,9,-2,0,-2,-9,0,4,-2,-2,-2,-9,1,-9,1,-6,0,-9,-2,-15,-1,-7,0,-2,2,-7,1,-5,0,-6,4,4,0,7,1,7,0,7,1,-10,1,-10,0,-8,0,-2,2,11,2,-7,-1,-9,2,4,4,4,2,13,3,5,-1|-522,367,-5,-3,-8,3,2,1,7,0,4,-1|-382,366,1,-2,-6,0,-5,0,-5,0,-2,0,-5,3,0,1,2,1,12,-1,8,-2|-433,366,4,-3,5,4,12,2,9,-5,-1,-4,10,2,5,2,11,-3,7,-2,1,-2,9,1,5,-3,12,-2,4,-2,5,-5,-9,-2,12,-4,8,-1,7,-4,8,-1,-2,-3,-9,-6,-6,2,-8,5,-6,-1,-1,-3,6,-2,6,-3,2,-1,4,-5,-2,-4,-6,2,-13,4,7,-5,5,-3,1,-1,-13,2,-11,3,-6,2,2,1,-8,3,-7,2,0,-1,-15,-1,-4,2,4,4,9,0,10,0,-1,2,1,3,7,4,-2,3,-2,1,-7,3,-10,1,3,2,-5,3,-5,0,-4,2,-2,-2,-10,0,-18,1,-10,1,-8,1,-5,2,6,2,-7,0,-2,5,4,5,5,2,13,1,-4,-3|-502,369,6,-1,9,1,1,-2,-4,-2,7,-2,-1,-5,-8,-2,-5,1,-3,2,-12,4,0,1,10,0,-6,3,6,2|718,366,-8,0,-10,1,-1,0,5,2,6,0,7,-2,1,-1|-466,364,-5,-4,-6,0,-3,5,0,2,3,2,4,2,11,0,9,-2,-7,-4,-6,-1|-602,357,-13,-2,-3,2,-12,2,2,2,4,4,4,3,-5,3,17,1,7,-1,13,0,5,-2,5,-2,-6,-1,-12,-3,-6,-4,0,-2|754,375,-6,-2,-8,1,-9,2,1,1,9,0,13,-2|-468,375,-3,-2,-7,0,-6,2,3,2,7,1,4,-2,2,-1|725,378,-3,-4,-19,0,-8,-1,-10,3,3,4,6,1,13,-1,18,-2|-492,384,3,-3,0,-2,-2,-4,-8,-1,-5,1,0,3,-9,0,0,4,6,0,7,1,7,0,1,1|-541,381,2,-2,4,1,6,0,0,-3,-3,-2,-16,-1,-13,-2,-8,0,0,2,10,2,-23,-1,-7,1,7,5,5,1,14,-1,9,-3,9,-1,-7,5,4,2,5,-1,2,-2|288,354,-3,-1,-17,1,-1,2,-9,1,-1,3,5,1,0,3,10,4,-4,1,12,4,-2,2,11,3,17,3,16,1,9,2,10,1,3,-2,-3,-2,-18,-2,-15,-3,-16,-4,-7,-5,-8,-5,1,-4,10,-4|-473,385,5,-1,10,0,4,-2,-1,-2,6,-1,3,-1,7,0,7,-1,8,1,10,1,8,0,6,-2,1,-2,-3,-2,-8,-1,-6,1,-14,-1,-11,0,-8,1,-13,1,-2,3,0,2,-5,3,-11,0,-6,2,2,2,11,-1|-581,388,-1,-4,-4,-1,-4,-1,-9,-2,-8,0,-7,1,8,3,10,4,8,-1,7,1|535,385,1,-3,5,2,14,0,12,-3,4,-2,-2,-2,-5,-2,-13,-3,-4,-1,6,-1,8,-1,4,1,3,-3,2,1,8,1,16,-1,1,-2,21,-1,0,4,11,-1,8,0,8,-3,2,-3,-3,-2,7,-4,7,-2,5,5,8,-2,9,1,9,-1,4,1,8,-1,-3,5,6,2,46,-3,4,-3,13,-4,20,1,10,-1,4,-2,0,-3,6,-2,6,1,9,0,10,-1,9,1,9,-5,6,2,-4,3,2,2,16,-1,11,0,14,-2,7,-2,0,-20,-6,-2,-7,0,5,-3,3,-4,2,-1,0,-2,-1,-1,-9,1,-14,-4,-5,-1,-7,-3,-8,-3,-1,-3,-7,4,-14,-4,-2,2,-5,-2,-6,0,-2,-3,-6,-5,0,-2,6,-1,-1,-7,-4,0,-2,-5,2,-2,-9,-2,-2,-6,-7,-1,-2,-5,-7,-5,-2,4,-2,7,-3,11,3,7,4,3,0,2,8,1,9,7,8,5,9,4,4,7,-6,-1,-3,-4,-12,-5,-4,6,-13,-2,-13,-8,4,-3,-11,-2,-8,0,1,4,-8,0,-6,-2,-16,1,-16,-2,-16,-10,-19,-11,8,-1,2,-3,5,-1,3,2,6,0,7,-6,0,-4,-4,-5,0,-6,-3,-8,-7,-7,-2,-3,-7,-6,-6,-6,-4,-3,-6,-3,-3,0,-4,2,-6,-3,-1,-2,-2,0,-2,-1,-2,-2,1,-4,-3,-1,-1,-1,-2,-1,-3,-1,-2,-1,0,-2,-1,-1,2,-1,3,-2,4,-6,1,-3,0,-6,-2,-3,-4,-1,-4,-2,-5,0,0,3,1,3,-2,6,3,0,-3,5,-3,1,0,-1,-2,-1,0,1,-1,1,-1,1,1,2,1,0,0,1,1,3,0,1,-3,0,-3,2,-7,-2,-3,-2,-6,-2,3,3,-1,2,4,3,-3,3,-4,-2,-6,-4,-3,-3,-5,0,-2,-2,2,-4,4,-1,1,-2,4,-1,5,3,5,-2,3,0,1,-2,-7,-2,-3,-2,-5,-3,-2,-3,5,-3,2,-5,3,-5,4,-4,-1,-3,-3,-2,2,-2,2,-2,0,-4,-2,-4,-2,0,-4,-6,-4,-6,-5,-6,-7,-5,-7,-4,-5,-1,-3,-2,-2,2,-3,-3,-7,-2,-5,-1,-2,-5,-3,-1,-1,4,1,2,-6,2,-3,-1,-6,-5,-5,-4,-1,-4,4,-5,5,-7,4,-3,3,-4,3,-9,-1,-9,-4,-3,-6,-3,-4,-4,-6,-5,-2,3,1,4,-3,2,-5,1,-2,3,-2,5,-5,2,-4,0,1,4,-5,0,0,-5,-3,-8,-1,-4,0,-4,3,0,2,-5,1,-4,3,-3,3,0,3,-3,1,0,3,-3,2,-4,0,-3,0,-2,0,-2,1,-3,1,-1,2,-5,0,-2,-3,0,-5,4,-6,4,-1,2,-3,4,0,4,-2,3,1,3,-2,2,-2,2,0,3,-3,3,-2,2,-1,-3,-1,3,0,3,2,5,-1,3,2,4,-2,3,1,6,-2,2,-2,6,-1,7,-2,4,-3,-3,-6,-3,-3,0,-3,1,2,6,-1,5,-4,6,0,2,-3,0,-3,4,-2,3,0,3,-1,2,-2,3,-5,0,1,-2,-2,-3,-2,1,0,-1,-2,1,-2,0,-1,-2,-3,1,-6,-2,0,-3,-3,-3,-7,-4,-5,-5,-4,-4,-5,-3,0,-2,-3,-1,-4,-2,-2,-1,-2,-3,1,-7,0,-4,-2,-5,0,-8,-2,0,-3,-4,2,-2,-5,-1,-1,-4,-2,-1,-5,4,-2,7,-2,6,-2,2,-3,5,-1,6,-1,3,-4,7,-2,10,-2,6,0,6,-1,5,-7,-3,-4,0,-6,6,2,2,-1,2,-6,4,-4,2,-1,3,-4,4,-9,-1,-8,0,-8,-1,-9,2,-5,1,-6,1,-2,6,-3,1,-3,-1,-5,-3,-7,2,-5,4,-4,1,-4,5,-3,7,-3,-1,-3,2,-2,-2,-3,0,1,-2,-1,-1,2,-4,2,-5,2,-1,1,-1,4,-3,0,-2,0,-1,0,-2,2,-1,0,-2,1,-1,0,3,1,3,1,1,2,-2,0,-3,-1,-3,1,-2,1,0,0,-1,4,1,4,0,3,0,3,3,4,3,3,3,2,2,0,-3,-1,0,1,-4,2,-4,3,-2,4,0,3,-1,2,-3,1,-2,2,0,0,-1,-2,-3,-1,-2,-2,-1,-2,-4,-2,0,-1,-1,-1,-2,1,-4,-1,0,-2,0,-3,-2,0,-3,-2,-1,-3,0,-2,-1,0,-2,-2,-1,-3,0,-3,-1,-2,-1,-4,-1,-1,-2,0,-2,-5,-2,-8,-2,-5,-4,-2,0,-1,0,-3,-2,-3,-1,-5,0,-1,-1,-1,-1,-1,0,-1,-2,-3,1,-1,-1,-4,0,-1,3,0,3,-1,1,-1,4,-1,2,1,0,0,3,0,1,0,2,-1,2,-1,1,-1,2,-2,2,-3,4,-1,4,-4,4,-2,1,-3,4,-1,4,0,3,-3,5,-2,2,-3,1,-1,3,0,1,-1,3,-2,1,-2,4,-3,4,-2,3,-3,0,1,3,0,2,1,2,0,1,-2,-3,-1,-3,-1,-3,-1,-1,-2,2,-2,2,-4,7,2,-5,3,-6,4,-7,1,-3,2,-3,4,-5,-1,-1,1,-3,5,-5,1,-1,2,-5,-1,-1,1,-5,1,-6,2,-1,3,-2,3,-6,1,-4,3,-3,7,-5,3,-2,2,-3,2,-2,2,-2,2,-1,-1,-2,-2,-1,2,-2,1,-1,1,-2,3,-2,2,0,5,1,5,1,5,2,2,0,2,1,3,0,1,0,3,1,2,0,3,2,2,0,0,-1,-1,-3,0,-3,-1,-2,-1,-5,-3,-6,-3,-6,-4,-7,-4,-6,-6,-7,-5,-4,-8,-5,-4,-4,-6,-6,-1,-2,-1,-1,-4,-2,-1,-2,-2,-1,0,-3,-2,-2,-1,-4,-2,-1,-2,-7,0,-2,3,-2,0,-1,-1,-4,0,-1,0,-2,2,-4,2,-4,2,-2,0,-2,0,-5,1,-4,0,-8,1,-2,-2,-4,-2,-4,-3,-3,-4,-2,-6,-2,-6,-5,-2,-1,-3,-4,-2,-1,0,-3,2,-4,1,-3,0,-2,1,1,0,-5,-1,-3,1,-1,-1,-2,-2,-1,-4,-2,-6,-3,-2,-2,0,-2,2,0,-1,-3,-1,-3,-1,-5,-1,-2,-3,-2,-1,-1,-2,-3,-2,-2,-3,-4,-5,-5,-4,-3,-4,-2,-5,-2,-2,0,-1,-2,-3,1,-3,-1,-5,1,-3,-1,-2,1,-5,-2,-5,-1,-3,-2,-2,0,-2,2,-2,0,-2,2,0,-1,-1,2,0,3,-1,3,1,1,0,4,-3,4,-3,5,-3,6,-4,4,-2,4,-1,4,-1,4,-2,8,0,6,-1,2,-2,3,-2,4,-3,6,-1,3,-4,5,0,3,-1,4,1,4,2,5,0,2,2,4,1,2,3,4,1,2,1,4,-1,2,-1,2,-1,3,-2,3,1,1,1,2,-1,5,-1,3,-3,4,1,0,-1,2,-1,4,-5,5,-5,5,-3,4,-3,5,0,2,1,2,1,3,1,4,0,1,1,5,1,4,-2,4,-2,1,-1,2,-2,0,1,2,-6,-2,-2,0,-2,-1,-4,0,-2,3,-2,4,-3,3,-4,0,-5,0,-4,0,-4,-1,-8,-3,-2,-2,-5,-1,-4,1,-3,0,-3,1,-3,0,-6,-1,-4,-1,-5,-2,-1,0,-1,0,-5,2,-5,4,-4,3,-3,3,-2,0,-3,2,-3,3,-1,2,0,4,-2,2,-2,2,-2,1,-1,1,0,2,-1,1,-2,1,-2,2,-2,1,-2,1,0,1,-1,1,0,1,-1,4,0,2,-2,4,-2,2,2,1,2,3,2,3,-1,2,2,3,0,5,0,4,-1,3,1,2,-2,3,-2,2,0,2,0,2,2,2,2,2,-1,2,2,4,3,3,2,1,1,3,0,2,2,3,3,2,3,5,3,2,5,1,3,3,3,1,4,5,-1,6,2,4,0,3,4,3,5,2,3,3,4,5,1,3,4,0,3,-2,5,0,5,-1,2,0,5,3,5,0,4,3,4,1,9,1,8,0,3,0,4,2,6,0,2,-2,3,1,6,2,3,-1,0,-2,4,1,1,0,-3,-3,0,-2,2,-2,-1,-4,-3,-2,1,-3,2,0,2,-3,1,0,6,-2,2,0,5,0,6,-3,3,-4,4,-1,7,-2,5,-3,3,2,2,2,-1,4,2,2,3,3,4,0,6,-1,2,-2,2,0,2,-1,5,-1,1,-1,6,0,5,-1,5,-2,3,-1,3,2,2,1,5,1,3,-1,2,-2,1,1,4,-1,4,0,2,1,2,2,-1,0,2,2,1,4,0,1,1,0,1,5,3,3,0,4,1,2,-2,2,2,2,-3,0,-4,1,-4,-3,-7,0,-5,2,-5,0,-1,-2,-3,0,-5,2,-6,0,-3,5,-3,3,2,4,-3,2,5,5,8,0,2,4,10,-1,6,4,6,1,8,0,9,-3,7,-2,6,1,4,-1,6,3,1,2,-2,3,-3,2,-2,1,-2,1,-7,4,-5,2,-5,3,4,1,4,4,-3,2,8,2,0,1,-5,0,-4,-1,-3,-2,-5,0,-4,-2,0,-3,3,-1,5,0,-1,-1,-6,-1,-7,-3,-2,1,1,2,-6,2,1,1,5,1,-2,1,-7,2,-1,2,-4,-1,-2,-3,-4,-4,0,-1,-2,-1,-2,1,-1,-6,-3,-3,-2,-3,2,-3,1,-2,4,-2,-1,-1,-6,0,-2,-2,-4,-2,-2,2,0,1,-3,0,-2,1,-6,-2,3,-2,-2,-1,-3,0,-3,2,-1,-1,1,-3,3,-2,-2,-1,3,-2,2,-2,0,-3,-4,2,1,-3,-3,0,2,-5,-4,0,-4,2,-2,4,0,4,-2,2,-3,3,0,1,-1,0,0,2,-3,1,0,3,0,3,1,2,-1,0,-1,1,-2,1,-2,1,-4,2,-3,2,-5,2,-4,3,1,1,-2,2,0,1,-4,1,-1,-2,-2,2,0,1,1,1,1,0,-4,1,-4,-2,0,-3,-1,-1,2,-3,5,-2,2,-4,6,-4,4,0,1,-1,-2,-1,5,-2,4,-2,4,-2,0,-1,-1,-2,-2,2,-5,1,-2,-3,4,-2,-1,-2,-2,-1,-2,-4,-3,0,0,1,1,3,2,1,-2,3,-2,2,-2,1,-1,2,-4,1,-2,2,-4,0,-3,3,-5,3,-3,3,-2,5,-2,0,-5,2,-2,-1,-3,-2,-2,-1,-4,-2,-10,1,-7,-2,-1,-3,0,-3,-5,-3,-6,-1,0,-2,-3,-2,-2,-4,2,-3,-3,-3,-1,-3,-4,-1,-4,-4,-6,0,-5,0,-3,-1,-2,-2,-2,0,-2,2,-2,3,-4,0,-2,-1,-3,1,-2,-1,0,4,0,3,-2,1,-2,2,1,3,2,2,0,2,1,3,0,2,-1,2,0,1,0,4,-2,2,7,4,6,-1,7,0,5,-1,4,0,8,0,3,3,1,10,-5,5,-4,3,-7,2,-1,3,7,2,8,-2,-2,6,5,-2,12,4,1,4,5,1,4,1,2,1,5,7,6,3,5,-1,1,1,4,1,1,-1,3,2,-1,2,0,3,-2,3,-1,5,1,1,2,2,4,0,2,1,4,2,0,-3,-2,-2,1,-1,3,-1,-2,-2,-1,1,-4,-4,2,-2,0,-2,5,-1,0,-2,5,1,3,1,5,-2,3,-1,3,1,8,3,6,1,5,-1,0,-1,5,0,1,2,7,2,-1,4,0,4,3,3,5,2,4,-4,4,0,1,4,0,3,-2,-1,-3,2,0,3,6,1,6,1,6,-1,5,0,6,3,-6,3,-9,-1,-9,-2,-8,-1,-3,3,-4,2,1,5,-3,4,3,3,4,3,12,6,3,1,-1,2,-6,2,-9,-1,-5,-4,1,-3,-8,-4,-10,-4,-3,-7,3,-4,5,-3,-5,-5,-5,-1,-2,-9,-3,-4,-6,0,-2,-4,-6,0,-2,5,-4,5,-4,7,-3,3,-10,-5,-7,-2,-7,3,-1,5,-2,12,5,3,13,4,10,5,9,7,12,10,8,4,14,6,11,2,8,0,8,4,9,0,9,1,15,-4,-6,-1,6,-3,5,2,8,-3,14,-2,18,-5,4,-3,1,-3,-6,-3,-8,-1,-22,4,-4,-1,8,-3,1,-8,6,-1,4,-2,1,3,-3,2,3,2,12,-3,4,1,-3,3,11,5,5,0,5,-2,3,4,-5,3,3,3,-4,3,14,-2,3,-3,-6,0,0,-3,4,-2,7,1,2,4,10,2,18,4,3,0,-5,-3,7,-1,3,2,10,0,7,2,6,-3,5,4,-5,3,3,1,15,-1,6,-2,19,-6,3,3,-5,3,0,1,-6,0,1,3,-2,4,-1,1,10,5,3,4,4,1,13,-1,1,-3,-5,-4,3,-2,2,-3,-1,-7,5,-3,-2,-3,-10,-7,6,-1,2,2,6,1,1,2,4,3,-3,3,3,3,-6,0,-1,3,4,5,-6,4,8,4,-1,3,3,0,2,-2,-2,-5,6,-1,-2,3,8,2,10,1,10,-3,-5,4,0,5,8,1,12,0,11,1,-4,2,6,4,6,0,9,2,14,1,1,1,13,1,4,-1,12,2,9,0,1,2,5,2,12,2,8,-1,-6,-1,11,-1|-469,388,-2,-1,-10,1,-1,1,10,0,3,-1|-551,388,-9,-1,-8,2,4,1,8,1,7,-1,-2,-2|124,389,-12,-2,-8,1,3,2,-3,1,10,1,2,-2,8,-1|-548,393,-6,-1,-9,0,0,1,5,1,3,0,7,-1|-479,390,-8,-1,-4,1,-2,2,0,2,6,0,3,0,6,-2,-1,-2|-500,392,2,-2,-9,0,-8,2,-11,0,5,1,-6,2,0,2,9,-1,14,-2,4,-2|525,392,-28,-2,9,6,4,1,4,-1,13,-2,-2,-2|91,399,17,-4,-13,-2,-3,-4,-4,-1,-2,-4,-6,0,-11,3,4,2,-7,1,-10,4,-4,4,14,2,3,-2,7,0,2,2,7,0,6,-1|127,402,10,-2,-7,-2,-15,-1,-15,1,-1,1,-7,0,-5,3,15,1,8,-1,5,1,12,-1|256,403,-7,-1,-5,0,0,-1,-6,-1,-5,1,2,2,-11,0,10,1,8,0,1,-1,2,1,5,1,8,-2,-2,0|500,394,-11,0,-14,1,-8,2,-4,4,-7,1,13,3,11,1,9,-2,12,-5,-1,-5|-435,398,6,-1,-7,-2,-9,-4,-9,0,-10,1,-6,2,0,2,4,1,-9,0,-5,2,-4,2,4,2,3,2,6,0,-3,1,12,0,6,-2,9,-1,8,-1,4,-4|-342,416,13,-1,11,-1,9,-1,0,-1,-13,-2,-12,-1,-4,-1,11,0,-12,-4,-8,-1,-9,-4,-10,-1,-3,-1,-16,0,7,-1,-3,-1,4,-2,-5,-2,-7,-2,-3,-1,-7,-2,1,-1,8,0,1,-1,-14,-3,-13,1,-15,-1,-7,1,-9,0,-1,3,9,1,-2,4,3,0,13,-2,-7,3,-8,1,4,2,9,1,2,2,-8,2,-2,2,14,0,4,-1,8,2,-11,1,-18,0,-9,1,-4,2,-6,2,-1,1,8,1,5,1,10,0,7,2,7,0,5,-1,4,2,6,1,9,1,16,0,2,-1,15,1,11,0,11,0|-136,418,32,-4,-9,-2,-20,-1,-27,0,3,-1,18,1,15,-2,9,1,5,-1,-6,-3,13,2,24,2,15,-1,3,-3,-20,-3,-3,-1,-16,-1,11,0,-5,-4,-5,-3,1,-6,6,-3,-8,0,-8,-2,9,-3,1,-4,-5,0,6,-5,-11,0,6,-2,-2,-2,-7,0,-7,0,6,-4,1,-2,-10,2,-3,-1,7,-2,6,-3,2,-4,-9,-1,-4,2,-6,3,2,-3,-6,-3,13,0,7,0,-13,-5,-14,-4,-14,-1,-6,0,-5,-2,-7,-6,-11,-3,-3,0,-7,-2,-7,-1,-4,-3,0,-3,-3,-4,-8,-4,2,-3,-2,-5,-3,-5,-7,0,-7,4,-10,0,-5,3,-4,5,-8,6,-3,3,0,5,-7,4,1,4,-3,2,5,6,8,2,2,2,1,4,-6,-2,-3,-1,-4,-1,-6,2,-1,3,2,3,5,0,10,-1,-9,3,-4,2,-5,-1,-4,1,5,5,-3,2,-4,3,-6,6,-6,1,0,3,-13,3,-11,0,-13,0,-13,-1,-5,2,-9,3,13,2,10,0,-21,1,-11,2,0,2,19,3,18,2,2,2,-13,2,4,2,18,3,7,1,-2,2,12,1,15,1,15,0,6,-2,13,3,12,-2,7,0,10,-2,-12,3,1,2,17,3,18,0,6,2,18,0,39,0").split("|").map(s=>{
+  const a=s.split(",").map(Number), pts=[]; let x=0,y=0,mn=90,mx=-90;
+  for(let i=0;i+1<a.length;i+=2){x+=a[i];y+=a[i+1];const la=y/5;pts.push([x/5,la]);if(la<mn)mn=la;if(la>mx)mx=la;}
+  return {pts,mn,mx};
+});
+const SPOTS=[
+  ["fairbanks","フェアバンクス","アラスカ",64.84,-147.72,"Fairbanks","Alaska"],["anchorage","アンカレッジ","アラスカ",61.22,-149.90,"Anchorage","Alaska"],
+  ["whitehorse","ホワイトホース","カナダ",60.72,-135.06,"Whitehorse","Canada"],["yellowknife","イエローナイフ","カナダ",62.45,-114.37,"Yellowknife","Canada"],
+  ["churchill","チャーチル","カナダ",58.77,-94.17,"Churchill","Canada"],["calgary","カルガリー","カナダ",51.05,-114.07,"Calgary","Canada"],
+  ["iqaluit","イカルイト","カナダ",63.75,-68.52,"Iqaluit","Canada"],["nuuk","ヌーク","グリーンランド",64.18,-51.72,"Nuuk","Greenland"],
+  ["kanger","カンゲルルススアーク","グリーンランド",67.01,-50.72,"Kangerlussuaq","Greenland"],["reykjavik","レイキャビク","アイスランド",64.15,-21.94,"Reykjavík","Iceland"],
+  ["akureyri","アークレイリ","アイスランド",65.68,-18.09,"Akureyri","Iceland"],["tromso","トロムソ","ノルウェー",69.65,18.96,"Tromsø","Norway"],
+  ["alta","アルタ","ノルウェー",69.97,23.27,"Alta","Norway"],["lofoten","ロフォーテン","ノルウェー",68.23,14.57,"Lofoten","Norway"],
+  ["oslo","オスロ","ノルウェー",59.91,10.75,"Oslo","Norway"],["abisko","アビスコ","スウェーデン",68.35,18.83,"Abisko","Sweden"],
+  ["kiruna","キルナ","スウェーデン",67.86,20.23,"Kiruna","Sweden"],["stockholm","ストックホルム","スウェーデン",59.33,18.07,"Stockholm","Sweden"],
+  ["rovaniemi","ロヴァニエミ","フィンランド",66.50,25.73,"Rovaniemi","Finland"],["saariselka","サーリセルカ","フィンランド",68.42,27.41,"Saariselkä","Finland"],
+  ["oulu","オウル","フィンランド",65.01,25.47,"Oulu","Finland"],["helsinki","ヘルシンキ","フィンランド",60.17,24.94,"Helsinki","Finland"],
+  ["murmansk","ムルマンスク","ロシア",68.97,33.07,"Murmansk","Russia"],["shetland","シェトランド","英国",60.15,-1.15,"Shetland","UK"],
+  ["edinburgh","エディンバラ","英国",55.95,-3.19,"Edinburgh","UK"],["copenhagen","コペンハーゲン","デンマーク",55.68,12.57,"Copenhagen","Denmark"],
+  ["seattle","シアトル","米国",47.61,-122.33,"Seattle","USA"],["minneapolis","ミネアポリス","米国",44.98,-93.27,"Minneapolis","USA"],
+  ["wakkanai","稚内","北海道",45.42,141.67,"Wakkanai","Hokkaido"],["rikubetsu","陸別","北海道",43.47,143.74,"Rikubetsu","Hokkaido"],
+  ["hobart","ホバート","タスマニア",-42.88,147.33,"Hobart","Tasmania"],["queenstown","クイーンズタウン","ニュージーランド",-45.03,168.66,"Queenstown","New Zealand"],
+  ["invercargill","インバーカーギル","ニュージーランド",-46.41,168.35,"Invercargill","New Zealand"],["ushuaia","ウシュアイア","アルゼンチン",-54.80,-68.30,"Ushuaia","Argentina"]
+].map(a=>({id:a[0],name:a[1],area:a[2],lat:a[3],lon:a[4],enName:a[5],enArea:a[6]}));
+
+const M={mode:"auto",v:null,free:false,dragging:false,tap:null,cg:null,cgVer:0,cgCache:null,cgBase:null,cgFail:false,cgLoading:false,ck:0,crad:100,showCloud:true,near:[],spotCloud:null,spotT:0,ovVer:0,mg:null,rkey:"",frame:null,spotPx:[],evals:[],showAll:false};
+const mapCv=$("#map"), mctx=mapCv.getContext("2d"), rcv=document.createElement("canvas"), rctx=rcv.getContext("2d");
+
+const PL=rad(80.8), PN=rad(-72.6);
+function geomag(lat,lon){
+  const la=rad(lat), lo=rad(lon)-PN;
+  const x=Math.cos(la)*Math.cos(lo), y=Math.cos(la)*Math.sin(lo), z=Math.sin(la), t=Math.PI/2-PL;
+  const x2=x*Math.cos(t)-z*Math.sin(t), z2=x*Math.sin(t)+z*Math.cos(t);
+  return {mlat:deg(Math.asin(clamp(z2,-1,1))),mlon:deg(Math.atan2(y,x2))};
+}
+/* OVATIONを取れないとき：Kpから推定したオーロラ帯（夜側ほど強い） */
+function modelGrid(){
+  const kp=S.hours[0]?S.hours[0].kp:kpAt(Date.now()).kp, key="m"+kp.toFixed(2)+"_"+Math.floor(Date.now()/600000);
+  if(M.mg&&M.mg.key===key) return M.mg;
+  const g=new Float32Array(360*181), dd=days(Date.now()), sun=sunRaDec(dd), gmst=280.46061837+360.98564736629*dd;
+  const sunLon=((deg(sun.ra)-gmst)%360+540)%360-180, ms=geomag(deg(sun.dec),sunLon).mlon;
+  const b=kp<=6?66.5-2.05*kp:54.2-4.5*(kp-6), cen=b+3, sg=2+0.25*kp, peak=clamp(15+9*kp,10,90);
+  for(let lo=0;lo<360;lo++) for(let la=-90;la<=90;la++){
+    const m=geomag(la,lo), mlt=((12+(m.mlon-ms)/15)%24+24)%24;
+    const night=0.35+0.65*(0.5+0.5*Math.cos(2*Math.PI*(mlt-23)/24)), dz=(Math.abs(m.mlat)-cen)/sg;
+    g[lo*181+la+90]=peak*night*Math.exp(-0.5*dz*dz);
+  }
+  M.mg={key,grid:g}; return M.mg;
+}
+function auroraGrid(){
+  if(S.ovGrid) return {grid:S.ovGrid,key:"o"+M.ovVer,src:"ovation"};
+  const m=modelGrid(); return {grid:m.grid,key:m.key,src:"kp"};
+}
+function ovSample(grid,lat,lon){
+  const x=((lon%360)+360)%360, y=clamp(lat+90,0,180), x0=Math.floor(x), y0=Math.floor(y), fx=x-x0, fy=y-y0;
+  const x1=(x0+1)%360, y1=Math.min(y0+1,180), v=(a,b)=>{const t=grid[a*181+b];return t>0?t:0;};
+  return (v(x0,y0)*(1-fx)+v(x1,y0)*fx)*(1-fy)+(v(x0,y1)*(1-fx)+v(x1,y1)*fx)*fy;
+}
+function evalPoint(lat,lon,cloud,grid,T){
+  const over=ovSample(grid,lat,lon), dir=lat>=0?1:-1; let hor=0;
+  for(let d=1;d<=8;d++){const la=lat+dir*d; if(Math.abs(la)>90) break; for(const dx of [-3,0,3]) hor=Math.max(hor,ovSample(grid,la,lon+dx));}
+  const aur=Math.max(over,0.6*hor), dd=days(T||Date.now()), sAlt=altOf(sunRaDec(dd),dd,lat,lon), dark=clamp((-sAlt-5)/11,0,1);
+  const hasC=cloud!=null&&Number.isFinite(cloud), clear=hasC?1-clamp(cloud,0,100)/100:1;
+  let st;
+  if(aur<10) st={key:"none",cls:"s-none"};
+  else if(dark<0.4) st={key:"bright",cls:"s-dim"};
+  else if(hasC&&clear<0.4) st={key:"cloud",cls:"s-dim"};
+  else st=over>=10?{key:"vis",cls:"s-vis"}:{key:"vish",cls:"s-vis"};
+  st.label=t("st")[st.key];
+  return {over,hor,aur,sAlt,dark,cloud:hasC?cloud:null,vis:aur*dark*clear,st};
+}
+
+/* ---------- cloud grid around a base point (Open-Meteo, multi-location) ---------- */
+const CG_N=11, CG_DLAT=0.4;
+function cgLayout(lat,lon){
+  const dlon=CG_DLAT/Math.max(0.15,Math.cos(rad(lat))), half=(CG_N-1)/2, pts=[];
+  for(let j=0;j<CG_N;j++) for(let i=0;i<CG_N;i++)
+    pts.push({lat:clamp(lat+(j-half)*CG_DLAT,-89.5,89.5),lon:((lon+(i-half)*dlon)%360+540)%360-180});
+  return {lat,lon,dlon,south:lat-half*CG_DLAT,west:lon-half*dlon,pts};
+}
+async function fetchCloudGrid(lat,lon){
+  const g=cgLayout(lat,lon);
+  const q="latitude="+g.pts.map(p=>p.lat.toFixed(3)).join(",")+"&longitude="+g.pts.map(p=>p.lon.toFixed(3)).join(",")+
+    "&hourly=cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high&forecast_hours=6&timeformat=unixtime";
+  const j=await getJSON("https://api.open-meteo.com/v1/forecast?"+q,30000), arr=Array.isArray(j)?j:[j];
+  if(arr.length!==g.pts.length) throw new Error("length");
+  g.series=arr.map(o=>{
+    const h=(o&&o.hourly)||{}, t=Array.isArray(h.time)?h.time:[], at=(a,k)=>num(Array.isArray(a)?a[k]:NaN);
+    return {t,v:t.map((_,k)=>effCloud(at(h.cloud_cover_low,k),at(h.cloud_cover_mid,k),at(h.cloud_cover_high,k),at(h.cloud_cover,k)))};
+  });
+  g.fetched=Date.now(); return g;
+}
+function seriesAt(s,T){
+  const t=s.t; if(!t.length) return null;
+  const x=(T/1000-t[0])/3600, i=Math.floor(x);
+  if(i<0) return s.v[0]; if(i>=t.length-1) return s.v[t.length-1];
+  const a=s.v[i], b=s.v[i+1]; if(a==null) return b; if(b==null) return a; return a+(b-a)*(x-i);
+}
+function cgValsAt(T){
+  const g=M.cg; if(!g) return null;
+  const key=M.cgVer+"_"+Math.floor(T/300000);
+  if(M.cgCache&&M.cgCache.key===key) return M.cgCache.vals;
+  const vals=g.series.map(s=>seriesAt(s,T));
+  M.cgCache={key,vals}; return vals;
+}
+function cgSample(vals,lat,lon){
+  const g=M.cg; if(!g||!vals) return null;
+  const u=(((lon-g.west)%360)+360)%360/g.dlon, v=(lat-g.south)/CG_DLAT;
+  if(u<0||u>CG_N-1||v<0||v>CG_N-1) return null;
+  const i0=Math.min(Math.floor(u),CG_N-2), j0=Math.min(Math.floor(v),CG_N-2), fu=u-i0, fv=v-j0;
+  const at=(i,j)=>vals[j*CG_N+i];
+  const a=at(i0,j0),b=at(i0+1,j0),c=at(i0,j0+1),e=at(i0+1,j0+1);
+  if([a,b,c,e].some(x=>x==null)) return [a,b,c,e].find(x=>x!=null)??null;
+  return (a*(1-fu)+b*fu)*(1-fv)+(c*(1-fu)+e*fu)*fv;
+}
+function onLand(lat,lon){
+  let inside=false;
+  for(const r of LAND){
+    if(lat<r.mn||lat>r.mx) continue;
+    const p=r.pts;
+    for(let i=0,j=p.length-1;i<p.length;j=i++){
+      const xi=p[i][0],yi=p[i][1],xj=p[j][0],yj=p[j][1];
+      if(((yi>lat)!==(yj>lat))&&(lon<(xj-xi)*(lat-yi)/(yj-yi)+xi)) inside=!inside;
+    }
+  }
+  return inside;
+}
+function distBear(a,b){
+  const f1=rad(a.lat),f2=rad(b.lat),dl=rad(b.lon-a.lon);
+  const d=2*6371*Math.asin(Math.sqrt(Math.sin((f2-f1)/2)**2+Math.cos(f1)*Math.cos(f2)*Math.sin(dl/2)**2));
+  const br=(deg(Math.atan2(Math.sin(dl)*Math.cos(f2),Math.cos(f1)*Math.sin(f2)-Math.sin(f1)*Math.cos(f2)*Math.cos(dl)))+360)%360;
+  return {d,di:Math.round(br/45)%8,get dir(){return t("dirs")[this.di];}};
+}
+async function loadCloudGrid(force){
+  const c=M.cgBase||{lat:S.loc.lat,lon:S.loc.lon};
+  const same=M.cg&&Math.abs(M.cg.lat-c.lat)<1e-6&&Math.abs(M.cg.lon-c.lon)<1e-6;
+  if(!force&&same&&Date.now()-M.cg.fetched<30*60000) return;
+  if(M.cgLoading) return; M.cgLoading=true; renderNear();
+  try{ const g=await fetchCloudGrid(c.lat,c.lon); M.cg=g; M.cgVer++; M.cgFail=false; }
+  catch(e){ if(!same) M.cg=null; M.cgFail=true; }
+  finally{ M.cgLoading=false; }
+  M.rkey=""; renderAll();
+}
+function renderNear(){
+  const list=$("#nearList"), sub=$("#nearSub"), base=$("#nearBase");
+  document.querySelectorAll("#nearTime button").forEach(b=>b.setAttribute("aria-pressed",Number(b.dataset.k)===M.ck?"true":"false"));
+  document.querySelectorAll("#nearRad button").forEach(b=>b.setAttribute("aria-pressed",Number(b.dataset.r)===M.crad?"true":"false"));
+  M.near=[];
+  const bp=M.cgBase||{lat:S.loc.lat,lon:S.loc.lon,name:shortName(locLabel(S.loc))};
+  const bname=M.cgBase?t("mapCenter"):bp.name;
+  if(!M.cg){
+    base.textContent=""; list.innerHTML="";
+    sub.textContent=M.cgLoading?t("gridLoading"):M.cgFail?t("gridFail"):"";
+    return;
+  }
+  const T=Date.now()+M.ck*HOUR, vals=cgValsAt(T), A=auroraGrid(), when=t("when",M.ck);
+  const evs=M.cg.pts.map((p,k)=>{
+    const e=evalPoint(p.lat,p.lon,vals[k],A.grid,T), db=distBear(bp,p);
+    return {p,k,e,db,score:e.aur*e.dark*(e.cloud==null?1:1-e.cloud/100),sky:e.dark*(e.cloud==null?1:1-e.cloud/100)};
+  });
+  const bc=cgSample(vals,bp.lat,bp.lon), be=evalPoint(bp.lat,bp.lon,bc,A.grid,T), bs=be.aur*be.dark*(be.cloud==null?1:1-be.cloud/100);
+  base.innerHTML='<b>'+esc(t("baseWhen",bname,when))+'</b>　<span class="chip-s '+scoreCls(bs)+'">'+t("visIdx",Math.round(bs))+'</span>　<span class="mono" style="color:var(--mute);font-size:12px">'+t("cl")+' '+(bc==null?"—":Math.round(bc)+"%")+' · '+t("pr")+' '+Math.round(be.aur)+'% · '+t("sun")+' '+be.sAlt.toFixed(0)+'°</span>';
+  const clr=x=>x.e.cloud==null?1:1-x.e.cloud/100;
+  const cand=evs.filter(x=>x.db.d<=M.crad&&x.db.d>8&&onLand(x.p.lat,x.p.lon)).sort((a,b)=>(b.score-a.score)||(b.sky-a.sky)||(clr(b)-clr(a)));
+  const top=cand.slice(0,5); M.near=top;
+  const maxAur=Math.max(0,...evs.map(x=>x.e.aur));
+  let msg=t("nearMsg",M.crad,cand.length,when);
+  if(be.dark<0.1) msg+=t("nearBright");
+  else if(maxAur<10) msg+=t("nearWeak");
+  else if(top.length&&top[0].score-bs<5) msg+=t("nearSame");
+  sub.textContent=msg;
+  list.innerHTML=top.length?top.map((x,n)=>{
+    const e=x.e;
+    return '<div class="spot"><div class="nm"><span class="rank">'+(n+1)+'</span>'+t("candDir",x.db.dir,Math.round(x.db.d))+'</div>'+
+      '<span class="chip-s st '+scoreCls(x.score)+'">'+t("visIdx",Math.round(x.score))+'</span>'+
+      '<div class="vals mono">'+t("cl")+' '+(e.cloud==null?"—":Math.round(e.cloud)+"%")+' · '+t("pr")+' '+Math.round(e.aur)+'% · '+t("sun")+' '+e.sAlt.toFixed(0)+'°</div>'+
+      '<div class="acts"><button class="btn sm" type="button" data-near="'+n+'">'+t("showMap")+'</button>'+
+      '<a class="btn sm" href="https://www.google.com/maps/search/?api=1&amp;query='+x.p.lat.toFixed(4)+','+x.p.lon.toFixed(4)+'" target="_blank" rel="noopener">'+t("gmaps")+'</a></div></div>';
+  }).join(""):'<p class="sub">'+t("noCand")+'</p>';
+}
+function scoreCls(s){ return s>=25?"s-vis":s>=8?"s-dim":"s-none"; }
+
+function hemi(){ if(M.mode==="north") return 1; if(M.mode==="south") return -1; return S.loc.lat>=0?1:-1; }
+function proj(lat,lon,h,lon0){ const r=h>0?90-lat:90+lat, a=rad(lon-lon0); return [(h>0?1:-1)*r*Math.sin(a), r*Math.cos(a)]; }
+function unproj(x,y,h,lon0){ const r=Math.hypot(x,y), a=Math.atan2(h>0?x:-x,y); return {lat:h>0?90-r:r-90, lon:((lon0+deg(a))%360+540)%360-180}; }
+function presetView(){
+  const h=hemi(), lon0=S.loc.lon;
+  if(M.mode==="local"){ const p=proj(S.loc.lat,S.loc.lon,h,lon0); return {h,lon0,cx:p[0],cy:p[1]-3,half:10}; }
+  return {h,lon0,cx:0,cy:0,half:61};
+}
+function mapFrame(){ if(!M.v) M.v=presetView(); return Object.assign({clip:91},M.v); }
+
+/* gestures: drag = pan, pinch/wheel = zoom, two-finger twist = rotate around the pole */
+function clampView(){
+  const v=M.v; v.half=clamp(v.half,1.5,85);
+  const r=Math.hypot(v.cx,v.cy); if(r>100){v.cx*=100/r;v.cy*=100/r;}
+  v.lon0=((v.lon0%360)+540)%360-180;
+}
+function geoAt(p,W){ const v=M.v; return unproj(v.cx+(p.x/W*2-1)*v.half, v.cy+(p.y/W*2-1)*v.half, v.h, v.lon0); }
+function anchorTo(g,p,W){
+  const v=M.v; v.half=clamp(v.half,1.5,85);
+  const q=proj(g.lat,g.lon,v.h,v.lon0);
+  v.cx=q[0]-(p.x/W*2-1)*v.half; v.cy=q[1]-(p.y/W*2-1)*v.half; clampView();
+}
+let rafMap=false;
+function reqMap(){ if(rafMap) return; rafMap=true; requestAnimationFrame(()=>{rafMap=false; renderMap();}); }
+const ptrs=new Map(); let gest=null, lastTap=null;
+function cpos(e){ const r=mapCv.getBoundingClientRect(); return {x:e.clientX-r.left,y:e.clientY-r.top,W:r.width}; }
+function snap(){
+  const a=[...ptrs.values()];
+  if(a.length>=2){ const p=a[0],q=a[1]; return {n:2,mid:{x:(p.x+q.x)/2,y:(p.y+q.y)/2},dist:Math.max(1,Math.hypot(q.x-p.x,q.y-p.y)),ang:Math.atan2(q.y-p.y,q.x-p.x),W:p.W}; }
+  return {n:1,mid:{x:a[0].x,y:a[0].y},dist:1,ang:0,W:a[0].W};
+}
+mapCv.addEventListener("pointerdown",e=>{
+  mapFrame(); try{mapCv.setPointerCapture(e.pointerId);}catch(err){}
+  const p=cpos(e); ptrs.set(e.pointerId,p);
+  if(ptrs.size===1) gest={moved:false,start:p,t:Date.now(),prev:snap()}; else if(gest){gest.prev=snap(); gest.moved=true;}
+});
+mapCv.addEventListener("pointermove",e=>{
+  if(!ptrs.has(e.pointerId)||!gest) return;
+  const p=cpos(e); ptrs.set(e.pointerId,p);
+  const cur=snap(), prev=gest.prev;
+  if(cur.n!==prev.n){gest.prev=cur;return;}
+  if(!gest.moved&&Math.hypot(p.x-gest.start.x,p.y-gest.start.y)<6) return;
+  gest.moved=true; M.free=true; M.dragging=true;
+  const g=geoAt(prev.mid,cur.W);
+  if(cur.n===2){
+    M.v.half*=prev.dist/cur.dist;
+    let d=cur.ang-prev.ang; if(d>Math.PI) d-=2*Math.PI; if(d<-Math.PI) d+=2*Math.PI;
+    M.v.lon0+=M.v.h*deg(d);
+  }
+  anchorTo(g,cur.mid,cur.W); gest.prev=cur; reqMap();
+});
+function endPtr(e){
+  if(!ptrs.has(e.pointerId)) return;
+  const p=ptrs.get(e.pointerId); ptrs.delete(e.pointerId);
+  if(ptrs.size>0){ if(gest) gest.prev=snap(); return; }
+  const wasTap=gest&&!gest.moved&&Date.now()-gest.t<600&&e.type!=="pointercancel";
+  M.dragging=false; gest=null;
+  if(wasTap){
+    if(lastTap&&Date.now()-lastTap.t<320&&Math.hypot(p.x-lastTap.p.x,p.y-lastTap.p.y)<30){
+      const g=geoAt(p,p.W); M.v.half/=2; anchorTo(g,p,p.W); M.free=true; lastTap=null; renderMap(); return;
+    }
+    lastTap={t:Date.now(),p}; handleTap(p);
+  } else renderMap();
+}
+mapCv.addEventListener("pointerup",endPtr);
+mapCv.addEventListener("pointercancel",endPtr);
+mapCv.addEventListener("wheel",e=>{
+  e.preventDefault(); mapFrame();
+  const p=cpos(e), g=geoAt(p,p.W);
+  M.v.half*=Math.exp(clamp(e.deltaY,-120,120)*0.0018); anchorTo(g,p,p.W); M.free=true; reqMap();
+},{passive:false});
+document.querySelector(".map-ctl").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-z]"); if(!b) return;
+  mapFrame(); const W=mapCv.clientWidth, c={x:W/2,y:W/2}, z=b.dataset.z;
+  if(z==="cloud"){ M.showCloud=!M.showCloud; renderMap(); return; }
+  if(z==="home"){ anchorTo({lat:S.loc.lat,lon:S.loc.lon},c,W); }
+  else { const g=geoAt(c,W);
+    if(z==="in") M.v.half/=1.6; else if(z==="out") M.v.half*=1.6;
+    else M.v.lon0+=M.v.h*(z==="rr"?30:-30);
+    anchorTo(g,c,W); }
+  M.free=true; renderMap();
+});
+
+function buildRaster(F,grid,N){
+  rcv.width=N; rcv.height=N;
+  const img=rctx.createImageData(N,N), d=img.data, T=Date.now()+M.ck*HOUR;
+  const dd=days(T), sun=sunRaDec(dd), gmst=280.46061837+360.98564736629*dd, sd=Math.sin(sun.dec), cd=Math.cos(sun.dec);
+  const cvals=M.showCloud?cgValsAt(T):null;
+  const lim=F.clip||170;
+  for(let j=0;j<N;j++) for(let i=0;i<N;i++){
+    const x=F.cx+((i+0.5)/N*2-1)*F.half, y=F.cy+((j+0.5)/N*2-1)*F.half;
+    if(Math.hypot(x,y)>lim) continue;
+    const g=unproj(x,y,F.h,F.lon0), la=rad(g.lat);
+    const alt=deg(Math.asin(clamp(Math.sin(la)*sd+Math.cos(la)*cd*Math.cos(rad(gmst+g.lon)-sun.ra),-1,1)));
+    const dayF=clamp((alt+6)/12,0,1);
+    let R=201,G=211,B=230,A=0.17*dayF;
+    const p=ovSample(grid,g.lat,g.lon);
+    if(p>=3){
+      const t=clamp(p/100,0,1); let cr=94,cg=240,cb=166;
+      if(t>=0.35&&t<0.65){const f=(t-0.35)/0.3;cr=94+148*f;cg=240-15*f;cb=166-88*f;}
+      else if(t>=0.65){const f=Math.min(1,(t-0.65)/0.3);cr=242+13*f;cg=225-135*f;cb=78+12*f;}
+      const aa=clamp(0.18+p/35,0,0.88)*(1-0.7*dayF), oa=aa+A*(1-aa);
+      R=(cr*aa+R*A*(1-aa))/oa; G=(cg*aa+G*A*(1-aa))/oa; B=(cb*aa+B*A*(1-aa))/oa; A=oa;
+    }
+    if(cvals){
+      const cv=cgSample(cvals,g.lat,g.lon);
+      if(cv!=null&&cv>4){
+        const ca=0.62*clamp(cv/100,0,1)*cv/(cv+8), oa=ca+A*(1-ca);
+        R=(214*ca+R*A*(1-ca))/oa; G=(220*ca+G*A*(1-ca))/oa; B=(232*ca+B*A*(1-ca))/oa; A=oa;
+      }
+    }
+    const k=(j*N+i)*4; d[k]=R; d[k+1]=G; d[k+2]=B; d[k+3]=A*255;
+  }
+  rctx.putImageData(img,0,0);
+}
+
+function renderMap(){
+  const W=mapCv.clientWidth; if(!W) return;
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  if(mapCv.width!==Math.round(W*dpr)||mapCv.height!==Math.round(W*dpr)){mapCv.width=Math.round(W*dpr);mapCv.height=Math.round(W*dpr);}
+  const c=mctx, F=mapFrame(), A=auroraGrid(), s=W/2/F.half;
+  M.frame=F;
+  const px=(lat,lon)=>{const p=proj(lat,lon,F.h,F.lon0);return [(p[0]-F.cx)*s+W/2,(p[1]-F.cy)*s+W/2];};
+  const pole=[(0-F.cx)*s+W/2,(0-F.cy)*s+W/2];
+  c.setTransform(dpr,0,0,dpr,0,0); c.clearRect(0,0,W,W);
+  c.save(); c.beginPath();
+  if(F.clip) c.arc(pole[0],pole[1],F.clip*s,0,Math.PI*2); else c.rect(0,0,W,W);
+  c.clip();
+  c.fillStyle="#0b1530"; c.fillRect(0,0,W,W);
+  c.fillStyle="#1c2a48"; c.strokeStyle="#34476f"; c.lineWidth=0.8; c.lineJoin="round";
+  for(const r of LAND){
+    if(F.h>0&&r.mx<-50) continue; if(F.h<0&&r.mn>50) continue;
+    c.beginPath(); r.pts.forEach((p,i)=>{const q=px(p[1],p[0]); i?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1]);});
+    c.closePath(); c.fill(); c.stroke();
+  }
+  const N=M.dragging?120:Math.max(120,Math.min(320,Math.round(W*dpr*0.55)));
+  const key=[F.h,F.lon0.toFixed(2),F.cx.toFixed(2),F.cy.toFixed(2),F.half,N,A.key,Math.floor(Date.now()/120000),M.showCloud?1:0,M.cgVer,M.ck].join("|");
+  if(key!==M.rkey){buildRaster(F,A.grid,N); M.rkey=key;}
+  c.imageSmoothingEnabled=true; c.drawImage(rcv,0,0,W,W);
+  // graticule
+  c.strokeStyle="rgba(143,156,181,.2)"; c.lineWidth=1; c.fillStyle="rgba(143,156,181,.75)"; c.font="10px 'IBM Plex Mono',ui-monospace,monospace";
+  for(let L=10;L<=80;L+=10){ const r=(90-L)*s; c.beginPath(); c.arc(pole[0],pole[1],r,0,Math.PI*2); c.stroke(); if(L<=70&&(F.half<40||L>=30)) c.fillText((F.h>0?"":"−")+L+"°",pole[0]+3,pole[1]-r-3); }
+  for(let k=0;k<12;k++){ const a=k*Math.PI/6, r=90*s; c.beginPath(); c.moveTo(pole[0],pole[1]); c.lineTo(pole[0]+Math.sin(a)*r,pole[1]+Math.cos(a)*r); c.stroke(); }
+  // view line
+  c.strokeStyle="#b98cff"; c.lineWidth=1.6; c.setLineDash([5,4]); c.beginPath(); let pen=false;
+  for(let lon=-180;lon<=180;lon+=2){
+    let edge=null; for(let la=25;la<=86;la+=0.5){ if(ovSample(A.grid,F.h*la,lon)>=10){edge=la;break;} }
+    if(edge==null||edge-6<20){pen=false;continue;}
+    const q=px(F.h*(edge-6),lon); if(pen) c.lineTo(q[0],q[1]); else {c.moveTo(q[0],q[1]);pen=true;}
+  }
+  c.stroke(); c.setLineDash([]);
+  // spots
+  M.spotPx=[];
+  const o=px(S.loc.lat,S.loc.lon), taken=[[o[0]-12,o[1]-12,o[0]+56,o[1]+20]];
+  const free=(r)=>!taken.some(t=>r[0]<t[2]&&r[2]>t[0]&&r[1]<t[3]&&r[3]>t[1]);
+  const labels=[];
+  c.font="11px 'Zen Kaku Gothic New','Hiragino Sans',sans-serif";
+  for(const ev of M.evals){
+    const sp=ev.sp; if((sp.lat>=0?1:-1)!==F.h) continue;
+    const q=px(sp.lat,sp.lon); if(q[0]<-10||q[1]<-10||q[0]>W+10||q[1]>W+10) continue;
+    const k=ev.e.st.key; M.spotPx.push({x:q[0],y:q[1],ev});
+    c.beginPath();
+    if(k==="vis"||k==="vish"){ c.fillStyle="rgba(94,240,166,.25)"; c.arc(q[0],q[1],9,0,Math.PI*2); c.fill(); c.beginPath(); c.fillStyle="#5ef0a6"; c.arc(q[0],q[1],4.5,0,Math.PI*2); c.fill(); }
+    else if(k==="none"){ c.fillStyle="rgba(143,156,181,.75)"; c.arc(q[0],q[1],2.5,0,Math.PI*2); c.fill(); }
+    else { c.strokeStyle="#f2c14e"; c.lineWidth=2; c.arc(q[0],q[1],4.5,0,Math.PI*2); c.stroke(); }
+    if((k==="vis"||k==="vish"||F.half<30)&&Math.hypot(q[0]-o[0],q[1]-o[1])>6){
+      const w=c.measureText(spName(sp)).width, r=[q[0]+6,q[1]-17,q[0]+8+w,q[1]-3];
+      if(free(r)){ taken.push(r); labels.push([spName(sp),q[0]+7,q[1]-6]); }
+    }
+  }
+  c.fillStyle="#e8edf5"; c.shadowColor="rgba(5,10,22,.9)"; c.shadowBlur=3;
+  for(const l of labels) c.fillText(l[0],l[1],l[2]);
+  c.shadowBlur=0;
+  // observer
+  c.strokeStyle="#ffffff"; c.lineWidth=2; c.beginPath(); c.arc(o[0],o[1],7,0,Math.PI*2); c.stroke();
+  c.beginPath(); c.moveTo(o[0]-11,o[1]); c.lineTo(o[0]-4,o[1]); c.moveTo(o[0]+4,o[1]); c.lineTo(o[0]+11,o[1]); c.moveTo(o[0],o[1]-11); c.lineTo(o[0],o[1]-4); c.moveTo(o[0],o[1]+4); c.lineTo(o[0],o[1]+11); c.stroke();
+  c.fillStyle="#ffffff"; c.font="700 11px 'Zen Kaku Gothic New','Hiragino Sans',sans-serif"; c.fillText(t("me"),o[0]+10,o[1]+15);
+  if(M.tap){ const t=px(M.tap.lat,M.tap.lon); c.strokeStyle="#e8edf5"; c.lineWidth=2; c.beginPath(); c.moveTo(t[0]-5,t[1]-5); c.lineTo(t[0]+5,t[1]+5); c.moveTo(t[0]+5,t[1]-5); c.lineTo(t[0]-5,t[1]+5); c.stroke(); }
+  // cloud-grid footprint + nearby candidates
+  if(M.cg&&M.showCloud){
+    const g=M.cg, e=g.south+(CG_N-1)*CG_DLAT, w=g.west, ea=g.west+(CG_N-1)*g.dlon, ring=[];
+    for(let k=0;k<=20;k++) ring.push([g.south,w+(ea-w)*k/20]);
+    for(let k=0;k<=20;k++) ring.push([g.south+(e-g.south)*k/20,ea]);
+    for(let k=20;k>=0;k--) ring.push([e,w+(ea-w)*k/20]);
+    for(let k=20;k>=0;k--) ring.push([g.south+(e-g.south)*k/20,w]);
+    c.strokeStyle="rgba(232,237,245,.35)"; c.lineWidth=1; c.setLineDash([2,4]); c.beginPath();
+    ring.forEach((p,k)=>{const q=px(p[0],p[1]); k?c.lineTo(q[0],q[1]):c.moveTo(q[0],q[1]);}); c.closePath(); c.stroke(); c.setLineDash([]);
+  }
+  c.font="700 11px 'IBM Plex Mono',ui-monospace,monospace"; c.textAlign="center"; c.textBaseline="middle";
+  M.near.forEach((x,n)=>{
+    const q=px(x.p.lat,x.p.lon);
+    if(F.half>6){ c.beginPath(); c.fillStyle="#e8edf5"; c.arc(q[0],q[1],3,0,Math.PI*2); c.fill(); return; }
+    c.beginPath(); c.fillStyle="#e8edf5"; c.arc(q[0],q[1],8.5,0,Math.PI*2); c.fill();
+    c.strokeStyle="#0a1122"; c.lineWidth=1.5; c.stroke();
+    c.fillStyle="#0a1122"; c.fillText(String(n+1),q[0],q[1]+0.5);
+  });
+  c.textAlign="start"; c.textBaseline="alphabetic";
+  c.restore();
+  if(F.clip){ c.strokeStyle="#26334f"; c.lineWidth=1; c.beginPath(); c.arc(pole[0],pole[1],F.clip*s,0,Math.PI*2); c.stroke(); }
+  // captions
+  $("#mapSrc").textContent=(A.src==="ovation"
+    ?t("srcOv",isFinite(S.ovTime)?hm(S.ovTime):"")
+    :t("srcKp",S.hours[0]?S.hours[0].kp.toFixed(1):""))+
+    (M.showCloud&&M.cg?t("srcCloud",t("when",M.ck)):"");
+  const cb=document.querySelector('.map-ctl button[data-z="cloud"]'); if(cb) cb.setAttribute("aria-pressed",M.showCloud?"true":"false");
+  document.querySelectorAll("#mapMode button").forEach(b=>{
+    const on=!M.free&&(M.mode==="local"?b.dataset.m==="local":b.dataset.m===(F.h>0?"north":"south"));
+    b.setAttribute("aria-pressed",on?"true":"false");
+  });
+}
+
+function placeName(sp,lang){ return (lang||LANG)==="en"?sp.enName+", "+sp.enArea:sp.name+"（"+sp.area+"）"; }
+function spName(sp){ return LANG==="en"?sp.enName:sp.name; }
+function spArea(sp){ return LANG==="en"?sp.enArea:sp.area; }
+function renderSpots(){
+  const A=auroraGrid();
+  const list=SPOTS.map((sp,i)=>({sp,i,e:evalPoint(sp.lat,sp.lon,M.spotCloud?M.spotCloud[i]:null,A.grid)}));
+  list.sort((a,b)=>(b.e.vis-a.e.vis)||(b.e.aur-a.e.aur));
+  M.evals=list;
+  const vis=list.filter(x=>x.e.st.key==="vis"||x.e.st.key==="vish");
+  $("#spotSub").textContent=(vis.length?t("spotVis",SPOTS.length,vis.length):t("spotNone",SPOTS.length))+
+    (M.spotCloud?t("spotCl"):t("spotNoCl"));
+  const shown=M.showAll?list:list.slice(0,8);
+  $("#spots").innerHTML=shown.map(x=>{
+    const e=x.e;
+    return '<div class="spot"><div class="nm">'+esc(spName(x.sp))+'<small>'+esc(spArea(x.sp))+'</small></div>'+
+      '<span class="chip-s st '+e.st.cls+'">'+e.st.label+'</span>'+
+      '<div class="vals mono">'+t("pr")+' '+Math.round(e.aur)+'% · '+t("cl")+' '+(e.cloud==null?"—":Math.round(e.cloud)+"%")+' · '+t("sun")+' '+e.sAlt.toFixed(0)+'°</div>'+
+      '<button class="btn sm go" type="button" data-spot="'+x.i+'">'+t("spotGo")+'</button></div>';
+  }).join("");
+  $("#spotMore").textContent=M.showAll?t("top8"):t("all",SPOTS.length);
+  // observer line
+  const cl=S.cloud?cloudAt(Date.now()).eff:null, me=evalPoint(S.loc.lat,S.loc.lon,cl,A.grid);
+  $("#mapNow").innerHTML='<b>'+esc(shortName(locLabel(S.loc)))+'</b>　<span class="chip-s '+me.st.cls+'">'+me.st.label+'</span>　<span class="mono" style="color:var(--mute);font-size:12px">'+t("pr")+' '+Math.round(me.aur)+'%'+(me.cloud!=null?' · '+t("cl")+' '+Math.round(me.cloud)+'%':'')+' · '+t("sun")+' '+me.sAlt.toFixed(0)+'°</span>';
+}
+function renderTap(){
+  const box=$("#tapInfo"), tp=M.tap; if(!tp){box.hidden=true;return;}
+  const e=evalPoint(tp.lat,tp.lon,tp.cloud,auroraGrid().grid);
+  const title=tp.spot!=null?placeName(SPOTS[tp.spot]):tp.cand?t("candName",tp.cand.n,t("dirs")[tp.cand.di],tp.cand.km):t("latlon",tp.lat,tp.lon);
+  const cloudTxt=tp.cloud===undefined?t("fetching"):tp.cloud==null?t("na"):Math.round(tp.cloud)+"%";
+  const twi=twiOf(e.sAlt,"twi2");
+  const row=(k,v,sub)=>'<div class="row"><span class="k">'+k+'</span><span class="v">'+v+(sub?"<small>"+sub+"</small>":"")+'</span></div>';
+  box.innerHTML='<div class="t-head"><b>'+esc(title)+'</b><span class="chip-s '+e.st.cls+'">'+e.st.label+'</span></div>'+
+    '<div class="facts">'+row(t("pOver"),Math.round(e.over)+"%","")+row(t("pHor"),Math.round(e.hor)+"%",t("pHorSub"))+
+    row(t("fSun"),e.sAlt.toFixed(1)+"°",twi)+row(t("cloudNow"),cloudTxt,"")+'</div>'+
+    '<button class="btn sm" type="button" id="tapGo" style="align-self:flex-start">'+t("tapGo")+'</button>';
+  box.hidden=false;
+}
+async function fetchPointCloud(lat,lon){
+  const j=await getJSON("https://api.open-meteo.com/v1/forecast?latitude="+lat.toFixed(2)+"&longitude="+lon.toFixed(2)+"&current=cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high");
+  const c=(j&&j.current)||{}; return effCloud(num(c.cloud_cover_low),num(c.cloud_cover_mid),num(c.cloud_cover_high),num(c.cloud_cover));
+}
+async function fetchSpotClouds(){
+  const q="latitude="+SPOTS.map(s=>s.lat).join(",")+"&longitude="+SPOTS.map(s=>s.lon).join(",")+"&current=cloud_cover,cloud_cover_low,cloud_cover_mid,cloud_cover_high";
+  const j=await getJSON("https://api.open-meteo.com/v1/forecast?"+q), arr=Array.isArray(j)?j:[j];
+  if(arr.length!==SPOTS.length) throw new Error("length");
+  return arr.map(o=>{const c=(o&&o.current)||{};return effCloud(num(c.cloud_cover_low),num(c.cloud_cover_mid),num(c.cloud_cover_high),num(c.cloud_cover));});
+}
+function handleTap(pt){
+  const F=M.frame; if(!F) return;
+  const W=pt.W, x0=pt.x, y0=pt.y;
+  let hit=null, bd=16; for(const p of M.spotPx){const d=Math.hypot(p.x-x0,p.y-y0); if(d<bd){bd=d;hit=p;}}
+  const x=F.cx+(x0/W*2-1)*F.half, y=F.cy+(y0/W*2-1)*F.half;
+  if(!hit&&F.clip&&Math.hypot(x,y)>F.clip) return;
+  let tp;
+  if(hit) tp={lat:hit.ev.sp.lat,lon:hit.ev.sp.lon,spot:hit.ev.i,cloud:M.spotCloud?M.spotCloud[hit.ev.i]:undefined};
+  else { const g=unproj(x,y,F.h,F.lon0); tp={lat:g.lat,lon:g.lon,cloud:undefined}; }
+  M.tap=tp; renderMap(); renderTap();
+  if(tp.cloud===undefined) fetchPointCloud(tp.lat,tp.lon).then(v=>{tp.cloud=v;},()=>{tp.cloud=null;}).then(()=>{ if(M.tap===tp) renderTap(); });
+}
+$("#tapInfo").addEventListener("click",e=>{
+  if(!e.target.closest("#tapGo")||!M.tap) return;
+  const tp=M.tap, sp=tp.spot!=null?SPOTS[tp.spot]:null;
+  const loc=sp?{id:"spot-"+sp.id,name:placeName(sp,"ja"),en:placeName(sp,"en"),lat:sp.lat,lon:sp.lon,tz:null}:customLoc(tp.lat,tp.lon);
+  setLoc(loc); window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
+});
+$("#spots").addEventListener("click",e=>{
+  const b=e.target.closest("[data-spot]"); if(!b) return;
+  const sp=SPOTS[Number(b.dataset.spot)];
+  setLoc({id:"spot-"+sp.id,name:placeName(sp,"ja"),en:placeName(sp,"en"),lat:sp.lat,lon:sp.lon,tz:null}); window.scrollTo({top:0,behavior:reduce?"auto":"smooth"});
+});
+$("#spotMore").addEventListener("click",()=>{M.showAll=!M.showAll; renderSpots();});
+document.querySelectorAll("#nearTime button").forEach(b=>b.addEventListener("click",()=>{ M.ck=Number(b.dataset.k); renderNear(); renderMap(); }));
+document.querySelectorAll("#nearRad button").forEach(b=>b.addEventListener("click",()=>{ M.crad=Number(b.dataset.r); renderNear(); renderMap(); }));
+$("#nearHere").addEventListener("click",()=>{
+  mapFrame(); const W=mapCv.clientWidth, g=geoAt({x:W/2,y:W/2},W);
+  M.cgBase={lat:g.lat,lon:g.lon}; M.cg=null; M.near=[]; loadCloudGrid(true);
+});
+$("#nearList").addEventListener("click",e=>{
+  const b=e.target.closest("[data-near]"); if(!b) return;
+  const x=M.near[Number(b.dataset.near)]; if(!x) return;
+  mapFrame(); const W=mapCv.clientWidth;
+  M.v.half=Math.min(M.v.half,2.2); anchorTo({lat:x.p.lat,lon:x.p.lon},{x:W/2,y:W/2},W); M.free=true;
+  M.tap={lat:x.p.lat,lon:x.p.lon,cand:{n:Number(b.dataset.near)+1,di:x.db.di,km:Math.round(x.db.d)},cloud:x.e.cloud};
+  renderMap(); renderTap(); $("#mapSec").scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});
+});
+document.querySelectorAll("#mapMode button").forEach(b=>b.addEventListener("click",()=>{
+  M.mode=b.dataset.m; M.v=null; M.free=false; save("aurora-map",M.mode==="local"?"local":"auto"); M.tap=null; renderMap(); renderTap();
+}));
+if(window.ResizeObserver) new ResizeObserver(()=>renderMap()).observe(mapCv); else window.addEventListener("resize",renderMap);
+
+/* ---------- status & manual ---------- */
+function renderStatus(){
+  for(const k of ["kp","sw","ov","cl"]) $("#st-"+k).dataset.s=S.status[k];
+  $("#updated").textContent=S.updated?t("updated",new Intl.DateTimeFormat(LOCALE(),{hour:"2-digit",minute:"2-digit",hourCycle:"h23"}).format(S.updated)):"";
+  const kpMissing=S.status.kp==="fail", clMissing=S.status.cl==="fail";
+  $("#manual").hidden=!(kpMissing||clMissing);
+  $("#kpSlider").hidden=!kpMissing; $("#clSlider").hidden=!clMissing;
+  if(kpMissing&&clMissing&&S.status.sw==="fail"&&S.status.ov==="fail")
+    $("#manualNote").textContent=t("manualAll");
+  else $("#manualNote").textContent=t("manualSome");
+}
+function renderAll(){
+  const H=buildHours(); S.hours=H;
+  renderHero(H); renderNights(H); renderNowcast(H); renderSpots(); renderNear(); renderMap(); renderTap(); renderTimeline(H.slice(0,48)); renderDetail(H); renderNow(H); renderKp(); renderStatus(); renderCal(); renderInvite();
+}
+
+/* ---------- loading ---------- */
+let loading=false;
+async function refresh(all){
+  if(loading) return; loading=true; $("#refresh").disabled=true;
+  const jobs=[];
+  if(all!==false){
+    S.status.kp=S.status.sw=S.status.ov="loading";
+    jobs.push(fetchKp().then(v=>{S.kp=v;S.status.kp="live"},()=>{S.status.kp="fail"}).then(renderAll));
+    jobs.push(fetchSW().then(v=>{S.sw=v;S.status.sw="live"},()=>{S.status.sw="fail"}).then(renderAll));
+    jobs.push(fetchOvation().then(v=>{S.ovGrid=v.grid;S.ovTime=v.time;S.status.ov="live";M.ovVer++},()=>{S.status.ov="fail"}).then(renderAll));
+    jobs.push(fetch27().then(v=>{CAL.kp27=v;},()=>{}).then(renderCal));
+    jobs.push(fetchSpotClouds().then(v=>{M.spotCloud=v;M.spotT=Date.now()},()=>{if(Date.now()-M.spotT>3*HOUR) M.spotCloud=null}).then(renderAll));
+  }
+  S.status.cl="loading"; renderStatus();
+  jobs.push(loadCloudGrid(false));
+  const loc=S.loc;
+  jobs.push(fetchCloud(loc).then(v=>{if(loc===S.loc){S.cloud=v;S.status.cl="live"}},()=>{if(loc===S.loc){S.cloud=null;S.status.cl="fail"}}).then(renderAll));
+  await Promise.allSettled(jobs);
+  S.updated=new Date(); loading=false; $("#refresh").disabled=false; renderAll();
+  const sc=$("#tlScroll"), i0=S.hours.findIndex(h=>h.dark>0.05);
+  if(i0>2) sc.scrollLeft=Math.max(0,40+(i0-2)*16);
+}
+
+/* ---------- language switch ---------- */
+function applyLang(){
+  document.documentElement.lang=LANG;
+  document.querySelectorAll("[data-i18n]").forEach(e=>{e.textContent=t(e.dataset.i18n);});
+  document.querySelectorAll("[data-i18n-aria]").forEach(e=>{const v=t(e.dataset.i18nAria); e.setAttribute("aria-label",v); if(e.hasAttribute("title")) e.setAttribute("title",v);});
+  document.querySelectorAll("[data-setlang]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.setlang===LANG?"true":"false"));
+  if(!PAGE&&/github\.io$/.test(location.hostname)) document.title=t("title");
+  fillSelect(); renderAll();
+}
+$("#langSeg").addEventListener("click",e=>{
+  const b=e.target.closest("[data-setlang]"); if(!b||b.dataset.setlang===LANG) return;
+  if(PAGE&&PAGE.alt){ save("aurora-lang",b.dataset.setlang); location.href=PAGE.alt; return; }
+  LANG=b.dataset.setlang; save("aurora-lang",LANG); applyLang();
+});
+
+/* ---------- location UI ---------- */
+function fillSelect(){
+  const sel=$("#loc"); let h="";
+  for(const p of PRESETS) h+='<option value="'+p.id+'">'+esc(locLabel(p))+"</option>";
+  h+='<option value="__geo">'+t("useGeo")+'</option><option value="__custom">'+t("enterCoord")+'</option>';
+  if(!PRESETS.some(p=>p.id===S.loc.id)) h+='<option value="'+esc(S.loc.id)+'">'+esc(S.loc.id==="custom"?t("customOpt",S.loc.lat.toFixed(2),S.loc.lon.toFixed(2)):locLabel(S.loc))+"</option>";
+  sel.innerHTML=h; sel.value=S.loc.id;
+}
+function setLoc(loc){
+  S.loc=loc; S.cloud=null; S.sel=null; M.tap=null; M.v=null; M.free=false; M.cgBase=null; M.near=[]; if(M.mode!=="local") M.mode="auto"; save("aurora-loc",loc); fillSelect(); renderAll(); refresh(false);
+}
+function customLoc(lat,lon){return {id:"custom",name:I18N.ja.custom,en:I18N.en.custom,lat,lon,tz:null}}
+$("#loc").addEventListener("change",e=>{
+  const v=e.target.value; $("#customMsg").textContent="";
+  if(v==="__custom"){$("#customBox").hidden=false;$("#lat").focus();e.target.value=S.loc.id;return;}
+  if(v==="__geo"){
+    e.target.value=S.loc.id; $("#customBox").hidden=false;
+    if(!navigator.geolocation){$("#customMsg").textContent=t("noGeo");return;}
+    $("#customMsg").textContent=t("gettingGeo");
+    try{
+      navigator.geolocation.getCurrentPosition(p=>{$("#customMsg").textContent="";$("#customBox").hidden=true;setLoc(customLoc(p.coords.latitude,p.coords.longitude));},
+        ()=>{$("#customMsg").textContent=t("geoFail");},{timeout:10000,maximumAge:600000});
+    }catch(err){$("#customMsg").textContent=t("geoFail");}
+    return;
+  }
+  const p=PRESETS.find(x=>x.id===v); if(p){$("#customBox").hidden=true;setLoc(p);}
+});
+$("#setCustom").addEventListener("click",()=>{
+  const lat=parseFloat($("#lat").value), lon=parseFloat($("#lon").value);
+  if(!(lat>=-90&&lat<=90)||!(lon>=-180&&lon<=180)){$("#customMsg").textContent=t("badCoord");return;}
+  $("#customMsg").textContent=""; $("#customBox").hidden=true; setLoc(customLoc(lat,lon));
+});
+$("#refresh").addEventListener("click",()=>refresh(true));
+$("#mKp").addEventListener("input",e=>{S.manual.kp=Number(e.target.value);$("#mKpOut").textContent=S.manual.kp.toFixed(1);renderAll();});
+$("#mCl").addEventListener("input",e=>{S.manual.cloud=Number(e.target.value);$("#mClOut").textContent=S.manual.cloud+"%";renderAll();});
+
+
+/* ---------- "look outside now" nowcast ---------- */
+const AL={on:!!load("aurora-alert"),dismissUntil:0,lastLv:0,lastNotify:{1:0,2:0},audio:null,wake:null,timer:null};
+function nowcastState(H){
+  const h=H[0]; if(!h) return {lv:0};
+  const A=auroraGrid(), cl=S.cloud?cloudAt(Date.now()).eff:null;
+  const e=evalPoint(S.loc.lat,S.loc.lon,cl,A.grid);
+  const bz=S.sw&&Number.isFinite(S.sw.bz)?S.sw.bz:null;
+  const dark=e.dark>=0.5, clearOk=cl==null||cl<60, clearMaybe=cl==null||cl<80;
+  const strong=e.aur>=35||(bz!=null&&bz<=-10&&e.aur>=10);
+  const some=e.aur>=15||(bz!=null&&bz<=-6&&e.aur>=5);
+  const lv=dark&&clearOk&&strong?2:dark&&clearMaybe&&some?1:0;
+  return {lv,aur:e.aur,bz,cl};
+}
+function renderNowcast(H){
+  const st=nowcastState(H), bar=$("#nowcast");
+  const show=st.lv>0&&Date.now()>AL.dismissUntil;
+  bar.hidden=!show; bar.dataset.lv=st.lv;
+  if(show){
+    $("#ncTitle").textContent=st.lv===2?t("ncStrong"):t("ncSome");
+    const parts=[S.loc.lat>=0?t("dirN"):t("dirS"),t("pr")+" "+Math.round(st.aur)+"%"];
+    if(st.bz!=null) parts.push("Bz "+(st.bz>0?"+":"")+st.bz.toFixed(1)+" nT");
+    if(st.cl!=null) parts.push(t("cl")+" "+Math.round(st.cl)+"%");
+    $("#ncWhy").textContent=parts.join(" · ");
+  }
+  document.body.style.paddingBottom=show?"96px":"";
+  if(AL.on&&st.lv>AL.lastLv&&Date.now()-AL.lastNotify[st.lv]>20*60000){ AL.lastNotify[st.lv]=Date.now(); fireAlert(st.lv); }
+  AL.lastLv=st.lv;
+  renderAlertBox();
+}
+function renderAlertBox(){
+  $("#alertBox").dataset.on=AL.on?"true":"false";
+  const b=$("#alertToggle"); b.textContent=AL.on?t("alertOff"):t("alertOn"); b.setAttribute("aria-pressed",AL.on?"true":"false");
+  let msg=AL.on?t("alertDescOn"):t("alertDescOff");
+  if(AL.on&&!(("Notification" in window)&&Notification.permission==="granted")) msg+=" "+t("alertNoNotif");
+  $("#alertState").textContent=msg;
+}
+function chime(lv){
+  try{
+    const ac=AL.audio; if(!ac) return; if(ac.state==="suspended") ac.resume();
+    const notes=lv===2?[660,880,1320]:[660,880];
+    notes.forEach((f,i)=>{ const o=ac.createOscillator(), g=ac.createGain(), t0=ac.currentTime+i*0.22;
+      o.type="sine"; o.frequency.value=f; g.gain.setValueAtTime(0.0001,t0); g.gain.exponentialRampToValueAtTime(0.25,t0+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t0+0.5);
+      o.connect(g).connect(ac.destination); o.start(t0); o.stop(t0+0.55); });
+  }catch(e){}
+}
+function fireAlert(lv){
+  chime(lv);
+  try{ if(navigator.vibrate) navigator.vibrate(lv===2?[200,100,200,100,400]:[200,100,200]); }catch(e){}
+  const place=shortName(locLabel(S.loc)), body=lv===2?t("notifStrong",place):t("notifSome",place);
+  try{
+    if(("Notification" in window)&&Notification.permission==="granted"){
+      const opt={body,icon:"icon-192.png",badge:"icon-192.png",tag:"kyokko-nowcast",renotify:true};
+      if(navigator.serviceWorker&&navigator.serviceWorker.controller) navigator.serviceWorker.ready.then(r=>r.showNotification(t("title").split(/[｜|]/)[0].trim(),opt)).catch(()=>{});
+      else new Notification(t("title").split(/[｜|]/)[0].trim(),opt);
+    }
+  }catch(e){}
+}
+async function pollNow(){
+  if(document.hidden&&!AL.on) return;
+  const r=await Promise.allSettled([fetchSW(),fetchOvation()]);
+  if(r[0].status==="fulfilled"){S.sw=r[0].value;S.status.sw="live";}
+  if(r[1].status==="fulfilled"){S.ovGrid=r[1].value.grid;S.ovTime=r[1].value.time;S.status.ov="live";M.ovVer++;}
+  renderAll();
+}
+function setAlert(on){
+  AL.on=on; save("aurora-alert",on);
+  clearInterval(AL.timer); AL.timer=on?setInterval(()=>{ if(!loading) pollNow(); },2*60000):null;
+  renderAlertBox();
+}
+$("#alertToggle").addEventListener("click",async()=>{
+  if(AL.on){ setAlert(false); return; }
+  try{ AL.audio=AL.audio||new (window.AudioContext||window.webkitAudioContext)(); AL.audio.resume(); }catch(e){}
+  try{ if(("Notification" in window)&&Notification.permission==="default") await Notification.requestPermission(); }catch(e){}
+  AL.lastLv=0; setAlert(true); chime(1);
+});
+async function setWake(on){
+  try{
+    if(on){ if(navigator.wakeLock) AL.wake=await navigator.wakeLock.request("screen"); else $("#wakeChk").checked=false; }
+    else if(AL.wake){ await AL.wake.release(); AL.wake=null; }
+  }catch(e){ $("#wakeChk").checked=false; AL.wake=null; }
+}
+$("#wakeChk").addEventListener("change",e=>setWake(e.target.checked));
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden&&$("#wakeChk").checked&&!AL.wake) setWake(true); });
+$("#ncClose").addEventListener("click",()=>{ AL.dismissUntil=Date.now()+20*60000; renderNowcast(S.hours); });
+
+/* ---------- share image ---------- */
+const SH={blob:null,url:null};
+function appUrl(){ return /github\.io$/.test(location.hostname)?location.origin+location.pathname:"https://gaaasuu2013-prog.github.io/aurora/"; }
+function fitFont(g,text,weight,family,max,width){ let sz=max; do{ g.font=weight+" "+sz+"px "+family; if(g.measureText(text).width<=width) break; sz-=4; }while(sz>24); return sz; }
+async function makeShareImage(){
+  const F={disp:"'Zen Old Mincho','Hiragino Mincho ProN','Yu Mincho',serif",body:"'Zen Kaku Gothic New','Hiragino Sans','Noto Sans JP',sans-serif",data:"'IBM Plex Mono',ui-monospace,monospace"};
+  try{ await Promise.all(["900 80px 'Zen Old Mincho'","700 40px 'Zen Kaku Gothic New'","500 40px 'IBM Plex Mono'"].map(f=>document.fonts.load(f))); }catch(e){}
+  const W=1080,Hh=1920,c=document.createElement("canvas"); c.width=W; c.height=Hh; const g=c.getContext("2d");
+  const bg=g.createLinearGradient(0,0,0,Hh); bg.addColorStop(0,"#050a16"); bg.addColorStop(.55,"#0c1730"); bg.addColorStop(1,"#0a1122"); g.fillStyle=bg; g.fillRect(0,0,W,Hh);
+  let sd=11; const rnd=()=>{sd=(sd*16807)%2147483647; return sd/2147483647;};
+  for(let i=0;i<220;i++){ g.fillStyle="rgba(232,237,245,"+(0.2+rnd()*0.6)+")"; g.beginPath(); g.arc(rnd()*W,rnd()*Hh*0.7,rnd()*2.2+0.5,0,6.283); g.fill(); }
+  const H=S.hours, sc0=H.length?Math.round(Math.max(...H.slice(0,24).map(h=>h.score))):0, I=clamp(0.25+sc0/110,0.25,1);
+  const oc=document.createElement("canvas"); oc.width=W; oc.height=Hh; const og=oc.getContext("2d"); og.globalCompositeOperation="lighter";
+  for(let k=0;k<2;k++) for(let x=0;x<=W;x+=3){
+    const u=x/W, top=Hh*(0.05+k*0.06)+Hh*0.04*Math.sin(u*5.2+k*2.1)+Hh*0.015*Math.sin(u*17-k);
+    const ray=0.55+0.45*Math.sin(u*90+k*3)*Math.sin(u*37+1.3), L=Hh*0.32*(0.55+0.45*(0.5+0.5*Math.sin(u*23+k)));
+    const a=(k?0.18:0.32)*I*Math.max(0.15,ray), gr=og.createLinearGradient(0,top-60,0,top+L);
+    gr.addColorStop(0,"rgba(185,140,255,0)"); gr.addColorStop(0.08,"rgba(170,140,255,"+(a*0.6)+")"); gr.addColorStop(0.22,"rgba(94,240,166,"+a+")"); gr.addColorStop(1,"rgba(94,240,166,0)");
+    og.fillStyle=gr; og.fillRect(x,top-60,5,L+60);
+  }
+  g.globalCompositeOperation="lighter";
+  try{ g.filter="blur(5px)"; g.drawImage(oc,0,0); g.filter="none"; g.globalAlpha=0.45; g.drawImage(oc,0,0); g.globalAlpha=1; }catch(e){ g.drawImage(oc,0,0); }
+  g.globalCompositeOperation="source-over";
+  const fade=g.createLinearGradient(0,Hh*0.25,0,Hh*0.55); fade.addColorStop(0,"rgba(10,17,34,0)"); fade.addColorStop(1,"rgba(10,17,34,.85)"); g.fillStyle=fade; g.fillRect(0,Hh*0.25,W,Hh*0.75);
+  const X=96, txt=(s,x,y,font,col,align)=>{ g.font=font; g.fillStyle=col; g.textAlign=align||"left"; g.fillText(s,x,y); };
+  txt("極光ナビ",X,230,"700 40px "+F.disp,"#e8edf5"); g.font="700 40px "+F.disp; const bw=g.measureText("極光ナビ").width;
+  txt("KYOKKO NAVI",X+bw+20,230,"500 26px "+F.body,"#a9b6cc");
+  const place=shortName(locLabel(S.loc)), gs=nightGroups(H), sm=gs.length?nightSummary(H,gs[0]):null;
+  const sz=fitFont(g,place,"900",F.disp,96,W-2*X); txt(place,X,560,"900 "+sz+"px "+F.disp,"#e8edf5");
+  const nd=sm?t("imgNight",md(sm.start)):""; txt(nd,X,630,"500 38px "+F.body,"#a9b6cc");
+  const sc=sm?Math.round(sm.best.score):0, [v]=verdict(sc);
+  g.font="500 300px "+F.data; g.fillStyle=scoreColor(Math.max(sc,25)); g.textAlign="left"; g.shadowColor="rgba(94,240,166,.45)"; g.shadowBlur=40; g.fillText(String(sc),X-10,960); g.shadowBlur=0;
+  const sw=g.measureText(String(sc)).width; txt("/ 100",X+sw+10,960,"500 54px "+F.data,"#8f9cb5");
+  const vs=fitFont(g,v,"900",F.disp,104,W-2*X); txt(v,X,1100,"900 "+vs+"px "+F.disp,"#e8edf5");
+  if(sm&&sc>=5) txt(t("win",hm(sm.a),hm(sm.b)),X,1180,"500 44px "+F.body,"#e8edf5");
+  txt(t("imgNext"),X,1320,"700 34px "+F.body,"#a9b6cc");
+  const cw=(W-2*X-40)/3;
+  gs.forEach((gr,i)=>{
+    const s2=nightSummary(H,gr), x=X+i*(cw+20), y=1350, s3=Math.round(s2.best.score);
+    g.fillStyle="rgba(16,26,48,.92)"; g.strokeStyle="#26334f"; g.lineWidth=2; g.beginPath(); g.roundRect(x,y,cw,190,24); g.fill(); g.stroke();
+    txt(t("nLbl")[i],x+24,y+50,"700 30px "+F.body,"#e8edf5"); txt(md(s2.start),x+24,y+88,"400 24px "+F.body,"#8f9cb5");
+    txt(String(s3),x+24,y+160,"500 64px "+F.data,scoreColor(Math.max(s3,25)));
+  });
+  txt(t("imgFree"),W/2,1690,"700 38px "+F.body,"#e8edf5","center");
+  txt(appUrl().replace(/^https?:\/\//,"").replace(/\/$/,""),W/2,1745,"500 30px "+F.data,"#5ef0a6","center");
+  return await new Promise(r=>c.toBlob(r,"image/png"));
+}
+async function openShare(){
+  $("#shareMsg").textContent=t("shareMaking"); $("#shareModal").hidden=false;
+  try{
+    SH.blob=await makeShareImage(); if(SH.url) URL.revokeObjectURL(SH.url); SH.url=URL.createObjectURL(SH.blob);
+    $("#shareImg").src=SH.url; $("#shareImg").alt=t("shareTitle"); $("#shareMsg").textContent="";
+  }catch(e){ $("#shareMsg").textContent=t("shareFail"); }
+  $("#shareClose").focus();
+}
+function shareMsgText(){ const gs=nightGroups(S.hours), sm=gs.length?nightSummary(S.hours,gs[0]):null, sc=sm?Math.round(sm.best.score):0;
+  return t("shareText",shortName(locLabel(S.loc)),sc,verdict(sc)[0]); }
+$("#shareBtn").addEventListener("click",openShare);
+function renderInvite(){
+  const tags=t("tags"), text=shareMsgText(), u=c=>appUrl()+"?utm_campaign="+c;
+  $("#invTags").textContent=tags;
+  $("#invX").href="https://twitter.com/intent/tweet?text="+encodeURIComponent(text+" "+tags)+"&url="+encodeURIComponent(u("x"));
+  $("#invThreads").href="https://www.threads.net/intent/post?text="+encodeURIComponent(text+" "+tags+"\n"+u("threads"));
+  $("#invLine").href="https://line.me/R/share?text="+encodeURIComponent(text+"\n"+u("line"));
+}
+$("#invImg").addEventListener("click",openShare);
+$("#invCopy").addEventListener("click",async()=>{
+  const v=t("tags");
+  try{ await navigator.clipboard.writeText(v); $("#invMsg").textContent=t("invCopied"); }catch(e){ $("#invMsg").textContent=v; }
+});
+$("#shareClose").addEventListener("click",()=>{ $("#shareModal").hidden=true; $("#shareBtn").focus(); });
+$("#shareModal").addEventListener("click",e=>{ if(e.target.id==="shareModal") $("#shareClose").click(); });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&!$("#shareModal").hidden) $("#shareClose").click(); });
+$("#shareGo").addEventListener("click",async()=>{
+  const url=appUrl()+"?utm_campaign=share", text=shareMsgText()+" "+t("tags");
+  try{
+    const file=SH.blob?new File([SH.blob],"kyokko-navi.png",{type:"image/png"}):null;
+    if(file&&navigator.canShare&&navigator.canShare({files:[file]})){ await navigator.share({files:[file],text:text+"\n"+url}); return; }
+    if(navigator.share){ await navigator.share({title:t("title"),text,url}); return; }
+    $("#shareMsg").textContent=t("shareFail");
+  }catch(e){ if(e&&e.name!=="AbortError") $("#shareMsg").textContent=t("shareFail"); }
+});
+$("#shareSave").addEventListener("click",()=>{
+  if(!SH.url) return; const a=document.createElement("a"); a.href=SH.url; a.download="kyokko-navi-"+ymd(Date.now()).replace(/\D/g,"")+".png";
+  document.body.appendChild(a); a.click(); a.remove();
+});
+$("#shareCopy").addEventListener("click",async()=>{
+  const v=shareMsgText()+" "+appUrl()+"?utm_campaign=share";
+  try{ await navigator.clipboard.writeText(v); $("#shareMsg").textContent=t("shareCopied"); }catch(e){ $("#shareMsg").textContent=v; }
+});
+
+/* ---------- sky canvas ---------- */
+const cv=$("#sky"), ctx=cv.getContext("2d");
+const reduce=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+const stars=Array.from({length:70},()=>({x:Math.random(),y:Math.random()*0.8,r:Math.random()*1.1+0.3,a:Math.random()*0.6+0.2}));
+function drawSky(ts){
+  const dpr=Math.min(window.devicePixelRatio||1,2), w=cv.clientWidth, h=cv.clientHeight;
+  if(!w||!h) return;
+  if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr);}
+  ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,w,h);
+  ctx.globalCompositeOperation="source-over";
+  for(const s of stars){ctx.fillStyle="rgba(232,237,245,"+s.a+")";ctx.beginPath();ctx.arc(s.x*w,s.y*h,s.r,0,6.283);ctx.fill();}
+  ctx.globalCompositeOperation="lighter";
+  const I=S.intensity, tt=ts*0.00025;
+  for(let k=0;k<3;k++){
+    const yb=h*(0.18+k*0.07), len=h*(0.32+0.1*k);
+    const g=ctx.createLinearGradient(0,yb-h*0.1,0,yb+len);
+    g.addColorStop(0,"rgba(185,140,255,"+(0.10*I)+")");
+    g.addColorStop(0.25,"rgba(94,240,166,"+(0.32*I)+")");
+    g.addColorStop(1,"rgba(94,240,166,0)");
+    ctx.fillStyle=g; ctx.beginPath();
+    const pts=[];
+    for(let x=-10;x<=w+10;x+=8){
+      const y=yb+h*0.10*Math.sin(x*0.006+k*1.9+tt*(1+k*0.4))+h*0.035*Math.sin(x*0.021-tt*2.1+k);
+      pts.push([x,y]);
+    }
+    ctx.moveTo(pts[0][0],pts[0][1]); for(const p of pts) ctx.lineTo(p[0],p[1]);
+    for(let i=pts.length-1;i>=0;i--) ctx.lineTo(pts[i][0],pts[i][1]+len*(0.75+0.25*Math.sin(pts[i][0]*0.03+tt*3+k)));
+    ctx.closePath(); ctx.fill();
+  }
+  ctx.globalCompositeOperation="source-over";
+  const fade=ctx.createLinearGradient(0,0,w,0);
+  fade.addColorStop(0,"rgba(5,10,22,.55)"); fade.addColorStop(0.6,"rgba(5,10,22,.15)"); fade.addColorStop(1,"rgba(5,10,22,0)");
+  ctx.fillStyle=fade; ctx.fillRect(0,0,w,h);
+}
+function loop(ts){drawSky(ts); if(!reduce) requestAnimationFrame(loop);}
+window.addEventListener("resize",()=>{if(reduce) drawSky(0)});
+
+/* ---------- boot ---------- */
+const saved=load("aurora-loc");
+if(saved&&typeof saved.lat==="number"&&typeof saved.lon==="number")
+  S.loc=PRESETS.find(p=>p.id===saved.id)||{id:saved.id||"custom",name:saved.name||I18N.ja.custom,en:saved.en||(saved.id==="custom"||!saved.id?I18N.en.custom:saved.name),lat:saved.lat,lon:saved.lon,tz:saved.tz||null};
+if(load("aurora-map")==="local") M.mode="local";
+if(PAGE&&PAGE.loc){ const pl=PRESETS.find(p=>p.id===PAGE.loc); if(pl) S.loc=pl; }
+(function(){ const a=document.getElementById("altLang"); if(a&&PAGE&&PAGE.lang==="ja"){ const n=(navigator.languages&&navigator.languages[0])||navigator.language||"ja"; if(!/^ja/i.test(n)) a.hidden=false; } })();
+applyLang(); requestAnimationFrame(loop);
+if(AL.on) setAlert(true);
+refresh(true);
+setInterval(()=>{ if(!document.hidden) refresh(true); },10*60*1000);
+setInterval(()=>{
+  if(document.hidden||loading) return;
+  fetchOvation().then(v=>{S.ovGrid=v.grid;S.ovTime=v.time;S.status.ov="live";M.ovVer++;renderAll();},()=>{});
+},5*60*1000);
+setInterval(()=>{ if(reduce) drawSky(0); },60000);
+})();

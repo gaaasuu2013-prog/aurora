@@ -1,4 +1,143 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://gaaasuu2013-prog.github.io/aurora/</loc><lastmod>2026-10-21</lastmod><changefreq>weekly</changefreq></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/en.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/rovaniemi.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/rovaniemi.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-rovaniemi.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-rovaniemi.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/en-rovaniemi.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/rovaniemi.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-rovaniemi.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-rovaniemi.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/saariselka.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/saariselka.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-saariselka.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-saariselka.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/en-saariselka.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/saariselka.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-saariselka.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-saariselka.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/helsinki.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/helsinki.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-helsinki.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-helsinki.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/en-helsinki.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/helsinki.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-helsinki.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-helsinki.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/tromso.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/tromso.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-tromso.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-tromso.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/en-tromso.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/tromso.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-tromso.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-tromso.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/abisko.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/abisko.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-abisko.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-abisko.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/en-abisko.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/abisko.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-abisko.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-abisko.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/reykjavik.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/reykjavik.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-reykjavik.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-reykjavik.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/en-reykjavik.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/reykjavik.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-reykjavik.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-reykjavik.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/fairbanks.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/fairbanks.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-fairbanks.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-fairbanks.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/en-fairbanks.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/fairbanks.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-fairbanks.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-fairbanks.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/yellowknife.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/yellowknife.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-yellowknife.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-yellowknife.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/en-yellowknife.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/yellowknife.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-yellowknife.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-yellowknife.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/rikubetsu.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/rikubetsu.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-rikubetsu.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-rikubetsu.html"/>
+  </url>
+  <url>
+    <loc>https://gaaasuu2013-prog.github.io/aurora/en-rikubetsu.html</loc>
+    <lastmod>2026-10-21</lastmod>
+    <xhtml:link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/rikubetsu.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-rikubetsu.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-rikubetsu.html"/>
+  </url>
 </urlset>

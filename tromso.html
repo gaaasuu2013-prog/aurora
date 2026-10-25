@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>トロムソのオーロラ予報｜今夜見える？ - 極光ナビ</title>
+<meta name="description" content="トロムソ（ノルウェー）で今夜オーロラが見えるかを0〜100で予報。Kp・雲量・暗さ・月明かりから判定し、ねらい目の時間、この先3晩、近くの晴れている場所もわかる無料アプリ。見える時期や観測のコツも紹介。">
+<link rel="canonical" href="https://gaaasuu2013-prog.github.io/aurora/tromso.html">
+<link rel="alternate" hreflang="ja" href="https://gaaasuu2013-prog.github.io/aurora/tromso.html">
+<link rel="alternate" hreflang="en" href="https://gaaasuu2013-prog.github.io/aurora/en-tromso.html">
+<link rel="alternate" hreflang="x-default" href="https://gaaasuu2013-prog.github.io/aurora/en-tromso.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="極光ナビ">
+<meta property="og:title" content="トロムソのオーロラ予報｜今夜見える？ - 極光ナビ">
+<meta property="og:description" content="トロムソ（ノルウェー）で今夜オーロラが見えるかを0〜100で予報。Kp・雲量・暗さ・月明かりから判定し、ねらい目の時間、この先3晩、近くの晴れている場所もわかる無料アプリ。見える時期や観測のコツも紹介。">
+<meta property="og:url" content="https://gaaasuu2013-prog.github.io/aurora/tromso.html">
+<meta property="og:image" content="https://gaaasuu2013-prog.github.io/aurora/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:locale:alternate" content="en_US">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0a1122">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="icon-192.png" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="極光ナビ">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "極光ナビ", "alternateName": "Kyokko Navi", "url": "https://gaaasuu2013-prog.github.io/aurora/tromso.html", "description": "トロムソ（ノルウェー）で今夜オーロラが見えるかを0〜100で予報。Kp・雲量・暗さ・月明かりから判定し、ねらい目の時間、この先3晩、近くの晴れている場所もわかる無料アプリ。見える時期や観測のコツも紹介。", "applicationCategory": "WeatherApplication", "operatingSystem": "Any", "inLanguage": "ja", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "USD"}}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;700&family=Zen+Old+Mincho:wght@700;900&display=swap">
+<link rel="stylesheet" href="app.css">
+<script>window.KN_PAGE={"lang": "ja", "alt": "en-tromso.html", "loc": "tromso"};</script>
+<script data-goatcounter="https://gaaasuu2013.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+<script>if("serviceWorker" in navigator&&location.protocol==="https:"){addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}</script>
+</head>
+<body>
+<div class="wrap">
+  <div class="brandbar">
+    <h1 class="brand-h1">トロムソのオーロラ予報<span class="en-name">極光ナビ</span></h1>
+    <a class="alt-lang" id="altLang" href="en-tromso.html" hreflang="en" lang="en" hidden>English version →</a>
+    <p class="tagline">トロムソ（ノルウェー）で今夜オーロラは見える？</p>
+  </div>
+  <header class="hero" id="hero" data-level="maybe">
+    <canvas id="sky" aria-hidden="true"></canvas>
+    <div class="hero-in">
+      <div class="loc-row">
+        <label for="loc" data-i18n="locLabel">観測地</label>
+        <select id="loc"></select>
+        <div class="seg lang-seg" id="langSeg" role="group" aria-label="Language">
+          <button type="button" data-setlang="ja" aria-pressed="true" lang="ja">日本語</button>
+          <button type="button" data-setlang="en" aria-pressed="false" lang="en">EN</button>
+        </div>
+      </div>
+      <p class="eyebrow" id="nightLabel" data-i18n="calc">計算中…</p>
+      <div class="score"><span class="num" id="score">--</span><span class="of">/ 100</span></div>
+      <p id="verdict" data-i18n="loadingData">データを読み込んでいます</p>
+      <p id="window"></p>
+      <p id="reason"></p>
+      <div class="hero-act">
+        <button class="btn share" id="shareBtn" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5"/><path d="M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"/></svg><span data-i18n="share">画像で共有</span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="status" id="status">
+    <span class="chip" data-s="loading" id="st-kp"><span class="dot"></span><span data-i18n="stKp">Kp予報</span></span>
+    <span class="chip" data-s="loading" id="st-sw"><span class="dot"></span><span data-i18n="stSw">太陽風</span></span>
+    <span class="chip" data-s="loading" id="st-ov"><span class="dot"></span>OVATION</span>
+    <span class="chip" data-s="loading" id="st-cl"><span class="dot"></span><span data-i18n="stCl">雲量</span></span>
+    <span id="updated" class="mono"></span>
+    <button class="btn" id="refresh" type="button" data-i18n="refresh">更新</button>
+  </div>
+
+  <div class="custom" id="customBox" hidden>
+    <label for="lat"><span data-i18n="lat">緯度</span><input id="lat" type="number" step="0.01" min="-90" max="90" inputmode="decimal" placeholder="66.50"></label>
+    <label for="lon"><span data-i18n="lon">経度</span><input id="lon" type="number" step="0.01" min="-180" max="180" inputmode="decimal" placeholder="25.73"></label>
+    <button class="btn" id="setCustom" type="button" data-i18n="setCustom">この地点で予報</button>
+    <p class="msg" id="customMsg"></p>
+  </div>
+
+  <section id="nightsSec">
+    <div class="sec-head">
+      <h2 data-i18n="nightsTitle">この先3晩</h2>
+      <button class="btn sm" id="toCal" type="button" data-i18n="toCal">もっと先の旅行計画</button>
+    </div>
+    <div class="nights" id="nights"></div>
+    <p class="sub" data-i18n="nTap">タップすると、その夜の時間ごとの数値が見られます。</p>
+    <div class="alertbox" id="alertBox" data-on="false">
+      <div class="ab-text"><b data-i18n="alertTitle">「いま外を見て！」速報</b><span class="sub" id="alertState"></span></div>
+      <div class="ab-ctl">
+        <button class="btn" id="alertToggle" type="button" aria-pressed="false"></button>
+        <label class="chk" for="wakeChk"><input type="checkbox" id="wakeChk"><span data-i18n="keepAwake">画面をつけたままにする</span></label>
+      </div>
+    </div>
+  </section>
+
+  <section class="guide" id="guide">
+    <h2>トロムソでオーロラを見るには</h2>
+    <p>トロムソはノルウェー北部の港町で、オーロラ帯の真下にあります。磁気活動が弱い夜でも見られる一方、海沿いのため雲が出やすいのが難点です。</p>
+    <dl class="gfacts">
+      <div><dt>見える時期</dt><dd>9月〜3月</dd></div>
+      <div><dt>見える目安のKp</dt><dd>Kp 1〜2</dd></div>
+      <div><dt>ねらい目の時間帯（現地）</dt><dd>21時〜翌2時ごろ</dd></div>
+    </dl>
+    <ul><li>海沿いが曇っていても、内陸のフィンランド国境方面は晴れていることがよくあります。</li><li>多くのオーロラツアーは雲を避けて車で移動します。このページの「近くで見えやすい場所」で晴れ間を確認しましょう。</li><li>市内でも強いオーロラなら見えますが、街の明かりから離れるほどきれいに見えます。</li></ul>
+  </section>
+
+  <section class="manual" id="manual" hidden>
+    <p id="manualNote" data-i18n="manualSome">ライブデータを取得できなかった項目があります。つまみで条件を変えて試せます（取得できた項目はライブ値を使います）。</p>
+    <div class="slider" id="kpSlider"><label for="mKp" data-i18n="kpAssumed">Kp（仮定）</label><input id="mKp" type="range" min="0" max="9" step="0.33" value="3"><output id="mKpOut" for="mKp">3.0</output></div>
+    <div class="slider" id="clSlider"><label for="mCl" data-i18n="clAssumed">雲量（仮定）</label><input id="mCl" type="range" min="0" max="100" step="5" value="30"><output id="mClOut" for="mCl">30%</output></div>
+  </section>
+
+  <section id="mapSec">
+    <div class="map-head">
+      <div>
+        <h2 data-i18n="mapTitle">いま、どこで見えている？</h2>
+        <p class="sub" id="mapSub" data-i18n="mapSub">オーロラの出現確率に昼夜を重ねた地図です。タップした地点の状況が下に出ます。</p>
+      </div>
+      <div class="seg" id="mapMode" role="group" aria-label="地図の範囲" data-i18n-aria="ariaMapArea">
+        <button type="button" data-m="north" aria-pressed="false" data-i18n="north">北半球</button>
+        <button type="button" data-m="south" aria-pressed="false" data-i18n="south">南半球</button>
+        <button type="button" data-m="local" aria-pressed="false" data-i18n="local">観測地まわり</button>
+      </div>
+    </div>
+    <p class="map-now" id="mapNow"></p>
+    <div class="map-wrap">
+      <canvas id="map" aria-label="オーロラ出現確率の地図。タップで地点の状況を表示" data-i18n-aria="ariaMap"></canvas>
+      <p class="map-src" id="mapSrc"></p>
+      <div class="map-ctl" role="group" aria-label="地図の操作" data-i18n-aria="ariaMapCtl">
+        <button type="button" data-z="in" aria-label="拡大" title="拡大" data-i18n-aria="zIn"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+        <button type="button" data-z="out" aria-label="縮小" title="縮小" data-i18n-aria="zOut"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+        <button type="button" data-z="rl" aria-label="左に回転" title="左に回転" data-i18n-aria="zRl"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4h4"/></svg></button>
+        <button type="button" data-z="rr" aria-label="右に回転" title="右に回転" data-i18n-aria="zRr"><svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v4h-4"/></svg></button>
+        <button type="button" data-z="home" aria-label="観測地を中心に" title="観測地を中心に" data-i18n-aria="zHome"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg></button>
+        <button type="button" data-z="cloud" aria-label="雲の表示" title="雲の表示" data-i18n-aria="zCloud" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M7 18h10a4 4 0 0 0 .4-7.98A6 6 0 0 0 5.9 9.3 4.4 4.4 0 0 0 7 18z"/></svg></button>
+      </div>
+    </div>
+    <p class="map-hint" data-i18n="mapHint">ドラッグで移動・ピンチ（PCはホイール）で拡大縮小・2本指でひねると回転・ダブルタップで拡大</p>
+    <div class="legend">
+      <span class="ramp"><i></i><span class="mono">10→50→90%</span></span>
+      <span><span class="dash"></span><span data-i18n="lgView">地平線に見える目安ライン</span></span>
+      <span><i style="background:#c9d3e6;opacity:.45"></i><span data-i18n="lgDay">昼の地域</span></span>
+      <span><span class="ringdot" style="background:var(--oxygen)"></span><span data-i18n="lgVis">見えていそうな地点</span></span>
+      <span><span class="ringdot" style="border:2px solid var(--warn)"></span><span data-i18n="lgDim">出ているが曇り・明るい</span></span>
+      <span><i style="background:#d6dce8;opacity:.6"></i><span data-i18n="lgCloud">雲（白いほど厚い）</span></span>
+      <span><span class="ringdot" style="background:var(--snow);color:var(--night);font-size:8px;text-align:center;line-height:10px;font-weight:700">1</span><span data-i18n="lgCand">近くの候補地</span></span>
+    </div>
+    <div class="tapinfo" id="tapInfo" hidden></div>
+
+    <h3 class="h3" data-i18n="nearTitle">近くで見えやすい場所</h3>
+    <p class="sub" id="nearSub"></p>
+    <div class="near-ctl">
+      <div class="seg" id="nearTime" role="group" aria-label="時刻" data-i18n-aria="ariaTime">
+        <button type="button" data-k="0" aria-pressed="true" data-i18n="kNow">いま</button>
+        <button type="button" data-k="1" aria-pressed="false" data-i18n="k1">1時間後</button>
+        <button type="button" data-k="2" aria-pressed="false" data-i18n="k2">2時間後</button>
+        <button type="button" data-k="3" aria-pressed="false" data-i18n="k3">3時間後</button>
+      </div>
+      <div class="seg" id="nearRad" role="group" aria-label="探す範囲" data-i18n-aria="ariaRad">
+        <button type="button" data-r="50" aria-pressed="false" data-i18n="r50">〜50km</button>
+        <button type="button" data-r="100" aria-pressed="true" data-i18n="r100">〜100km</button>
+        <button type="button" data-r="200" aria-pressed="false" data-i18n="r200">〜200km</button>
+      </div>
+      <button class="btn sm" id="nearHere" type="button" data-i18n="nearHere">地図の中心で探す</button>
+    </div>
+    <p class="map-now" id="nearBase"></p>
+    <div class="spots" id="nearList"></div>
+
+    <h3 class="h3" data-i18n="spotsTitle">いま見えていそうな場所</h3>
+    <p class="sub" id="spotSub"></p>
+    <div class="spots" id="spots"></div>
+    <button class="btn more" id="spotMore" type="button"></button>
+  </section>
+
+  <section>
+    <h2 data-i18n="tlTitle">48時間の見込み</h2>
+    <p class="sub" data-i18n="tlSub">1時間ごとのスコア。濃い帯が暗い時間帯、下段は雲の多さ。棒をタップすると、その時間の数値が下に出ます。</p>
+    <div class="scroll" id="tlScroll"><svg id="timeline" aria-label="48時間のオーロラ見込みスコア" data-i18n-aria="ariaTl"></svg></div>
+    <div class="detail" id="detail" aria-live="polite"></div>
+    <div class="legend">
+      <span><i style="background:var(--oxygen)"></i><span data-i18n="lgScore">見込みスコア</span></span>
+      <span><i style="background:var(--panel2);border:1px solid var(--line)"></i><span data-i18n="lgDark">暗い時間帯</span></span>
+      <span><i style="background:var(--mute)"></i><span data-i18n="lgCloud2">雲（濃いほど多い）</span></span>
+    </div>
+  </section>
+
+  <section>
+    <h2 data-i18n="nowTitle">いまの宇宙天気と空</h2>
+    <div class="now" id="now"></div>
+  </section>
+
+  <section>
+    <h2 data-i18n="kpTitle">Kp指数 3日予報</h2>
+    <p class="sub" id="kpSub" data-i18n="kpSub">3時間ごとの地磁気活動。点線はこの地点で地平線近くに見え始める目安。</p>
+    <div class="scroll"><svg id="kpchart" role="img" aria-label="Kp指数の3日予報" data-i18n-aria="ariaKp"></svg></div>
+    <div class="legend">
+      <span><i style="background:var(--oxygen)"></i>Kp 0–4</span>
+      <span><i style="background:var(--warn)"></i><span data-i18n="lgKp5">Kp 5–6（磁気嵐 G1–G2）</span></span>
+      <span><i style="background:var(--bad)"></i><span data-i18n="lgKp7">Kp 7以上（G3以上）</span></span>
+      <span><i style="background:var(--oxygen);opacity:.45"></i><span data-i18n="lgObs">観測・推定値</span></span>
+    </div>
+  </section>
+
+  <section id="calSec">
+    <h2 data-i18n="calTitle">旅行日えらび：暗さと月明かりカレンダー</h2>
+    <p class="sub" data-i18n="calSub">オーロラの強さは3日より先は予報できません。暗い時間が長く月明かりの少ない夜を選び、出発直前にKp予報を確認しましょう。日付をタップすると詳細が出ます。</p>
+    <div class="cal-nav">
+      <button class="btn sm" id="calPrev" type="button" data-i18n-aria="calPrev" aria-label="前の月">‹</button>
+      <b id="calMonth"></b>
+      <button class="btn sm" id="calNext" type="button" data-i18n-aria="calNext" aria-label="次の月">›</button>
+    </div>
+    <div class="cal" id="cal"></div>
+    <div class="legend">
+      <span><i style="background:var(--oxygen);opacity:.5"></i><span data-i18n="lgCalQ">緑が濃いほど暗く、月明かりが少ない</span></span>
+      <span><i style="background:var(--warn)"></i><span data-i18n="lgCalKp">Kp：NOAA 27日予報の最大値（目安）</span></span>
+    </div>
+    <div class="tapinfo" id="calInfo" hidden></div>
+  </section>
+
+  <nav class="locnav" aria-label="観測地別のオーロラ予報">
+    <h2>観測地別のオーロラ予報</h2>
+    <ul><li><a href="./">極光ナビ トップ</a></li><li><a href="rovaniemi.html">ロヴァニエミ（フィンランド）</a></li><li><a href="saariselka.html">サーリセルカ（フィンランド）</a></li><li><a href="helsinki.html">ヘルシンキ（フィンランド）</a></li><li><a href="tromso.html" aria-current="page">トロムソ（ノルウェー）</a></li><li><a href="abisko.html">アビスコ（スウェーデン）</a></li><li><a href="reykjavik.html">レイキャビク（アイスランド）</a></li><li><a href="fairbanks.html">フェアバンクス（アラスカ）</a></li><li><a href="yellowknife.html">イエローナイフ（カナダ）</a></li><li><a href="rikubetsu.html">陸別（北海道）</a></li><li><a href="en-tromso.html" hreflang="en" lang="en">English version</a></li></ul>
+  </nav>
+
+  <section class="invite" id="invite">
+    <h2 data-i18n="invTitle">オーロラ、見えましたか？</h2>
+    <p data-i18n="invText">見えたら、写真や今夜の予報を #極光ナビ をつけてSNSに投稿してもらえるとうれしいです。次に旅する人がチャンスを見つける助けになります。</p>
+    <span class="tags" id="invTags" data-i18n="tags">#極光ナビ #KyokkoNavi #オーロラ #northernlights</span>
+    <div class="acts">
+      <button class="btn sm" id="invImg" type="button" data-i18n="invImg">予報を画像で共有</button>
+      <a class="btn sm" id="invX" href="https://twitter.com/intent/tweet" target="_blank" rel="noopener" data-i18n="invX">Xでポスト</a>
+      <a class="btn sm" id="invThreads" href="https://www.threads.net/intent/post" target="_blank" rel="noopener" data-i18n="invThreads">Threadsで投稿</a>
+      <a class="btn sm" id="invLine" href="https://line.me/R/share" target="_blank" rel="noopener" data-i18n="invLine">LINEで送る</a>
+      <button class="btn sm" id="invCopy" type="button" data-i18n="invCopy">ハッシュタグをコピー</button>
+    </div>
+    <p class="msg" id="invMsg" aria-live="polite"></p>
+  </section>
+
+  <details>
+    <summary><span data-lang="ja">スコアの考え方</span><span data-lang="en">How the score works</span></summary>
+    <div data-lang="ja">
+      <p>今夜の見えやすさ（0〜100）は、次の4つを掛け合わせた目安です。確率ではありません。</p>
+      <ul>
+        <li><b>磁気活動</b>：NOAAのKp予報を、観測地の地磁気緯度で「地平線に見える目安のKp」「真上に来る目安のKp」と比べます。直近2時間は太陽風の磁場Bzが南向きなら上乗せします。</li>
+        <li><b>暗さ</b>：太陽高度を端末内で計算し、−5°より暗くなるほど加点、−16°以下で満点です。</li>
+        <li><b>晴れ</b>：Open-Meteoの低層・中層・上層雲を重み付けして実効雲量にします（低い雲ほど強く遮る）。</li>
+        <li><b>月明かり</b>：月が出ていて明るいほど少し減点します。</li>
+      </ul>
+      <p>オーロラは数十分単位で急に変わるため、あくまで出かける判断の目安です。</p>
+      <p>地図の「いま見えていそう」は別の判定です。OVATIONの出現確率（真上、または極側8°以内の値の6割）が10%以上あり、太陽が十分沈んでいて、現在の雲量が多すぎない地点を表示しています。OVATIONを取得できないときは、Kpから推定したオーロラ帯で代用します。</p>
+      <p>「近くで見えやすい場所」は、基準点のまわり約±220kmを約44km間隔で区切った121地点の雲量予報（Open-Meteo、1時間ごと）を使います。陸地の地点だけを対象に、「出現確率 × 暗さ × 晴れの割合」を見える度（0〜100）として比べます。陸地の判定は簡易的なため、海岸近くや湖の多い地域では誤差があります。</p>
+    </div>
+    <div data-lang="en">
+      <p>Tonight's score (0–100) multiplies four factors. It is a guide for comparing conditions, not a probability.</p>
+      <ul>
+        <li><b>Geomagnetic activity</b>: NOAA's Kp forecast is compared with the Kp needed for aurora to appear low on the horizon and overhead at your magnetic latitude. For the next two hours, a southward solar-wind Bz adds a boost.</li>
+        <li><b>Darkness</b>: the sun's altitude is calculated on your device. The score rises once the sun is more than 5° below the horizon and is full at −16° or lower.</li>
+        <li><b>Clear sky</b>: Open-Meteo's low, mid and high cloud are weighted into an effective cloud cover (low cloud blocks the most).</li>
+        <li><b>Moonlight</b>: a bright moon above the horizon lowers the score a little.</li>
+      </ul>
+      <p>Aurora can change within minutes, so use the score to decide whether it's worth heading out.</p>
+      <p>"Likely visible" on the map is a separate check: OVATION probability of 10% or more (overhead, or 60% of the highest value within 8° poleward), the sun well below the horizon, and not too much cloud right now. If OVATION is unavailable, an aurora oval estimated from Kp is used instead.</p>
+      <p>"Best spots nearby" uses hourly cloud forecasts (Open-Meteo) for 121 points about 44 km apart, within roughly ±220 km of the search point. Land points only are ranked by probability × darkness × clear sky. The land check is approximate near coasts and in lake country.</p>
+    </div>
+  </details>
+
+  <footer>
+    <p data-lang="ja">データ：<a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener">NOAA SWPC</a>（Kp予報・リアルタイム太陽風・OVATION）、<a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>（雲量、<a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>）。地図の陸地は <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a>。太陽・月の位置と地磁気緯度は端末内で計算。アクセス数の集計に <a href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a> を使用しています（Cookieなし・個人は特定しません）。位置情報と選んだ観測地は送信しません。</p>
+    <p data-lang="en">Data: <a href="https://www.swpc.noaa.gov/" target="_blank" rel="noopener">NOAA SWPC</a> (Kp forecast, real-time solar wind, OVATION), <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a> (clouds, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>). Map land from <a href="https://www.naturalearthdata.com/" target="_blank" rel="noopener">Natural Earth</a>. Sun, moon and magnetic latitude are calculated on your device. Visits are counted with <a href="https://www.goatcounter.com/" target="_blank" rel="noopener">GoatCounter</a> (no cookies, no personal data). Your location and chosen place are never sent anywhere.</p>
+  </footer>
+</div>
+
+<div class="nowcast" id="nowcast" hidden role="alert" data-lv="0">
+  <div class="nc-in"><div><b id="ncTitle"></b><span id="ncWhy"></span></div><button class="nc-x" id="ncClose" type="button" data-i18n-aria="close" aria-label="閉じる">×</button></div>
+</div>
+<div class="modal" id="shareModal" hidden role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+  <div class="modal-in">
+    <div class="modal-head"><b id="shareTitle" data-i18n="shareTitle">共有用の画像</b><button class="nc-x" id="shareClose" type="button" data-i18n-aria="close" aria-label="閉じる">×</button></div>
+    <img id="shareImg" alt="">
+    <p class="sub" data-i18n="shareHint">画像を長押しして保存することもできます。</p>
+    <p class="sub" style="color:var(--oxygen)" data-i18n="shareTagHint">投稿するときは #極光ナビ をつけてもらえるとうれしいです</p>
+    <div class="modal-act">
+      <button class="btn" id="shareGo" type="button" data-i18n="shareGo">共有する</button>
+      <button class="btn" id="shareSave" type="button" data-i18n="shareSave">保存</button>
+      <button class="btn" id="shareCopy" type="button" data-i18n="shareCopy">リンクをコピー</button>
+    </div>
+    <p class="msg" id="shareMsg"></p>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
