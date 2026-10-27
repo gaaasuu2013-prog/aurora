@@ -26,4 +26,7 @@
 
 ## プライオリティパスの使い方（priority-pass-card-guide）
 - [x] (priority-pass-card-guide) 2人で年に何回くらいラウンジを使いますか？ 同伴者の料金はどうしていますか？
-- [ ] (priority-pass-card-guide) カードを選んだ決め手は？ 改悪で困ったことは？
+- [x] (priority-pass-card-guide) カードを選んだ決め手は？ 改悪で困ったことは？
+
+## エポスカードの保険（priority-pass-card-guide）
+- [ ] (priority-pass-card-guide) iPhoneが故障したのはどの旅行先で、そのとき持っていたのは一般・ゴールド・プラチナのどれ？ 修理費と、戻ってきた金額は？ 請求はどうやった？（電話・Web、必要だった書類）
