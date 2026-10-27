@@ -10,8 +10,8 @@
 
 ## 持ち物・服装（aurora-packing-list）
 - [x] (aurora-packing-list) 現地の最低気温は何℃くらいでしたか？ その日の服装を上から順に
-- [ ] (aurora-packing-list) 持って行って一番役立った物と、いらなかった物は？
-- [ ] (aurora-packing-list) スマホの電池は寒さでどうなりましたか？ 対策は？
+- [x] (aurora-packing-list) 持って行って一番役立った物と、いらなかった物は？（役立った物のみ回答。いらなかった物は下に再質問）
+- [x] (aurora-packing-list) スマホの電池は寒さでどうなりましたか？ 対策は？
 
 ## オーロラ撮影（aurora-photo-smartphone）
 - [ ] (aurora-photo-smartphone) 撮影に使った機材は？（スマホの機種、レンティオで借りたカメラ・レンズ、三脚）
@@ -30,7 +30,8 @@
 
 ## エポスカードの保険（priority-pass-card-guide）
 - [x] (priority-pass-card-guide) iPhoneが故障したのはどの旅行先で、そのとき持っていたのは一般・ゴールド・プラチナのどれ？ 修理費と、戻ってきた金額は？ 請求はどうやった？（電話・Web、必要だった書類）
-- [ ] (priority-pass-card-guide) iPhoneの修理見積もりはだいたい何円で、補填されたのは何円くらい？ 実際に修理はした？ 「一度付帯しただけで」は「保険を使ったのは一度だけ」の意味？
+- [x] (priority-pass-card-guide) iPhoneの修理見積もりはだいたい何円で、補填されたのは何円くらい？ 実際に修理はした？ 「一度付帯しただけで」は「保険を使ったのは一度だけ」の意味？
 - [x] (aurora-packing-list) ダウン以外の服装は？（帽子、ダウンの下に着た物、手袋、ズボン、靴・靴下）
 - [x] (aurora-packing-list) 「かなり厚めのダウン」はサンダージャケットのこと？ それとも上にもう1枚？ 手袋は？ 寒かった所・着すぎた所は？
 - [ ] (aurora-packing-list) MILLETのダウンは、サンダージャケットの上に重ねて着た？ 足先の寒さに、次ならどんな対策をする？
+- [ ] (aurora-packing-list) 持って行ったけれど、使わなかった・いらなかった物は？
