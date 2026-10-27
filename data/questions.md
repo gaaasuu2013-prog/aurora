@@ -14,7 +14,8 @@
 - [x] (aurora-packing-list) スマホの電池は寒さでどうなりましたか？ 対策は？
 
 ## オーロラ撮影（aurora-photo-smartphone）
-- [ ] (aurora-photo-smartphone) 撮影に使った機材は？（スマホの機種、レンティオで借りたカメラ・レンズ、三脚）
+- [x] (aurora-photo-smartphone) 撮影に使った機材は？（スマホの機種、レンティオで借りたカメラ・レンズ、三脚）
+- [ ] (aurora-photo-smartphone) カメラ一式は買った？借りた？（借りたならサービス名・料金・日数） スマホでも撮った？機種は？
 - [ ] (aurora-photo-smartphone) うまく撮れた時の設定（ナイトモード、露出時間、ISOなど覚えている範囲で）
 - [ ] (aurora-photo-smartphone) 写真：一番気に入っている1枚と、失敗した1枚
 
@@ -33,5 +34,5 @@
 - [x] (priority-pass-card-guide) iPhoneの修理見積もりはだいたい何円で、補填されたのは何円くらい？ 実際に修理はした？ 「一度付帯しただけで」は「保険を使ったのは一度だけ」の意味？
 - [x] (aurora-packing-list) ダウン以外の服装は？（帽子、ダウンの下に着た物、手袋、ズボン、靴・靴下）
 - [x] (aurora-packing-list) 「かなり厚めのダウン」はサンダージャケットのこと？ それとも上にもう1枚？ 手袋は？ 寒かった所・着すぎた所は？
-- [ ] (aurora-packing-list) MILLETのダウンは、サンダージャケットの上に重ねて着た？ 足先の寒さに、次ならどんな対策をする？
-- [ ] (aurora-packing-list) 持って行ったけれど、使わなかった・いらなかった物は？
+- [x] (aurora-packing-list) MILLETのダウンは、サンダージャケットの上に重ねて着た？ 足先の寒さに、次ならどんな対策をする？
+- [x] (aurora-packing-list) 持って行ったけれど、使わなかった・いらなかった物は？
