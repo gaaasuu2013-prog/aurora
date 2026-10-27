@@ -16,7 +16,7 @@
 ## オーロラ撮影（aurora-photo-smartphone）
 - [x] (aurora-photo-smartphone) 撮影に使った機材は？（スマホの機種、レンティオで借りたカメラ・レンズ、三脚）
 - [x] (aurora-photo-smartphone) カメラ一式は買った？借りた？（借りたならサービス名・料金・日数） スマホでも撮った？機種は？
-- [ ] (aurora-photo-smartphone) うまく撮れた時の設定（ナイトモード、露出時間、ISOなど覚えている範囲で）
+- [x] (aurora-photo-smartphone) うまく撮れた時の設定（ナイトモード、露出時間、ISOなど覚えている範囲で）
 - [x] (aurora-photo-smartphone) 写真：一番気に入っている1枚と、失敗した1枚
 
 ## 空港ラウンジ（helsinki-airport-lounge）
@@ -39,7 +39,8 @@
 - [x] (aurora-photo-smartphone) 送ってくれたオーロラの写真は、α7 IVとiPhoneのどちらで撮った？ 気に入っている1枚と失敗した1枚のどちら？ レンティオの料金と借りた日数は？
 - [x] (aurora-photo-smartphone) 失敗した1枚（暗くて星がぶれた写真）は、α7 IVとiPhoneのどちらで撮った？（→iPhone）
 - [x] (aurora-photo-smartphone) iPhoneの失敗写真は、なぜうまくいかなかったと思う？（→ナイトモードは使ったが手ブレ？）
-- [ ] (aurora-photo-smartphone) iPhoneは手持ちで撮った？ 最初に送ってくれたピンぼけの1枚は、何で撮った？
-- [ ] (aurora-photo-smartphone) Geminiに相談した後、実際にはどの設定で撮った？（覚えている範囲で。カメラの画面で「情報表示」すると、撮影データが見られることがあります）
+- [x] (aurora-photo-smartphone) iPhoneは手持ちで撮った？ 最初に送ってくれたピンぼけの1枚は、何で撮った？
+- [x] (aurora-photo-smartphone) Geminiに相談した後、実際にはどの設定で撮った？（覚えている範囲で。カメラの画面で「情報表示」すると、撮影データが見られることがあります）
 - [x] (aurora-photo-smartphone) レンティオのカメラは自宅に届いた？ 返却はどうした？（コンビニ・集荷など）
 - [ ] (helsinki-airport-lounge) 羽田（NODOKA）やヘルシンキ（Aspire・Plaza Premium）の写真はある？
+- [ ] (aurora-photo-smartphone) α7 IVのピントはどう合わせた？（マニュアルで無限遠、明るい星で拡大して合わせた、など） ピンぼけの1枚（最初に送った写真）は、そのやり方を覚える前のもの？
