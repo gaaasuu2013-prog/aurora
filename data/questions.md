@@ -44,4 +44,5 @@
 - [x] (aurora-photo-smartphone) レンティオのカメラは自宅に届いた？ 返却はどうした？（コンビニ・集荷など）
 - [ ] (helsinki-airport-lounge) 羽田（NODOKA）やヘルシンキ（Aspire・Plaza Premium）の写真はある？ ※2026-10-27：運営者がデータ取り込み中。次回の /trip-log で聞く
 - [ ] (aurora-photo-smartphone) α7 IVのピントはどう合わせた？（マニュアルで無限遠、明るい星で拡大して合わせた、など） ピンぼけの1枚（最初に送った写真）は、そのやり方を覚える前のもの？
-- [ ] (ry-rental-suitcase) スーツケースはどこで借りた？（サービス名） 2人で1個？ 8,200円は送料込み？
+- [x] (ry-rental-suitcase) スーツケースはどこで借りた？（→アールワイレンタル。2人それぞれ1個）
+- [ ] (ry-rental-suitcase) パートナーのスーツケースは、どこで何Lをいくらで借りた？ 8,200円は送料込み？
