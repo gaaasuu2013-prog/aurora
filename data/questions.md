@@ -23,7 +23,7 @@
 - [x] (helsinki-airport-lounge) どの空港のどのラウンジを使いましたか？（乗継・出発の別、時間帯）
 - [x] (helsinki-airport-lounge) 混み具合、食事・シャワー・座席で印象に残ったことは？
 - [x] (helsinki-airport-lounge) 入るときに見せたもの（プライオリティパスのカード／アプリ、搭乗券）と、使ったクレジットカードの種類
-- [ ] (helsinki-airport-lounge) 写真：入口、席、食事（撮影が許される範囲で）
+- [x] (helsinki-airport-lounge) 写真：入口、席、食事（ウィーンの4枚を受け取り。羽田・ヘルシンキはまだ）（撮影が許される範囲で）
 
 ## プライオリティパスの使い方（priority-pass-card-guide）
 - [x] (priority-pass-card-guide) 2人で年に何回くらいラウンジを使いますか？ 同伴者の料金はどうしていますか？
@@ -38,6 +38,8 @@
 - [x] (aurora-packing-list) 持って行ったけれど、使わなかった・いらなかった物は？
 - [x] (aurora-photo-smartphone) 送ってくれたオーロラの写真は、α7 IVとiPhoneのどちらで撮った？ 気に入っている1枚と失敗した1枚のどちら？ レンティオの料金と借りた日数は？
 - [x] (aurora-photo-smartphone) 失敗した1枚（暗くて星がぶれた写真）は、α7 IVとiPhoneのどちらで撮った？（→iPhone）
-- [ ] (aurora-photo-smartphone) iPhoneの失敗写真は、なぜうまくいかなかったと思う？（手持ち？ナイトモード？） 最初に送ってくれたピンぼけの1枚は、何で撮った？
+- [x] (aurora-photo-smartphone) iPhoneの失敗写真は、なぜうまくいかなかったと思う？（→ナイトモードは使ったが手ブレ？）
+- [ ] (aurora-photo-smartphone) iPhoneは手持ちで撮った？ 最初に送ってくれたピンぼけの1枚は、何で撮った？
 - [ ] (aurora-photo-smartphone) Geminiに相談した後、実際にはどの設定で撮った？（覚えている範囲で。カメラの画面で「情報表示」すると、撮影データが見られることがあります）
 - [x] (aurora-photo-smartphone) レンティオのカメラは自宅に届いた？ 返却はどうした？（コンビニ・集荷など）
+- [ ] (helsinki-airport-lounge) 羽田（NODOKA）やヘルシンキ（Aspire・Plaza Premium）の写真はある？

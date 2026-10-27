@@ -50,7 +50,14 @@
 （未確認）
 
 ## 写真
-（まだなし）
+ウィーン空港のラウンジ（運営者の撮影）。バーのメニューに「DoN Lounges am Vienna International Airport」とある。運営者は「VIENNA Lounge」と呼んでいる。正式な名前は researcher が公式で確認する。
+- `img/2026-10-vienna-lounge-bar.jpg`：バーカウンター。メニュー（Barkarte）と、冷やされた瓶（スパークリング、水、ジュース、ビール）。メニューにはビール、スパークリングワイン、ワイン4種、スピリッツ（ジン、ウォッカ、Jameson、Johnnie Walker Red Label、Hennessy V.S.O.P. など）が並ぶ。
+  - 公開前の注意：奥に人が写っている（小さい）。顔がわかる場合はぼかす。
+- `img/2026-10-vienna-lounge-buffet.jpg`：席（緑の革のソファ）から見たビュッフェ台。木の天井と輪の形の照明。
+  - 公開前の注意：ビュッフェ台の前に人が写っている。顔がわかる場合はぼかす。
+- `img/2026-10-vienna-lounge-hennessy.jpg`：Hennessy の瓶を手に持った写真。ラベルは「VERY SPECIAL」（メニューの表記は V.S.O.P.。記事では写真のラベルどおりに書く）。
+- `img/2026-10-vienna-lounge-wine.jpg`：DoN の Grüner Veltliner（オーストリアの白ワイン）と、注いだグラス。
+- 羽田・ヘルシンキの写真：（まだなし）
 
 ## 本人の言葉
 - 「羽田空港エアポートガーデン内Body Care LUCK Airport Cafe Lounge NODOKA 午後１８時」
