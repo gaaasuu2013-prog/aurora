@@ -1,0 +1,20 @@
+# ブログ記事の自動チェック：空欄の残り・PR表記の漏れ・移転前の紹介リンクを見つけたら赤くなる
+name: blog-check
+on:
+  push:
+    branches: [main]
+    paths: ["content/blog/**", "tools/build_blog.py"]
+  pull_request:
+    paths: ["content/blog/**", "tools/build_blog.py"]
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install markdown
+      - run: python3 tools/build_blog.py --check
