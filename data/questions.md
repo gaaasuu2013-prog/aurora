@@ -4,8 +4,8 @@
 
 ## スーツケースレンタル（ry-rental-suitcase）
 - [x] (ry-rental-suitcase) 借りたスーツケースのサイズ（リットル or 何泊用）と、借りた日数・料金は？
-- [ ] (ry-rental-suitcase) 申し込み〜受け取り〜返却の方法は？（自宅配送／空港受け取り、返し方）
-- [ ] (ry-rental-suitcase) 借りて良かった点と、困った・気になった点を1つずつ
+- [x] (ry-rental-suitcase) 申し込み〜受け取り〜返却の方法は？（自宅配送／空港受け取り、返し方）
+- [x] (ry-rental-suitcase) 借りて良かった点と、困った・気になった点を1つずつ
 - [ ] (ry-rental-suitcase) 写真：届いた状態、空港や旅先で使っている所（あれば）
 
 ## 持ち物・服装（aurora-packing-list）
