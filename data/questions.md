@@ -19,7 +19,7 @@
 - [ ] (aurora-photo-smartphone) 写真：一番気に入っている1枚と、失敗した1枚
 
 ## 空港ラウンジ（helsinki-airport-lounge）
-- [ ] (helsinki-airport-lounge) どの空港のどのラウンジを使いましたか？（乗継・出発の別、時間帯）
+- [x] (helsinki-airport-lounge) どの空港のどのラウンジを使いましたか？（乗継・出発の別、時間帯）
 - [ ] (helsinki-airport-lounge) 混み具合、食事・シャワー・座席で印象に残ったことは？
 - [ ] (helsinki-airport-lounge) 入るときに見せたもの（プライオリティパスのカード／アプリ、搭乗券）と、使ったクレジットカードの種類
 - [ ] (helsinki-airport-lounge) 写真：入口、席、食事（撮影が許される範囲で）
