@@ -20,10 +20,10 @@
 
 ## 空港ラウンジ（helsinki-airport-lounge）
 - [x] (helsinki-airport-lounge) どの空港のどのラウンジを使いましたか？（乗継・出発の別、時間帯）
-- [ ] (helsinki-airport-lounge) 混み具合、食事・シャワー・座席で印象に残ったことは？
+- [x] (helsinki-airport-lounge) 混み具合、食事・シャワー・座席で印象に残ったことは？
 - [x] (helsinki-airport-lounge) 入るときに見せたもの（プライオリティパスのカード／アプリ、搭乗券）と、使ったクレジットカードの種類
 - [ ] (helsinki-airport-lounge) 写真：入口、席、食事（撮影が許される範囲で）
 
 ## プライオリティパスの使い方（priority-pass-card-guide）
-- [ ] (priority-pass-card-guide) 2人で年に何回くらいラウンジを使いますか？ 同伴者の料金はどうしていますか？
+- [x] (priority-pass-card-guide) 2人で年に何回くらいラウンジを使いますか？ 同伴者の料金はどうしていますか？
 - [ ] (priority-pass-card-guide) カードを選んだ決め手は？ 改悪で困ったことは？
