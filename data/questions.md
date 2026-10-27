@@ -42,5 +42,5 @@
 - [x] (aurora-photo-smartphone) iPhoneは手持ちで撮った？ 最初に送ってくれたピンぼけの1枚は、何で撮った？
 - [x] (aurora-photo-smartphone) Geminiに相談した後、実際にはどの設定で撮った？（覚えている範囲で。カメラの画面で「情報表示」すると、撮影データが見られることがあります）
 - [x] (aurora-photo-smartphone) レンティオのカメラは自宅に届いた？ 返却はどうした？（コンビニ・集荷など）
-- [ ] (helsinki-airport-lounge) 羽田（NODOKA）やヘルシンキ（Aspire・Plaza Premium）の写真はある？
+- [ ] (helsinki-airport-lounge) 羽田（NODOKA）やヘルシンキ（Aspire・Plaza Premium）の写真はある？ ※2026-10-27：運営者がデータ取り込み中。次回の /trip-log で聞く
 - [ ] (aurora-photo-smartphone) α7 IVのピントはどう合わせた？（マニュアルで無限遠、明るい星で拡大して合わせた、など） ピンぼけの1枚（最初に送った写真）は、そのやり方を覚える前のもの？
