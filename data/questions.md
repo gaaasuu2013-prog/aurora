@@ -47,7 +47,7 @@
 - [x] (ry-rental-suitcase) スーツケースはどこで借りた？（→アールワイレンタル。2人それぞれ1個）
 - [x] (ry-rental-suitcase) パートナーのスーツケースは何L？（→プロテガ98L、値段はサムソナイトと同じくらい）
 - [x] (ry-rental-suitcase) 自分の123Lはサムソナイト？ 8,200円は送料込み？（→どちらもはい）
-- [ ] (ry-rental-suitcase) パートナーの98Lもアールワイレンタルで借りた？
+- [x] (ry-rental-suitcase) パートナーの98Lもアールワイレンタルで借りた？
 - [x] (aurora-photo-smartphone) 気に入った1枚はそのあとに撮ったもの？（→カメラマンが撮影。記事には使えない）
 - [ ] (aurora-photo-smartphone) カメラマンに教わったあと、自分で手でピントを合わせて撮った？ 自分で撮った中で一番うまく撮れた1枚はある？（記事に使えるのは自分で撮った写真だけ）
 - [x] (aurora-photo-smartphone) 参加したオーロラツアーの名前（会社）、料金、何時から何時まで？ カメラマンは何をしてくれた？
@@ -56,6 +56,7 @@
 - [x] (rovaniemi-aurora-tour) オーロラが見えたのはどちらのツアー？ どちらがおすすめ？ それぞれ良かった点・気になった点を1つずつ
 - [x] (rovaniemi-aurora-tour) Arctic GM の398ユーロは2人分？（→2人分）
 - [x] (rovaniemi-aurora-tour) Beyond Arctic の割引は何の割引？（→早割。何日前からかはあいまい）
-- [ ] (rovaniemi-aurora-tour) 予約はどこから？（公式サイト・予約サイト） Arctic GM の良かった点は？（オーロラが出るまで続行する点など）
+- [x] (rovaniemi-aurora-tour) 予約はどこから？（→公式サイト）
+- [ ] (rovaniemi-aurora-tour) Arctic GM の良かった点は？（オーロラが出るまで続行する点など）
 - [ ] (rovaniemi-aurora-tour) 気に入った1枚はどちらのツアーのカメラマンが撮った？ 運営者のα7 IVで撮ってもらった？ その写真をブログに載せてよいか、ツアー会社に確認できる？
 - [ ] (aurora-photo-smartphone) 2026-10-28に送ってくれた写真（紫の空に緑の帯、手前に白樺）は、自分たちでα7 IVで撮ったもの？ どちらのツアーのとき？ ※確認できるまで img/ に保存しない
