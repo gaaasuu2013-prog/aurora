@@ -39,6 +39,8 @@
 - [x] (aurora-packing-list) MILLETのダウンは、サンダージャケットの上に重ねて着た？ 足先の寒さに、次ならどんな対策をする？
 - [x] (aurora-packing-list) 持って行ったけれど、使わなかった・いらなかった物は？
 - [ ] (aurora-packing-list) 写真：ロヴァニエミで着ていた服装が全身でわかる写真はありますか？（はい/いいえ。あれば屋外で撮った1枚）
+- [ ] (aurora-packing-list) 深夜の観測で外にいたのは何時間くらい？ 足先が冷えてきたのは外に出て何分ごろ？
+- [ ] (aurora-packing-list) 貼るカイロは1晩に何枚使った？ どこに貼った？（背中・お腹・靴下の上など）
 - [x] (aurora-photo-smartphone) 送ってくれたオーロラの写真は、α7 IVとiPhoneのどちらで撮った？ 気に入っている1枚と失敗した1枚のどちら？ レンティオの料金と借りた日数は？
 - [x] (aurora-photo-smartphone) 失敗した1枚（暗くて星がぶれた写真）は、α7 IVとiPhoneのどちらで撮った？（→iPhone）
 - [x] (aurora-photo-smartphone) iPhoneの失敗写真は、なぜうまくいかなかったと思う？（→ナイトモードは使ったが手ブレ？）
