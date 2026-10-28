@@ -3,7 +3,7 @@
 | 優先 | slug | テーマ | 柱 | 区分の見込み | 必要な体験 | 状態 |
 |---|---|---|---|---|---|---|
 | 1 | ry-rental-suitcase | スーツケースは借りる派：アールワイレンタルを使ってみた | B | approve | スーツケースレンタル | 調査待ち（公式サイトに接続できず） |
-| 2 | aurora-packing-list | オーロラ旅の持ち物・服装リスト（−20℃対策） | B | approve | 持ち物・服装 | 承認待ち（PR：claude/aurora-packing-list、2026-10-28 seo-editor） |
+| 2 | aurora-packing-list | オーロラ旅の持ち物・服装リスト（−20℃対策） | B | approve | 持ち物・服装 | 公開済み（2026-10-28、PR #4） |
 | 3 | kp-index-guide | Kp指数とは？オーロラ予報の読み方 | D | auto | 不要 | 待ち |
 | 4 | aurora-photo-smartphone | スマホでオーロラを撮る設定と、カメラを借りるなら | B | approve | オーロラ撮影 | 待ち |
 | 5 | helsinki-airport-lounge | ヘルシンキ空港の乗継とラウンジ実録 | C | approve | 空港ラウンジ | 待ち |
