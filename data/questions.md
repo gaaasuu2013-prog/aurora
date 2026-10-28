@@ -38,6 +38,7 @@
 - [x] (aurora-packing-list) 「かなり厚めのダウン」はサンダージャケットのこと？ それとも上にもう1枚？ 手袋は？ 寒かった所・着すぎた所は？
 - [x] (aurora-packing-list) MILLETのダウンは、サンダージャケットの上に重ねて着た？ 足先の寒さに、次ならどんな対策をする？
 - [x] (aurora-packing-list) 持って行ったけれど、使わなかった・いらなかった物は？
+- [ ] (aurora-packing-list) 写真：ロヴァニエミで着ていた服装が全身でわかる写真はありますか？（はい/いいえ。あれば屋外で撮った1枚）
 - [x] (aurora-photo-smartphone) 送ってくれたオーロラの写真は、α7 IVとiPhoneのどちらで撮った？ 気に入っている1枚と失敗した1枚のどちら？ レンティオの料金と借りた日数は？
 - [x] (aurora-photo-smartphone) 失敗した1枚（暗くて星がぶれた写真）は、α7 IVとiPhoneのどちらで撮った？（→iPhone）
 - [x] (aurora-photo-smartphone) iPhoneの失敗写真は、なぜうまくいかなかったと思う？（→ナイトモードは使ったが手ブレ？）
