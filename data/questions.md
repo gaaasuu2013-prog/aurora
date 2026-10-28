@@ -6,7 +6,9 @@
 - [x] (ry-rental-suitcase) 借りたスーツケースのサイズ（リットル or 何泊用）と、借りた日数・料金は？
 - [x] (ry-rental-suitcase) 申し込み〜受け取り〜返却の方法は？（自宅配送／空港受け取り、返し方）
 - [x] (ry-rental-suitcase) 借りて良かった点と、困った・気になった点を1つずつ
-- [ ] (ry-rental-suitcase) 写真：届いた状態、空港や旅先で使っている所（あれば）
+- [ ] (ry-rental-suitcase) 写真：届いた状態、空港や旅先で使っている所（あれば） ※2026-10-28：「あとで送る」
+- [x] (ry-rental-suitcase) 申し込みはどこから？（→公式サイト）
+- [x] (ry-rental-suitcase) スーツケースが家に届いたのは出発の何日前？（→前日）
 
 ## 持ち物・服装（aurora-packing-list）
 - [x] (aurora-packing-list) 現地の最低気温は何℃くらいでしたか？ その日の服装を上から順に
