@@ -52,6 +52,8 @@
 - [x] (aurora-photo-smartphone) 参加したオーロラツアーの名前（会社）、料金、何時から何時まで？ カメラマンは何をしてくれた？
 
 ## オーロラツアー（ロヴァニエミ）
-- [ ] (rovaniemi-aurora-tour) オーロラが見えたのはどちらのツアー？ どちらがおすすめ？ それぞれ良かった点・気になった点を1つずつ
-- [ ] (rovaniemi-aurora-tour) Arctic GM の398ユーロは2人分？ Beyond Arctic の割引は何の割引？ 予約はどこから？
+- [x] (rovaniemi-aurora-tour) オーロラが見えたのはどちらのツアー？ どちらがおすすめ？ それぞれ良かった点・気になった点を1つずつ
+- [x] (rovaniemi-aurora-tour) Arctic GM の398ユーロは2人分？（→2人分）
+- [ ] (rovaniemi-aurora-tour) Beyond Arctic の割引は何の割引？ 予約はどこから？ Arctic GM の良かった点は？（オーロラが出るまで続行する点など）
 - [ ] (rovaniemi-aurora-tour) 気に入った1枚はどちらのツアーのカメラマンが撮った？ 運営者のα7 IVで撮ってもらった？ その写真をブログに載せてよいか、ツアー会社に確認できる？
+- [ ] (aurora-photo-smartphone) 2026-10-28に送ってくれた写真（紫の空に緑の帯、手前に白樺）は、自分たちでα7 IVで撮ったもの？ どちらのツアーのとき？ ※確認できるまで img/ に保存しない
