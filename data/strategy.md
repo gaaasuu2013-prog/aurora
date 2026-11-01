@@ -34,7 +34,7 @@
 | 勤務先の副業ルール確認 | 2026-11-10 | 済み（申請すればOK と確認、2026-11-01 申請済み） |
 | ASP登録（A8.net・バリューコマース・もしも） | 2026-11-10 | 一部済み（A8.net 2026-10-29、サイトURLは github.io で登録。移転後に書き換え）／バリューコマース・もしもは未 |
 | ドメイン名を決める | 2026-11-10 | 済み（kyokko-navi.com、2026-10-29） |
-| 独自ドメイン取得・Cloudflare Pagesへ移転 | 2026-12-15 | 済み（2026-11-01、PR #8。https://kyokko-navi.com/ 。旧URLは JavaScript で転送）。Search Console 登録・A8 のURL書き換えは未 |
+| 独自ドメイン取得・Cloudflare Pagesへ移転 | 2026-12-15 | 済み（2026-11-01、PR #8。https://kyokko-navi.com/ 。旧URLは JavaScript で転送）。Search Console 登録・サイトマップ送信済み（2026-11-01）。A8 のURL書き換えは未 |
 | GoatCounter APIトークン登録 | 2026-12-15 | 未（2026-11-01：環境変数 `GOATCOUNTER_TOKEN` なし。計測タグは入っている） |
 | Open-Meteo 有料プラン（紹介リンク公開の前） | 2026-12-15 | 未確認 |
 
