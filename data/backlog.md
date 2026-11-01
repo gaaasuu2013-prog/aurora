@@ -5,7 +5,7 @@
 
 | 優先 | slug | テーマ | 柱 | 区分の見込み | 必要な体験 | 状態 |
 |---|---|---|---|---|---|---|
-| 1 | kp-index-guide | Kp指数とは？オーロラ予報の読み方 | D | auto | 不要 | 待ち（関門1の本数確保のため最優先） |
+| 1 | kp-index-guide | Kp指数とは？オーロラ予報の読み方 | D | approve（採点80点未満のため） | 不要 | 承認待ち（PR：claude/kp-index-guide、2026-11-01） |
 | 2 | aurora-destinations-compare | トロムソ・ロヴァニエミ・アビスコの比較 | A | auto | 不要 | 待ち |
 | 3 | ry-rental-suitcase | スーツケースは借りる派：アールワイレンタルを使ってみた | B | approve | スーツケースレンタル（体験メモあり：2026-10-suitcase-rental.md。写真のみ未着） | 調査待ち（公式サイトに接続できず。再調査から） |
 | 4 | rovaniemi-aurora-guide | ロヴァニエミでオーロラを見るには（時期・ツアー・宿） | A | approve | 現地の体験（体験メモあり：2026-10-rovaniemi-aurora-tour.md、2026-10-rovaniemi-packing.md） | 待ち |
