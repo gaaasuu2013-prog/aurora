@@ -1305,7 +1305,7 @@ $("#ncClose").addEventListener("click",()=>{ AL.dismissUntil=Date.now()+20*60000
 
 /* ---------- share image ---------- */
 const SH={blob:null,url:null};
-function appUrl(){ return /github\.io$/.test(location.hostname)?location.origin+location.pathname:"https://gaaasuu2013-prog.github.io/aurora/"; }
+function appUrl(){ return /(^|\.)kyokko-navi\.com$/.test(location.hostname)?location.origin+location.pathname:"https://kyokko-navi.com/"; }
 function fitFont(g,text,weight,family,max,width){ let sz=max; do{ g.font=weight+" "+sz+"px "+family; if(g.measureText(text).width<=width) break; sz-=4; }while(sz>24); return sz; }
 async function makeShareImage(){
   const F={disp:"'Zen Old Mincho','Hiragino Mincho ProN','Yu Mincho',serif",body:"'Zen Kaku Gothic New','Hiragino Sans','Noto Sans JP',sans-serif",data:"'IBM Plex Mono',ui-monospace,monospace"};
