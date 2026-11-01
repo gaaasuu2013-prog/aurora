@@ -85,7 +85,7 @@
 | 写真代 | "Nope! The photos are included in the price of the tour and are available free of charge." | 同上 | 2026-11-01 | 公式 |
 | 枚数 | "between 5 to 15 photos as a memory from the tour" | 同上 | 2026-11-01 | 公式 |
 | SNSでの共有 | "The photo quality is suitable for sharing on social media, such as Facebook or Instagram." | 同上 | 2026-11-01 | 公式 |
-| 印刷 | "Due to the high quality, these photos are well suited for printing your own posters, for example." | 同上 | 2026-11-01 | 公式 |
+| 印刷 | （訂正 2026-11-01 fact-checker）"well suited for printing your own posters" は Photoshoots（写真撮影プラン）の答え。ツアー写真の答えには含まれない。**ツアー写真には使わない** | https://beyondarctic.com/faq/ | 2026-11-01 | 公式 |
 | 会社側の利用 | 規約：撮った写真・動画を "for marketing, promotional and other business purposes" に使う権利を持つ。断りたい人は contact@beyondarctic.com に連絡（"We will make reasonable efforts to respect such requests."） | https://beyondarctic.com/terms/ | 2026-11-01 | 公式 |
 | 著作権・ブログでの利用・撮影者表記 | **公式に記載なし**（FAQ・規約・ツアーページ）。ページ下部は "Copyright Beyond Arctic Ltd © 2026" のみ。gallery.beyondarctic.com は 403 で開けず、ギャラリー側の利用条件は**未確認** | 上記3ページ、https://gallery.beyondarctic.com/ | 2026-11-01 | 公式（記載なし） |
 

@@ -86,3 +86,4 @@
 - [ ] (rovaniemi-aurora-tour-review) 写真は何枚届きましたか？ 届くまで何日でしたか？ Arctic GM の写真も届きましたか？
 - [ ] (rovaniemi-aurora-tour-review) どちらのツアーでも、温かい飲み物以外に何が出ましたか？（焚き火・ソーセージなど） Beyond Arctic で防寒着は借りましたか？
 - [ ] (rovaniemi-aurora-tour-review) Arctic GM で、オーロラが見えるまで何か所くらい移動しましたか？ 見えたのは何時ごろでしたか？ ガイドの説明は英語でしたか？
+- [ ] (rovaniemi-aurora-tour-review) 「公式サイトから予約した」のは、Beyond Arctic・Arctic GM の両方ですか？（片方だけなら、どちらか）
