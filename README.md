@@ -2,11 +2,11 @@
 
 ![極光ナビ](og.png)
 
-**▶ アプリを開く：https://gaaasuu2013-prog.github.io/aurora/**
+**▶ アプリを開く：https://kyokko-navi.com/**
 
-**▶ English: https://gaaasuu2013-prog.github.io/aurora/en.html**
+**▶ English: https://kyokko-navi.com/en**
 
-観測地別のページ：[ロヴァニエミ](https://gaaasuu2013-prog.github.io/aurora/rovaniemi.html)・[サーリセルカ](https://gaaasuu2013-prog.github.io/aurora/saariselka.html)・[ヘルシンキ](https://gaaasuu2013-prog.github.io/aurora/helsinki.html)・[トロムソ](https://gaaasuu2013-prog.github.io/aurora/tromso.html)・[アビスコ](https://gaaasuu2013-prog.github.io/aurora/abisko.html)・[レイキャビク](https://gaaasuu2013-prog.github.io/aurora/reykjavik.html)・[フェアバンクス](https://gaaasuu2013-prog.github.io/aurora/fairbanks.html)・[イエローナイフ](https://gaaasuu2013-prog.github.io/aurora/yellowknife.html)・[陸別](https://gaaasuu2013-prog.github.io/aurora/rikubetsu.html)
+観測地別のページ：[ロヴァニエミ](https://kyokko-navi.com/rovaniemi)・[サーリセルカ](https://kyokko-navi.com/saariselka)・[ヘルシンキ](https://kyokko-navi.com/helsinki)・[トロムソ](https://kyokko-navi.com/tromso)・[アビスコ](https://kyokko-navi.com/abisko)・[レイキャビク](https://kyokko-navi.com/reykjavik)・[フェアバンクス](https://kyokko-navi.com/fairbanks)・[イエローナイフ](https://kyokko-navi.com/yellowknife)・[陸別](https://kyokko-navi.com/rikubetsu)
 
 極光ナビは、オーロラが「今夜その場所で見えるか」を予測する無料のWebアプリです。インストールやアカウント登録は不要で、スマホのブラウザですぐに使えます。
 
@@ -61,9 +61,9 @@ HTMLとJavaScriptだけで動いており、サーバーは使っていません
 
 ## Kyokkō Navi — Will I see the aurora tonight?
 
-**Open the app: https://gaaasuu2013-prog.github.io/aurora/en.html**
+**Open the app: https://kyokko-navi.com/en**
 
-Forecasts by place: [Rovaniemi](https://gaaasuu2013-prog.github.io/aurora/en-rovaniemi.html) · [Saariselkä](https://gaaasuu2013-prog.github.io/aurora/en-saariselka.html) · [Helsinki](https://gaaasuu2013-prog.github.io/aurora/en-helsinki.html) · [Tromsø](https://gaaasuu2013-prog.github.io/aurora/en-tromso.html) · [Abisko](https://gaaasuu2013-prog.github.io/aurora/en-abisko.html) · [Reykjavík](https://gaaasuu2013-prog.github.io/aurora/en-reykjavik.html) · [Fairbanks](https://gaaasuu2013-prog.github.io/aurora/en-fairbanks.html) · [Yellowknife](https://gaaasuu2013-prog.github.io/aurora/en-yellowknife.html) · [Rikubetsu](https://gaaasuu2013-prog.github.io/aurora/en-rikubetsu.html)
+Forecasts by place: [Rovaniemi](https://kyokko-navi.com/en-rovaniemi) · [Saariselkä](https://kyokko-navi.com/en-saariselka) · [Helsinki](https://kyokko-navi.com/en-helsinki) · [Tromsø](https://kyokko-navi.com/en-tromso) · [Abisko](https://kyokko-navi.com/en-abisko) · [Reykjavík](https://kyokko-navi.com/en-reykjavik) · [Fairbanks](https://kyokko-navi.com/en-fairbanks) · [Yellowknife](https://kyokko-navi.com/en-yellowknife) · [Rikubetsu](https://kyokko-navi.com/en-rikubetsu)
 
 A free web app, in English and Japanese, that estimates how likely you are to see the northern or southern lights tonight. It rates your location from 0 to 100 using NOAA's Kp forecast, real-time solar wind and the OVATION aurora model, together with cloud forecasts, darkness and moonlight.
 

@@ -19,7 +19,7 @@ OUT = ROOT / "blog"
 SITEMAP = ROOT / "sitemap.xml"
 
 # 独自ドメインへ移ったらここを書き換える（末尾の / を忘れずに）
-SITE = "https://gaaasuu2013-prog.github.io/aurora/"
+SITE = "https://kyokko-navi.com/"
 GOATCOUNTER = "https://gaaasuu2013.goatcounter.com/count"
 SITE_NAME = "極光ナビ"
 
@@ -102,7 +102,9 @@ footer{color:var(--mute);font-size:13px;border-top:1px solid var(--line);margin-
 def page(title, desc, url, body, extra_head=""):
     return f"""<!doctype html>
 <html lang="ja"><head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<script>if(/github\\.io$/.test(location.hostname))location.replace("https://kyokko-navi.com"+location.pathname.replace(/^\\/aurora/,"").replace(/(index)?\\.html$/,"")+location.search+location.hash);</script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{html.escape(title)}</title>
 <meta name="description" content="{html.escape(desc)}">
 <link rel="canonical" href="{url}">
@@ -154,7 +156,7 @@ def build(check_only=False):
     posts.sort(key=lambda p: p[0].get("updated") or p[0]["date"], reverse=True)
     for meta, body in posts:
         slug = meta["slug"]
-        url = f"{SITE}blog/{slug}.html"
+        url = f"{SITE}blog/{slug}"
         content = markdown.markdown(body, extensions=["tables", "toc", "sane_lists"])
         content = content.replace('<a href="http', '<a rel="noopener" target="_blank" href="http')
         top = ""
@@ -198,7 +200,7 @@ def build(check_only=False):
         sm = re.sub(r"\s*<url>\s*<loc>[^<]*/blog/[^<]*</loc>.*?</url>", "", sm, flags=re.S)
         today = datetime.date.today().isoformat()
         add = f"  <url><loc>{SITE}blog/</loc><lastmod>{today}</lastmod></url>\n" + "".join(
-            f"  <url><loc>{SITE}blog/{m['slug']}.html</loc><lastmod>{m.get('updated') or m['date']}</lastmod></url>\n"
+            f"  <url><loc>{SITE}blog/{m['slug']}</loc><lastmod>{m.get('updated') or m['date']}</lastmod></url>\n"
             for m, _ in posts)
         sm = sm.replace("</urlset>", add + "</urlset>")
         SITEMAP.write_text(sm, encoding="utf-8")

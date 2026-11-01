@@ -84,5 +84,5 @@ status: draft | ready
 - `/sns-posts <slug>` SNS投稿案（手動用。通常は factory が作る）
 
 ## 状態
-- 公開URL：https://gaaasuu2013-prog.github.io/aurora/
-- 独自ドメイン：未取得（取得して `tools/build_blog.py` の SITE を書き換えるまで、紹介リンクつきの記事はビルドが止める）
+- 公開URL：https://kyokko-navi.com/（Cloudflare Pages。2026-11 に github.io から移転。旧URLは JavaScript で新URLへ転送）
+- 独自ドメイン：kyokko-navi.com（2026-10-31 取得）。紹介リンクの公開は `data/strategy.md` の関門2（移転完了・記事10本・副業の申請済み）を満たし、`data/affiliates.md` の「公開可」を「はい」にしてから
