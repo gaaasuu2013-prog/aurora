@@ -66,3 +66,14 @@
 - [ ] (rovaniemi-aurora-tour) カメラマンの写真2枚（カーブする道の1枚、白樺の1枚）は、それぞれどちらのツアー？ 写真の下に「撮影：〇〇のカメラマン」と書くために必要
 - [ ] (rovaniemi-aurora-tour) ツアーの写真の受け取り方は？（その場でα7 IVのカードに、後日メールで、など）ブログ利用について、ツアー会社の案内に何か書いてあった？
 - [x] (aurora-photo-smartphone) 2026-10-28に送ってくれた写真（紫の空に緑の帯、手前に白樺）は自分たちで撮ったもの？（→カメラマンの写真として使う）
+
+## 寝台列車（helsinki-rovaniemi-night-train）※2026-11-01 analyst 追加
+- [ ] (helsinki-rovaniemi-night-train) ヘルシンキ→ロヴァニエミの寝台列車は、どこで予約しましたか？（VR公式サイト・アプリ・旅行会社など） 何日前に予約しましたか？
+- [ ] (helsinki-rovaniemi-night-train) 客室はどの種類でしたか？（2人用個室・シャワー付きなど） 2人分の料金はいくらでしたか？
+- [ ] (helsinki-rovaniemi-night-train) 出発と到着は何時でしたか？ よく眠れましたか？ 良かった点と困った点を1つずつ
+- [ ] (helsinki-rovaniemi-night-train) 写真：客室の中、列車の外観（あれば）
+
+## 中欧をまわった旅程（aurora-central-europe-route）※2026-11-01 analyst 追加
+- [ ] (aurora-central-europe-route) ロヴァニエミ・プラハ・ハルシュタット・ウィーンに、それぞれ何泊しましたか？ 旅は全部で何日間でしたか？
+- [ ] (aurora-central-europe-route) プラハ→ハルシュタット、ハルシュタット→ウィーンの電車は、どこで予約しましたか？ 乗り換えで困ったことはありましたか？
+- [ ] (aurora-central-europe-route) 大きなスーツケース（123L・98L）を持っての移動で、大変だった場面はありましたか？
