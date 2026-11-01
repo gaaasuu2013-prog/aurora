@@ -147,3 +147,8 @@
 - ビューライン（見える南限の線）は2026年5月に廃止。古い説明を書かない。
 - 3日予報・27日予報の時刻は UTC。日本時間・フィンランド時間への換算を書くなら、時差の出典を別に取る（このメモでは未取得）。
 - 内部リンク候補：kyokko-navi-howto、aurora-best-time-night、aurora-moon-calendar、rikubetsu-aurora、aurora-destinations-compare（いずれもバックログ。公開済みかは要確認）。
+
+## 追記（2026-11-01）：日本時間と UTC
+| 事実 | 出典 | 確認日 |
+|---|---|---|
+| 日本標準時（JST）は協定世界時（UTC）より9時間進んでいる（UTC+9） | NICT「日本標準時」 https://www.nict.go.jp/sts/jst.html | 2026-11-01 |
