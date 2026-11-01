@@ -12,7 +12,7 @@
 | 5 | aurora-best-time-night | オーロラが出やすい時間帯と季節 | D | auto | 不要 | 待ち |
 | 6 | rovaniemi-december-guide | 12月のロヴァニエミ：日照・気温・クリスマスの混雑と予約の注意 | A | auto | 不要（12月に行った体験はないので、調査だけで書く） | 待ち（新規 2026-11-01。11月中に出したい） |
 | 7 | aurora-photo-smartphone | スマホでオーロラを撮る設定と、カメラを借りるなら | B | approve | オーロラ撮影（体験メモあり。不足：自分で撮ってうまくいった1枚、手でピントを合わせたか） | 質問待ち（1問） |
-| 8 | rovaniemi-aurora-tour-review | ロヴァニエミのオーロラツアー2社を比べた（Beyond Arctic・Arctic GM） | A | approve | ツアー2社の体験（体験メモあり：2026-10-rovaniemi-aurora-tour.md。不足：Arctic GM の良かった点、カメラマン写真がどちらのツアーか、写真の利用条件） | 質問待ち（新規 2026-11-01） |
+| 8 | rovaniemi-aurora-tour-review | ロヴァニエミのオーロラツアー2社を比べた（Beyond Arctic・Arctic GM） | A | approve | ツアー2社の体験（体験メモあり：2026-10-rovaniemi-aurora-tour.md。2026-11-01 の聞き取りで不足は解消。写真2枚は Beyond Arctic のカメラマン） | 待ち（体験そろった。Beyond Arctic の写真利用規約は調査で確認） |
 | 9 | aurora-camera-rental | オーロラ撮影のカメラはレンタルで：レンティオで α7 IV 一式を借りた流れ | B | approve | カメラレンタルの体験（体験メモあり：2026-10-aurora-photo.md。料金の内訳は公式で確認） | 待ち（新規 2026-11-01。aurora-photo-smartphone と相互リンク） |
 | 10 | aurora-moon-calendar | 月明かりとオーロラ：旅行日の選び方 | D | auto | 不要 | 待ち |
 | 11 | kyokko-navi-howto | 極光ナビの使い方：Kp・雲・観測地ページの見方 | D | auto | 不要（アプリの画面と説明はリポジトリ内のアプリから確認） | 待ち（新規 2026-11-01。アプリからブログへの導線） |
