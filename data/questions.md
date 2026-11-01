@@ -77,3 +77,12 @@
 - [ ] (aurora-central-europe-route) ロヴァニエミ・プラハ・ハルシュタット・ウィーンに、それぞれ何泊しましたか？ 旅は全部で何日間でしたか？
 - [ ] (aurora-central-europe-route) プラハ→ハルシュタット、ハルシュタット→ウィーンの電車は、どこで予約しましたか？ 乗り換えで困ったことはありましたか？
 - [ ] (aurora-central-europe-route) 大きなスーツケース（123L・98L）を持っての移動で、大変だった場面はありましたか？
+
+## ツアー比較の追加（rovaniemi-aurora-tour-review）※2026-11-01 researcher 追加
+- [ ] (rovaniemi-aurora-tour-review) Arctic GM で参加したのはどのツアーでしたか？予約確認メールのツアー名を教えてください（例：「Unlimited Northern Lights Guarantee Tour … Small Group」か、バスのツアーか）
+- [ ] (rovaniemi-aurora-tour-review) Beyond Arctic の「299ユーロ → 249ユーロ」は、予約画面に出ていた金額ですか？割引の名前（Early bird、クーポンコードなど）が予約確認メールにあれば教えてください（公式サイトには今「早割」の記載がない）
+- [ ] (rovaniemi-aurora-tour-review) 写真のダウンロードページ（gallery.beyondarctic.com）に、利用条件や「© 撮影者名」の表示はありましたか？（スクリーンショットがあれば）
+- [ ] (rovaniemi-aurora-tour-review) Beyond Arctic・Arctic GM それぞれ、参加者は全部で何人くらいでしたか？ 車は何人乗りでしたか？
+- [ ] (rovaniemi-aurora-tour-review) 写真は何枚届きましたか？ 届くまで何日でしたか？ Arctic GM の写真も届きましたか？
+- [ ] (rovaniemi-aurora-tour-review) どちらのツアーでも、温かい飲み物以外に何が出ましたか？（焚き火・ソーセージなど） Beyond Arctic で防寒着は借りましたか？
+- [ ] (rovaniemi-aurora-tour-review) Arctic GM で、オーロラが見えるまで何か所くらい移動しましたか？ 見えたのは何時ごろでしたか？ ガイドの説明は英語でしたか？
