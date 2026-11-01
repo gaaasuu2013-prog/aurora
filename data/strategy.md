@@ -35,7 +35,7 @@
 | ASP登録（A8.net・バリューコマース・もしも） | 2026-11-10 | 一部済み（A8.net 2026-10-29、サイトURLは https://kyokko-navi.com/ に書き換え済み）／バリューコマース：審査中（旧URLで申請、審査後に kyokko-navi.com へ書き換え）／もしもは未 |
 | ドメイン名を決める | 2026-11-10 | 済み（kyokko-navi.com、2026-10-29） |
 | 独自ドメイン取得・Cloudflare Pagesへ移転 | 2026-12-15 | 済み（2026-11-01、PR #8。https://kyokko-navi.com/ 。旧URLは JavaScript で転送）。Search Console 登録・サイトマップ送信済み（2026-11-01）。A8.net のサイトURLも書き換え済み（2026-11-01） |
-| GoatCounter APIトークン登録 | 2026-12-15 | 未（2026-11-01：環境変数 `GOATCOUNTER_TOKEN` なし。計測タグは入っている） |
+| GoatCounter APIトークン登録 | 2026-12-15 | 済み（2026-11-01、環境変数 GOATCOUNTER_TOKEN。週報で取得を確認） |
 | Open-Meteo 有料プラン（紹介リンク公開の前） | 2026-12-15 | 未確認 |
 
 ## 方針（strategist が見直しを提案してよい項目）

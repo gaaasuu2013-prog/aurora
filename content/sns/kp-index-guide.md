@@ -1,6 +1,6 @@
 ---
 article: kp-index-guide
-url: https://gaaasuu2013-prog.github.io/aurora/blog/kp-index-guide.html
+url: https://kyokko-navi.com/blog/kp-index-guide
 created: 2026-11-01
 affiliate: false   # 紹介リンクなし → PR表記なし
 status: draft      # 5枚目のスクリーンショットがそろうまで投稿しない
@@ -64,12 +64,12 @@ Full guide: link in bio.
 
 **1本目**
 Kpいくつでオーロラが見える？答えは行き先の「地磁気緯度」で変わります。極光ナビの計算値では、地平線に見える目安Kpはトロムソで0、稚内で8.6です。
-https://gaaasuu2013-prog.github.io/aurora/blog/kp-index-guide.html
+https://kyokko-navi.com/blog/kp-index-guide
 
 **2本目**
 NOAAの3日予報、時刻はUTCです。日本時間は9時間足して、「12-15UT」なら21〜24時。小数の「4.33」は「4+」、「4.67」は「5-」のことです。
-https://gaaasuu2013-prog.github.io/aurora/blog/kp-index-guide.html
+https://kyokko-navi.com/blog/kp-index-guide
 
 **3本目**
 オーロラ予報は「27日予報で日程→3日予報で前日〜当日→当夜はOVATIONと雲」の順に。Kpが高くても、雲・月明かり・暗さがそろわないと見えません。
-https://gaaasuu2013-prog.github.io/aurora/blog/kp-index-guide.html
+https://kyokko-navi.com/blog/kp-index-guide

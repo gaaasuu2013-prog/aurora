@@ -1,6 +1,6 @@
 ---
 article: aurora-packing-list
-url: https://gaaasuu2013-prog.github.io/aurora/blog/aurora-packing-list.html
+url: https://kyokko-navi.com/blog/aurora-packing-list
 created: 2026-10-28
 affiliate: false   # 紹介リンクなし → PR表記なし
 status: draft      # 写真がそろうまで投稿しない
@@ -65,12 +65,12 @@ Full packing list and power bank rules for flights: link in bio.
 
 **1本目**
 オーロラ旅の服装、10月のロヴァニエミで私たちの1人が着た服を帽子から靴まで載せました。体感は最低−5℃くらい。3層の重ね着に、外は厚手のダウンでした。
-https://gaaasuu2013-prog.github.io/aurora/blog/aurora-packing-list.html
+https://kyokko-navi.com/blog/aurora-packing-list
 
 **2本目**
 深夜のオーロラ観測で一番寒かったのは足先でした。靴下は2枚重ねでも冷えたので、次は靴を見直すつもりです。靴と手袋の選び方の公式の目安もまとめました。
-https://gaaasuu2013-prog.github.io/aurora/blog/aurora-packing-list.html
+https://kyokko-navi.com/blog/aurora-packing-list
 
 **3本目**
 モバイルバッテリーは2026年に機内ルールが変わりました。日本発着便もフィンエアーも2個まで、預け入れ不可。フィンエアーは承認なしだと1個100Whまでです。
-https://gaaasuu2013-prog.github.io/aurora/blog/aurora-packing-list.html
+https://kyokko-navi.com/blog/aurora-packing-list
