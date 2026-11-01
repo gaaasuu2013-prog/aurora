@@ -251,9 +251,10 @@ function lastMean(list,key,n){
   if(!v.length) return NaN; const s=v.slice(-n); return s.reduce((a,b)=>a+b,0)/s.length;
 }
 async function fetchSW(){
-  const [m,p]=await Promise.allSettled([getJSON(SWPC+"/products/solar-wind/mag-2-hour.json"),getJSON(SWPC+"/products/solar-wind/plasma-2-hour.json")]);
+  // 2026-10: products/solar-wind/*-2-hour.json was retired; the summary files hold the latest values
+  const [m,p]=await Promise.allSettled([getJSON(SWPC+"/products/summary/solar-wind-mag-field.json"),getJSON(SWPC+"/products/summary/solar-wind-speed.json")]);
   const mr=m.status==="fulfilled"?rows(m.value):[], pr=p.status==="fulfilled"?rows(p.value):[];
-  const sw={bz:lastMean(mr,"bz_gsm",20),bt:lastMean(mr,"bt",20),speed:lastMean(pr,"speed",20),density:lastMean(pr,"density",20)};
+  const sw={bz:lastMean(mr,"bz_gsm",1),bt:lastMean(mr,"bt",1),speed:lastMean(pr,"proton_speed",1),density:NaN};
   if(!isFinite(sw.bz)&&!isFinite(sw.speed)) throw new Error("empty");
   return sw;
 }
