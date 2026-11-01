@@ -6,7 +6,7 @@ sitemap.xml のブログ部分を書き直す。リポジトリのルートで `
 `--check` をつけると、ファイルを書かずにチェックだけ行う（GitHub Actions 用）。
 必要なもの：pip install markdown
 """
-import html, json, re, sys, datetime, pathlib
+import html, json, re, shutil, sys, datetime, pathlib
 
 try:
     import markdown
@@ -17,6 +17,9 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "content" / "blog"
 OUT = ROOT / "blog"
 SITEMAP = ROOT / "sitemap.xml"
+# 記事の写真は ![説明](img/ファイル名) と書く。使われた写真だけを content/notes/img/ から blog/img/ へ写す
+IMG_SRC = ROOT / "content" / "notes" / "img"
+IMG_REF = re.compile(r"!\[[^\]]*\]\(img/([^)\s]+)\)")
 
 # 独自ドメインへ移ったらここを書き換える（末尾の / を忘れずに）
 SITE = "https://kyokko-navi.com/"
@@ -67,6 +70,9 @@ def check(meta, body, name):
         errs.append("紹介リンクがあるのに affiliate: true になっていません")
     if is_aff and "github.io" in SITE:
         errs.append("独自ドメインへ移るまで、紹介リンクつきの記事は公開できません")
+    for img in IMG_REF.findall(body):
+        if not (IMG_SRC / img).is_file():
+            errs.append(f"写真 img/{img} が content/notes/img/ にありません")
     return [f"{name}: {e}" for e in errs]
 
 
@@ -188,6 +194,18 @@ def build(check_only=False):
     (OUT / "index.html").write_text(
         page(f"旅ブログ｜{SITE_NAME}", "オーロラ旅の観測地ガイド、持ち物、撮影、空港ラウンジの実録をまとめた極光ナビの旅ブログです。",
              f"{SITE}blog/", idx), encoding="utf-8")
+
+    used = {img for _, body in posts for img in IMG_REF.findall(body)}
+    if used:
+        (OUT / "img").mkdir(exist_ok=True)
+    for img in used:
+        shutil.copy2(IMG_SRC / img, OUT / "img" / img)
+    if (OUT / "img").is_dir():
+        for f in (OUT / "img").iterdir():
+            if f.name not in used:
+                f.unlink()
+        if not used:
+            (OUT / "img").rmdir()
 
     # 記事が消えた場合に古いHTMLを残さない
     keep = {f"{m['slug']}.html" for m, _ in posts} | {"index.html"}
