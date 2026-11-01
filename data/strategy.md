@@ -34,7 +34,7 @@
 | 勤務先の副業ルール確認 | 2026-11-10 | 済み（申請すればOK と確認、2026-11-01 申請済み） |
 | ASP登録（A8.net・バリューコマース・もしも） | 2026-11-10 | 一部済み（A8.net 2026-10-29、サイトURLは github.io で登録。移転後に書き換え）／バリューコマース・もしもは未 |
 | ドメイン名を決める | 2026-11-10 | 済み（kyokko-navi.com、2026-10-29） |
-| 独自ドメイン取得・Cloudflare Pagesへ移転 | 2026-12-15 | 取得済み（kyokko-navi.com、Cloudflare Registrar、2026-10-31）。移転は未 |
+| 独自ドメイン取得・Cloudflare Pagesへ移転 | 2026-12-15 | 済み（2026-11-01、PR #8。https://kyokko-navi.com/ 。旧URLは JavaScript で転送）。Search Console 登録・A8 のURL書き換えは未 |
 | GoatCounter APIトークン登録 | 2026-12-15 | 未（2026-11-01：環境変数 `GOATCOUNTER_TOKEN` なし。計測タグは入っている） |
 | Open-Meteo 有料プラン（紹介リンク公開の前） | 2026-12-15 | 未確認 |
 
@@ -45,6 +45,7 @@
 - 収益の柱：ツアー・宿（A）、カード（C）、レンタル・グッズ（B）。広告は後回し。
 
 ## 意思決定の記録（新しい順）
+- 2026-11-01：kyokko-navi.com へ移転（Cloudflare Pages、PR #8）。記事URLは .html なしの形に統一。GitHub Pages は旧URLの転送用に当面残す。
 - 2026-11-01：PR #5 を運営者が Merge。移転準備を段階1から並行して進める／関門2に「副業の申請済み」を追加。
 - 2026-10-31：kyokko-navi.com を Cloudflare Registrar で取得（運営者）。年 $10.46、更新も同額。
 - 2026-10-29：ドメイン名は kyokko-navi.com に決定（運営者）。取得は段階2で。2026-10-29時点で .com は空き。
