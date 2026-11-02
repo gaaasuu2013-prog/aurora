@@ -54,7 +54,7 @@
 - [x] (ry-rental-suitcase) 自分の123Lはサムソナイト？ 8,200円は送料込み？（→どちらもはい）
 - [x] (ry-rental-suitcase) パートナーの98Lもアールワイレンタルで借りた？
 - [x] (aurora-photo-smartphone) 気に入った1枚はそのあとに撮ったもの？（→カメラマンが撮影。記事には使えない）
-- [ ] (aurora-photo-smartphone) カメラマンに教わったあと、自分で手でピントを合わせて撮った？ 自分で撮った中で一番うまく撮れた1枚はある？（記事に使えるのは自分で撮った写真だけ）
+- [x] (aurora-photo-smartphone) カメラマンに教わったあと、自分で手でピントを合わせて撮った？ 自分で撮った中で一番うまく撮れた1枚はある？（記事に使えるのは自分で撮った写真だけ）（→パートナーが α7 IV で撮った1枚あり：img/2026-10-aurora-rovaniemi-partner-01.jpg。手でピントを合わせたかは別の質問へ）
 - [x] (aurora-photo-smartphone) 参加したオーロラツアーの名前（会社）、料金、何時から何時まで？ カメラマンは何をしてくれた？
 
 ## オーロラツアー（ロヴァニエミ）
@@ -87,3 +87,4 @@
 - [ ] (rovaniemi-aurora-tour-review) どちらのツアーでも、温かい飲み物以外に何が出ましたか？（焚き火・ソーセージなど） Beyond Arctic で防寒着は借りましたか？
 - [ ] (rovaniemi-aurora-tour-review) Arctic GM で、オーロラが見えるまで何か所くらい移動しましたか？ 見えたのは何時ごろでしたか？ ガイドの説明は英語でしたか？
 - [ ] (rovaniemi-aurora-tour-review) 「公式サイトから予約した」のは、Beyond Arctic・Arctic GM の両方ですか？（片方だけなら、どちらか）
+- [ ] (aurora-photo-smartphone) パートナーが α7 IV で撮ったうまくいった1枚（カーブする道）は、ピントを手で合わせましたか？ オートでしたか？ 三脚は使いましたか？
