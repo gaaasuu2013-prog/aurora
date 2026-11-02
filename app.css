@@ -13,7 +13,7 @@
   --warn:#f2c14e;
   --bad:#ff7a7a;
   --f-display:"Zen Old Mincho","Hiragino Mincho ProN","Yu Mincho",serif;
-  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+  --f-body:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Noto Sans CJK JP","Yu Gothic UI","Meiryo",system-ui,sans-serif;
   --f-data:"IBM Plex Mono",ui-monospace,"SFMono-Regular",monospace;
   color-scheme:dark;
 }

@@ -982,7 +982,7 @@ function renderMap(){
   const o=px(S.loc.lat,S.loc.lon), taken=[[o[0]-12,o[1]-12,o[0]+56,o[1]+20]];
   const free=(r)=>!taken.some(t=>r[0]<t[2]&&r[2]>t[0]&&r[1]<t[3]&&r[3]>t[1]);
   const labels=[];
-  c.font="11px 'Zen Kaku Gothic New','Hiragino Sans',sans-serif";
+  c.font="11px 'Hiragino Sans','Noto Sans JP','Noto Sans CJK JP',sans-serif";
   for(const ev of M.evals){
     const sp=ev.sp; if((sp.lat>=0?1:-1)!==F.h) continue;
     const q=px(sp.lat,sp.lon); if(q[0]<-10||q[1]<-10||q[0]>W+10||q[1]>W+10) continue;
@@ -1002,7 +1002,7 @@ function renderMap(){
   // observer
   c.strokeStyle="#ffffff"; c.lineWidth=2; c.beginPath(); c.arc(o[0],o[1],7,0,Math.PI*2); c.stroke();
   c.beginPath(); c.moveTo(o[0]-11,o[1]); c.lineTo(o[0]-4,o[1]); c.moveTo(o[0]+4,o[1]); c.lineTo(o[0]+11,o[1]); c.moveTo(o[0],o[1]-11); c.lineTo(o[0],o[1]-4); c.moveTo(o[0],o[1]+4); c.lineTo(o[0],o[1]+11); c.stroke();
-  c.fillStyle="#ffffff"; c.font="700 11px 'Zen Kaku Gothic New','Hiragino Sans',sans-serif"; c.fillText(t("me"),o[0]+10,o[1]+15);
+  c.fillStyle="#ffffff"; c.font="700 11px 'Hiragino Sans','Noto Sans JP','Noto Sans CJK JP',sans-serif"; c.fillText(t("me"),o[0]+10,o[1]+15);
   if(M.tap){ const t=px(M.tap.lat,M.tap.lon); c.strokeStyle="#e8edf5"; c.lineWidth=2; c.beginPath(); c.moveTo(t[0]-5,t[1]-5); c.lineTo(t[0]+5,t[1]+5); c.moveTo(t[0]+5,t[1]-5); c.lineTo(t[0]-5,t[1]+5); c.stroke(); }
   // cloud-grid footprint + nearby candidates
   if(M.cg&&M.showCloud){
@@ -1308,8 +1308,8 @@ const SH={blob:null,url:null};
 function appUrl(){ return /(^|\.)kyokko-navi\.com$/.test(location.hostname)?location.origin+location.pathname:"https://kyokko-navi.com/"; }
 function fitFont(g,text,weight,family,max,width){ let sz=max; do{ g.font=weight+" "+sz+"px "+family; if(g.measureText(text).width<=width) break; sz-=4; }while(sz>24); return sz; }
 async function makeShareImage(){
-  const F={disp:"'Zen Old Mincho','Hiragino Mincho ProN','Yu Mincho',serif",body:"'Zen Kaku Gothic New','Hiragino Sans','Noto Sans JP',sans-serif",data:"'IBM Plex Mono',ui-monospace,monospace"};
-  try{ await Promise.all(["900 80px 'Zen Old Mincho'","700 40px 'Zen Kaku Gothic New'","500 40px 'IBM Plex Mono'"].map(f=>document.fonts.load(f))); }catch(e){}
+  const F={disp:"'Zen Old Mincho','Hiragino Mincho ProN','Yu Mincho',serif",body:"'Hiragino Sans','Noto Sans JP','Noto Sans CJK JP',sans-serif",data:"'IBM Plex Mono',ui-monospace,monospace"};
+  try{ await Promise.all(["900 80px 'Zen Old Mincho'","500 40px 'IBM Plex Mono'"].map(f=>document.fonts.load(f))); }catch(e){}
   const W=1080,Hh=1920,c=document.createElement("canvas"); c.width=W; c.height=Hh; const g=c.getContext("2d");
   const bg=g.createLinearGradient(0,0,0,Hh); bg.addColorStop(0,"#050a16"); bg.addColorStop(.55,"#0c1730"); bg.addColorStop(1,"#0a1122"); g.fillStyle=bg; g.fillRect(0,0,W,Hh);
   let sd=11; const rnd=()=>{sd=(sd*16807)%2147483647; return sd/2147483647;};
