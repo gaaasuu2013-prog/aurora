@@ -88,3 +88,9 @@
 - [ ] (rovaniemi-aurora-tour-review) Arctic GM で、オーロラが見えるまで何か所くらい移動しましたか？ 見えたのは何時ごろでしたか？ ガイドの説明は英語でしたか？
 - [ ] (rovaniemi-aurora-tour-review) 「公式サイトから予約した」のは、Beyond Arctic・Arctic GM の両方ですか？（片方だけなら、どちらか）
 - [x] (aurora-photo-smartphone) パートナーが α7 IV で撮ったうまくいった1枚（カーブする道）は、ピントを手で合わせましたか？ オートでしたか？ 三脚は使いましたか？（→オート、三脚あり）
+
+## 撮影記事の追加（aurora-photo-smartphone）※2026-11-03 researcher 候補から
+- [ ] (aurora-photo-smartphone) iPhone のナイトモードで撮ったとき、アイコン横の秒数は何秒でしたか？「最大」にしましたか？ iPhone を三脚に付けて撮ったことはありますか？
+- [ ] (aurora-photo-smartphone) レンティオの総額46,737円の内訳（レンタル料・補償・送料など）は注文メールにありますか？ 何日間のプランでしたか？
+- [ ] (aurora-photo-smartphone) 現地で α7 IV のバッテリーは何本使いましたか？ 寒さで減りが早いと感じましたか？ 室内に戻ったときレンズが曇りましたか？
+- [ ] (aurora-photo-smartphone) レンティオに、海外（フィンランド）へ持って行くことを伝えましたか？ SDカードは自分で用意しましたか？
