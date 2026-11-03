@@ -169,3 +169,5 @@
 ## 夜の安全（他の調査メモにある出典）
 - Visit Rovaniemi：道路わきに車を止めない・駐車しない、暗い季節は反射材、現地の安全の案内に従う（https://www.visitrovaniemi.fi/a-guide-for-responsible-northern-lights-experience-in-rovaniemi/ 、2026-11-03 確認、content/research/aurora-photo-smartphone.md）
 - Terveyskirjasto「Paleltuma」：凍傷の初期サインはチクチク・感覚がなくなる（https://www.terveyskirjasto.fi/dlk00315/paleltuma 、2026-11-01 確認、content/research/kp-index-guide.md）
+| STF Abisko Turiststation は通年営業（"we are open all year round"） | https://www.swedishtouristassociation.com/facilities/stf-abisko-turiststation/opening-hours/ | 2026-11-03（fact-checker） |
+| キルナの路線バス91番は「冬季（2〜5月）と夏季（6〜9月）」の運行、"Please note the dates!" | https://kirunalapland.se/en/plan-your-trip/getting-around/bus/ | 2026-11-03（fact-checker） |
