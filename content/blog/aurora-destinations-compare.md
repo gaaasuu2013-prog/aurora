@@ -17,12 +17,9 @@ status: ready
 ただ、どこを選んでもオーロラが見える保証はありません。
 ロヴァニエミとスウェーデンの観光局も、保証はないと書いています（出典：[Visit Rovaniemi](https://www.visitrovaniemi.fi/northern-lights/)、[Visit Sweden](https://press.visitsweden.com/2024-02-20-Swedish-Lapland-the-worlds-best-place-to-see-the-Northern-Lights)）。
 
-最後に決め手になるのは、旅の日の雲と予報です。
-そのうえで、自分に合う場所を選んでいきましょう。
+見えるかどうかは、最後は旅の日の雲と予報しだいです。
 
 ## 北欧でオーロラを見るならどこ？3地点の比較表
-
-まずは、オーロラに関わる条件から並べてみます。
 
 ### オーロラの条件
 
@@ -36,7 +33,6 @@ status: ready
 - ※2 [Visit Tromsø](https://www.visittromso.no/northern-lights)、[Visit Rovaniemi](https://www.visitrovaniemi.fi/northern-lights/)、[STF（スウェーデン観光協会）](https://www.swedishtouristassociation.com/northern-lights/)。
 
 降水と雲は、同じ基準で比べたデータがないため表に入れていません。
-くわしくは、アビスコの「ブルーホール」の節でお話しします。
 
 ### 旅の条件
 
@@ -47,12 +43,10 @@ status: ready
 | 町の規模 | 人口79,932人 | 人口65,800人 | 国立公園の北部にある宿と駅 |
 
 気温は出典ごとに物差しが違うため、表には入れていません。
-寒さの節に、出典つきで載せています。
 
 ## 目的別の選び方：トロムソ・ロヴァニエミ・アビスコ
 
 表の条件をもとに、目的ごとの候補をまとめました。
-いちばん大事にしたいことから見てみてください。
 
 - **活動が弱い夜でも見たい**：トロムソ、アビスコ。極光ナビの計算では、Kp0〜1でも帯の端か中にあります。
 - **雨や雪の少ない場所がいい**：アビスコ。年降水量が少なく、気象機関が「降水の影」と説明しています。
@@ -106,9 +100,9 @@ Kpは地球全体の平均なので、ひとつの目安として見ておくの
 人口は79,932人です（2026年第2四半期、出典：[ノルウェー統計局（SSB）](https://www.ssb.no/kommunefakta/tromso)）。
 
 極夜は、約11月27日〜1月15日です。
-真っ暗な日が続くわけではなく、毎日数時間は薄明（日の出前のような明るさ）があります（出典：[Visit Tromsø](https://www.visittromso.no/seasons/winter)）。
+太陽は昇りませんが、毎日数時間は薄明（日の出前のような明るさ）があります（出典：[Visit Tromsø](https://www.visittromso.no/seasons/winter)）。
 
-うれしいのは、空港が町の中心から約5kmと近いことです。
+空港は町の中心から約5kmと近いです。
 オスロから毎日複数便があり、所要は約1時間50分です（出典：[Visit Tromsø](https://www.visittromso.no/travel-to-tromso)）。
 空港バス Flybussen が市中心部へ走ります（出典：[Avinor](https://avinor.no/en/airport/Tromso/info/public-transportation/)）。
 
@@ -120,7 +114,6 @@ Kpは地球全体の平均なので、ひとつの目安として見ておくの
 サンタクロース村は、市の中心から北へ8km、空港から3kmです。
 市中心部とは、路線バス8番が1年中走っています（出典：[Santa Claus Village](https://santaclausvillage.info/info-and-tips/getting-here-and-moving-around/)）。
 
-昼間も少し明るさがあるのが、この町のよいところです。
 日の長さは、12月でも平均2.5時間、1月は4時間です（出典：[Visit Rovaniemi](https://www.visitrovaniemi.fi/seasons/)）。
 
 空港は中心から約10kmで、バスやタクシーで10〜15分です。
@@ -129,7 +122,7 @@ Kpは地球全体の平均なので、ひとつの目安として見ておくの
 
 ## アビスコのオーロラ観測：晴れやすいと言われる国立公園
 
-アビスコは町ではなく、国立公園の北部にある宿と駅が拠点になります。
+アビスコは小さな拠点で、国立公園の北部にある宿と駅が旅の起点になります。
 宿の STF アビスコ・ツーリストステーションは、アビスコ国立公園の北部にあり、通年営業です。
 レストランやガイドツアー、道具の貸し出しがあります（出典：[Naturkartan](https://naturkartan.se/en/norrbottens-lan/stf-abisko-turiststation)、[STF「Opening hours」](https://www.swedishtouristassociation.com/facilities/stf-abisko-turiststation/opening-hours/)）。
 
@@ -151,7 +144,6 @@ SMHIの記事で挙げた観測所の中で、最も少ない値です。
 湿った風は山を越える前に雨や雪を降らせます。
 そのため、山の風下側は乾くのです。
 
-ほかの2地点も見てみましょう。
 海沿いのトロムソは、降水量の平年値が11〜3月に月94〜110mmと多めです（出典：[yr](https://www.yr.no/en/statistics/table/1-305409/Norway/Troms/Troms%C3%B8/Troms%C3%B8)）。
 
 フィンランドは秋冬に雲が多く、空の約65〜85%が雲です。
@@ -191,7 +183,6 @@ Kp予報の読み方は、「[Kp指数とは？オーロラ予報の見方](kp-i
 ## 北欧の冬の寒さと夜の安全：服装と注意点
 
 どの地点でも、夜に外でオーロラを待つ時間は冷えます。
-出典ごとの数字を並べておきますね。
 
 - **トロムソ**：平年値で11月0.2℃、1月−3.0℃、2月−3.3℃です（出典：[yr](https://www.yr.no/en/statistics/table/1-305409/Norway/Troms/Troms%C3%B8/Troms%C3%B8)。ノルウェー気象研究所とNRK）。3地点の中ではゆるめです。
 - **ロヴァニエミ**：観光局の目安の幅で、12月−20〜−10℃、1月−30〜−15℃です（出典：[Visit Rovaniemi](https://www.visitrovaniemi.fi/seasons/)）。FMI（フィンランド気象研究所）によると、ラップランドでは−45〜−50℃になることもあり、いちばん寒い日はふつう1月末です（出典：[FMI](https://en.ilmatieteenlaitos.fi/seasons-in-finland)）。
