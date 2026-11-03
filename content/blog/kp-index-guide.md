@@ -3,43 +3,53 @@ title: Kp指数とは？オーロラ予報の見方と「Kpいくつで見える
 description: Kp指数とは何か、オーロラ予報の見方をNOAAの公式情報で解説。Kpいくつで見えるかが地磁気緯度で変わる理由、3日予報のUTC時刻と4.67の読み方、27日予報とOVATIONの使い分け、北海道の例もまとめました。
 slug: kp-index-guide
 date: 2026-11-01
-updated: 2026-11-01
+updated: 2026-11-03
 pillar: D
 affiliate: false
 tier: approve
 status: ready
 ---
 
-この記事では、オーロラ予報の「Kp指数」の意味と読み方がわかります。
-「Kpいくつで見えるか」は場所で変わり、ラップランドなどでは低いKpでも見え、北海道ではまれです。
+この記事では、オーロラ予報でよく見る「Kp指数」の意味と読み方がわかります。
+「Kpいくつで見えるか」は場所で変わります。ラップランドなどでは低いKpでも見え、北海道ではまれです。
 予報は「27日予報→3日予報→当夜のOVATIONと雲」の順に確かめるのが基本です。
 
 ## Kp指数とは？0〜9で表す「地磁気の乱れ」
 
 Kp指数は、地球の磁場がどれだけ乱れているかを表す数字です。
 3時間ごとに、磁力計（磁場を測る機械）の揺れの大きさから求めます。
+
 値は0〜9で、1は静か、5以上は「磁気嵐」です。
+まずはここを押さえておくと、予報がぐっと読みやすくなりますよ。
+
+少しややこしいのが、Kpには「推定値」と「確定値」があることです。
 NOAA SWPC（米国の宇宙天気予報センター）のリアルタイム値は、8か所の磁力計からの推定値です。
-公式の確定値は、国際的な学会（IAGA）が認めたGFZ（ドイツ地球科学研究センター）のKpです（出典：[NOAA SWPC](https://www.spaceweather.gov/products/planetary-k-index)、[GFZ](https://kp.gfz.de/en/about-kp)）。
+公式の確定値は、GFZ（ドイツ地球科学研究センター）のKpです。
+国際的な学会（IAGA）が認めたものです（出典：[NOAA SWPC](https://www.spaceweather.gov/products/planetary-k-index)、[GFZ](https://kp.gfz.de/en/about-kp)）。
 
 もとになるのは、各観測所の「K指数」です。
-K指数は1か所の乱れを表し、数字が1増えるごとに乱れの幅が大きく増える目盛りです。
-Kpは13の観測所のK指数を標準化して平均したものです（出典：[NOAA NCEI「Geomagnetic Indices」](https://www.ncei.noaa.gov/products/geomagnetic-indices)）。
+K指数は1か所の乱れを表す目盛りです。
+数字が1増えるごとに、乱れの幅が大きく増えます。
+Kpは、13の観測所のK指数を標準化して平均したものです（出典：[NOAA NCEI「Geomagnetic Indices」](https://www.ncei.noaa.gov/products/geomagnetic-indices)）。
+
 磁場が大きく乱れるほど、オーロラは明るく、低い緯度まで広がります。
 
 ## Kpいくつで見える？答えは「地磁気緯度」で変わる
 
 地磁気緯度とは、地球の磁石の軸を基準にした緯度です。
-オーロラの見え方は、地図の緯度ではなく地磁気緯度で決まります。
+オーロラの見え方は、地図の緯度ではなく、この地磁気緯度で決まります。
+Kpを読むときの、いちばんのポイントです。
 
 NOAAによると、オーロラ帯の南の端（地磁気緯度）はKp0で約66°です。
 Kpが1上がるごとに約2°南へ動き、Kp9で約48°になります。
 ただし「おおよその平均」で、厳密に成り立たない日もあります（出典：[NOAA SWPC「Tips on Viewing the Aurora」](https://www.spaceweather.gov/content/tips-viewing-aurora)）。
-明るいオーロラは条件がよければ、最大 約1000km離れた場所からも見えます（出典：[NOAA SWPC「Aurora - 30 Minute Forecast」](https://www.spaceweather.gov/products/aurora-30-minute-forecast)）。
+
+明るいオーロラは、条件がよければ最大 約1000km離れた場所からも見えます（出典：[NOAA SWPC「Aurora - 30 Minute Forecast」](https://www.spaceweather.gov/products/aurora-30-minute-forecast)）。
 
 ### 行き先別：オーロラが見える目安のKp（極光ナビの計算値）
 
-下の表は、極光ナビの計算値（双極子近似）で、公的な観測値ではない目安です。
+下の表は、極光ナビの計算値（双極子近似）です。
+公的な観測値ではないので、目安として見てくださいね。
 双極子近似とは、地球の磁場を1本の棒磁石とみなす計算方法です。
 
 | 行き先 | 地磁気緯度 | 地平線に見える目安Kp | 真上の目安Kp |
@@ -53,8 +63,12 @@ Kpが1上がるごとに約2°南へ動き、Kp9で約48°になります。
 | 稚内 | 37.6° | 8.6 | 9.7 |
 | 陸別 | 35.8° | 9.0 | 9.9（上限） |
 
-陸別の地磁気緯度は、名古屋大学 ISEE の資料では約36.9°で、この近似とは約1°ずれます（出典：[名古屋大学 ISEE 研究集会資料](https://cicr.isee.nagoya-u.ac.jp/hokkaido/workshop/r07/04_yoda.pdf)）。
-表の「0」は、静かな夜でもオーロラ帯に入りうる位置という意味で、出る保証ではありません。
+陸別の地磁気緯度は、名古屋大学 ISEE の資料では約36.9°です。
+この近似とは約1°ずれます（出典：[名古屋大学 ISEE 研究集会資料](https://cicr.isee.nagoya-u.ac.jp/hokkaido/workshop/r07/04_yoda.pdf)）。
+
+表の「0」は、静かな夜でもオーロラ帯に入りうる位置という意味です。
+出る保証ではありません。
+
 地磁気緯度は近似の計算値なので、他の資料の値とずれることがあります。
 レイキャビクがトロムソより高く出ているのも、この近似での値です。
 
@@ -70,22 +84,29 @@ Kpが1上がるごとに約2°南へ動き、Kp9で約48°になります。
 - オウル・クーサモ：約25%
 - ヘルシンキ・トゥルク：月に1回ほど
 
-同研究所は数字のKp基準を示さず、場所ごとの「しきい値」を超えると出やすいと説明しています（出典：[Finnish Meteorological Institute「Auroras in Finland」](https://en.ilmatieteenlaitos.fi/auroras-in-finland)）。
+同研究所は、数字でのKpの基準は示していません。
+場所ごとの「しきい値」を超えると出やすい、という説明です（出典：[Finnish Meteorological Institute「Auroras in Finland」](https://en.ilmatieteenlaitos.fi/auroras-in-finland)）。
 
-ノルウェー宇宙天気センター（トロムソ大学）によると、北ノルウェーの磁場は地球全体の状態と大きくずれることがあります。
+ノルウェー宇宙天気センター（トロムソ大学）の説明も見てみましょう。
+北ノルウェーの磁場は、地球全体の状態と大きくずれることがあります。
 オーロラが急に明るくなる「サブストーム」は、3時間より短い時間で起きます（出典：[NOSWE / UiT](https://site.uit.no/spaceweather/?p=3770)）。
-3時間ごとのKpだけで、出る・出ないは決まりません。
+
+つまり、3時間ごとのKpだけで、出る・出ないは決まりません。
 
 ## 日本（北海道）でオーロラが見えるKpは？
 
 「北海道ではKpいくつ以上」という一律の数字は、公的な資料では見つかりませんでした。
-1つ目の理由は、地磁気緯度が低いことです。
+理由は2つあります。
+
+1つ目は、地磁気緯度が低いことです。
 上の表のとおり、NOAAの平均（Kp9で約48°）より、ずっと南です。
 
-2つ目の理由は、Kpだけで決まらない例があることです。
+2つ目は、Kpだけで決まらない例があることです。
 
 **2024年5月の大磁気嵐**
-この嵐は5月10日（米国東部時間）に最大のG5に達し、NOAAは「今世紀でおそらく最強」としています（出典：[NOAA SWPC](https://www.spaceweather.gov/news/g5-conditions-observed)、[NOAA](https://www.noaa.gov/heritage/stories/five-historically-huge-solar-events)）。
+この嵐は5月10日（米国東部時間）に最大のG5に達しました。
+NOAAは「今世紀でおそらく最強」としています（出典：[NOAA SWPC](https://www.spaceweather.gov/news/g5-conditions-observed)、[NOAA](https://www.noaa.gov/heritage/stories/five-historically-huge-solar-events)）。
+
 5月11日には、日本の広い範囲でオーロラが写真に撮られました。
 発光が高度 約1,000kmまで達したため、低い緯度からも見えたそうです（出典：[国立極地研究所ほか 発表資料](https://www.ism.ac.jp/ura/press/ISM2024-02/pr20241031.pdf)）。
 
@@ -96,7 +117,7 @@ Kpが1上がるごとに約2°南へ動き、Kp9で約48°になります。
 
 なお、NICTの宇宙天気予報の「地磁気」のレベルは、Kpではありません。
 茨城県柿岡のK指数を5段階で表したものです（出典：[NICT 宇宙天気予報](https://swc.nict.go.jp/knowledge/criteria_icon.html)）。
-KとKpは混ぜて読まないようにしましょう。
+日本の予報を見るときは、KとKpを混ぜて読まないように気をつけてくださいね。
 
 ## Kpと磁気嵐の大きさ（G1〜G5）の対応
 
@@ -115,16 +136,22 @@ NOAAは、磁気嵐の大きさをG1〜G5の5段階でも表します（出典�
 
 ## オーロラ予報の見方：27日予報・3日予報・OVATIONの使い分け
 
+予報は3種類あり、見る時期で使い分けます。
+順番にみていきましょう。
+
 ### 27日予報：旅行の日程えらびの目安
 
 27日予報には、日ごとの「最大Kp」の予報が並びます。
 毎週月曜 15:00 UTC までに発表されます（出典：[NOAA SWPC「27-day Outlook」](https://www.spaceweather.gov/products/27-day-outlook-107-cm-radio-flux-and-geomagnetic-indices)）。
+
 UTCは世界の基準時刻で、日本時間はUTC+9です（出典：[NICT「日本標準時」](https://www.nict.go.jp/sts/jst.html)）。
 月曜15:00 UTCは、日本時間の火曜0:00です。
 
-予報は、太陽が約27日で1回転し、活動的な領域がまた地球の正面に戻ることにもとづきます（出典：[NOAA SWPC「Forecasts」](https://www.spaceweather.gov/forecasts)）。
+この予報は、太陽が約27日で1回転することにもとづきます。
+活動的な領域が、また地球の正面に戻ってくるからです（出典：[NOAA SWPC「Forecasts」](https://www.spaceweather.gov/forecasts)）。
+
 ただし、何週間も先の予報は難しいとされます（出典：[NOAA NCEI](https://ncei.noaa.gov/news/chasing-northern-lights)）。
-日程は「目安」として使い、Kpだけで決めないのが安全です。
+日程は「目安」として使い、Kpだけで決めないほうが安心ですよ。
 
 ### 3日予報：前日〜当日の判断（UTCと「4.67」の読み方）
 
@@ -134,6 +161,7 @@ UTCは世界の基準時刻で、日本時間はUTC+9です（出典：[NICT「�
 
 「NOAA Kp index breakdown」の表には、00-03UT〜21-00UT の8枠が3日分並びます。
 UTはUTCとほぼ同じ意味の世界時です。
+英語の表ですが、読み方のコツは次の2つだけです。
 
 **時刻の読み方**：日本時間なら、UTに9時間足します。
 たとえば「12-15UT」は、日本時間の21〜24時です。
@@ -144,14 +172,20 @@ UTはUTCとほぼ同じ意味の世界時です。
 
 たとえば2026年11月1日 12:30 UTC 発表分には、次の一文がありました。
 「The greatest expected 3 hr Kp for Nov 01-Nov 03 2026 is 4.67 (NOAA Scale G1)」
-3日間で最も高い3時間のKpは4.67（5-）で、G1相当という意味です（出典：[NOAA SWPC 3日予報テキスト](https://services.swpc.noaa.gov/text/3-day-forecast.txt)）。
+
+これは、3日間で最も高い3時間のKpは4.67（5-）で、G1相当という意味です（出典：[NOAA SWPC 3日予報テキスト](https://services.swpc.noaa.gov/text/3-day-forecast.txt)）。
 
 ### OVATION：「今、外に出るか」
 
 OVATIONは、オーロラの位置と強さを示す地図の予報です。
-ジョンズ・ホプキンス大学の研究所が作ったモデルで、NOAAは2020年に新しい版を運用に入れました。
-先読みは「30〜90分先」で、地図の「確率」はオーロラの強さから出した推定です（出典：[NOAA SWPC「Aurora - 30 Minute Forecast」](https://www.spaceweather.gov/products/aurora-30-minute-forecast)）。
-なお、NOAAの予報図にあった見える南の限界の線「ビューライン」は、2026年5月に削除されました（出典：[NOAA SWPC「Aurora - Tonight and Tomorrow Night」](https://www.spaceweather.gov/products/aurora-viewline-tonight-and-tomorrow-night-experimental)）。
+ジョンズ・ホプキンス大学の研究所が作ったモデルです。
+NOAAは2020年に新しい版を運用に入れました。
+
+先読みは「30〜90分先」です。
+地図の「確率」は、オーロラの強さから出した推定です（出典：[NOAA SWPC「Aurora - 30 Minute Forecast」](https://www.spaceweather.gov/products/aurora-30-minute-forecast)）。
+
+なお、NOAAの予報図には、見える南の限界を示す線「ビューライン」がありました。
+この線は2026年5月に削除されています（出典：[NOAA SWPC「Aurora - Tonight and Tomorrow Night」](https://www.spaceweather.gov/products/aurora-viewline-tonight-and-tomorrow-night-experimental)）。
 
 ### Bzと太陽風の速さ：「いま出るか」の手がかり
 
@@ -164,11 +198,14 @@ NICTも、南向きになるとオーロラが明るくなると説明してい�
 
 太陽風の速さは、ふつう約400km/sです。
 コロナホール（太陽の暗い領域）からの高速の風は、500〜800km/sになります（出典：[NOAA SWPC「Solar Wind」](https://www.spaceweather.gov/phenomena/solar-wind)）。
-NOAAのグラフではBzがマイナスの部分に色がつきますが、「何nTならよい」という公式の基準は確認できませんでした（出典：[NOAA SWPC「Real Time Solar Wind」](https://www.spaceweather.gov/products/real-time-solar-wind)）。
+
+NOAAのグラフでは、Bzがマイナスの部分に色がつきます。
+ただ、「何nTならよい」という公式の基準は確認できませんでした（出典：[NOAA SWPC「Real Time Solar Wind」](https://www.spaceweather.gov/products/real-time-solar-wind)）。
 
 ## Kpが高くても見えない条件（雲・月明かり・暗さ）と寒さ対策
 
 Kpが高くても、空の条件が悪いとオーロラは見えません。
+出かける前に、次の点をチェックしておくと安心です。
 
 - **雲**：晴れていることが必要です。雲は天気予報で確認します。
 - **暗さ**：暗い空が必要です。オーロラ帯の夏は白夜で見えません。
@@ -179,28 +216,36 @@ Kpが高くても、空の条件が悪いとオーロラは見えません。
 
 （出典：[NOAA SWPC「Tips」](https://www.spaceweather.gov/content/tips-viewing-aurora)、[NOAA SWPC「Aurora」](https://www.spaceweather.gov/phenomena/aurora)、[NOAA NCEI](https://ncei.noaa.gov/news/chasing-northern-lights)）
 
-オーロラを待つ夜は冷え込むので、長く外にいるつもりで服装を整えましょう。
+オーロラを待つ夜は冷え込みます。
+長く外にいるつもりで、服装を整えておきましょう。
 凍傷の初期サインは、チクチクする感じや、感覚がなくなることです（出典：[Terveyskirjasto「Paleltuma」](https://www.terveyskirjasto.fi/dlk00315/paleltuma)）。
 服装と持ち物は[オーロラ旅の服装と持ち物](aurora-packing-list.html)にまとめています。
 
 ## オーロラ予報を確かめる手順（チェックリスト）
 
-1. **日程を決めるとき：[27日予報](https://www.spaceweather.gov/products/27-day-outlook-107-cm-radio-flux-and-geomagnetic-indices)**　日ごとの最大Kpを目安にし、暗い時間の長さと月明かりも合わせて考えます。
+ここまでの内容を、3つの手順にまとめました。
+
+1. **日程を決めるとき：[27日予報](https://www.spaceweather.gov/products/27-day-outlook-107-cm-radio-flux-and-geomagnetic-indices)**　日ごとの最大Kpを目安にします。暗い時間の長さと月明かりも合わせて考えます。
 2. **前日〜当日：[3日予報](https://www.spaceweather.gov/products/3-day-forecast)**　3時間ごとのKpを日本時間・現地時間に直し、夜の枠の値を見ます。
 3. **当夜：[OVATION](https://www.spaceweather.gov/products/aurora-30-minute-forecast)と雲**　OVATIONで30〜90分先を見て、雲の予報で晴れ間を確かめます（[極光ナビで雲量を見る](../index.html)）。
 
 ## 極光ナビは何を使って判定している？
 
-極光ナビの「見えやすさ」は、磁気活動×暗さ×晴れ×月明かりで出すスコアで、確率ではありません。
-磁気活動は、上の表と同じ「地平線・真上の目安Kp」をKp予報と比べ、磁場 Bz と太陽風速度も表示しています。
-地図の「いま見えていそう」はOVATION・暗さ・雲量で判定し、OVATIONが取れないときはKpから推定します。
+極光ナビの「見えやすさ」は、磁気活動×暗さ×晴れ×月明かりで出すスコアです。
+確率ではありません。
+
+磁気活動は、上の表と同じ「地平線・真上の目安Kp」をKp予報と比べています。
+磁場 Bz と太陽風速度も表示しています。
+
+地図の「いま見えていそう」は、OVATION・暗さ・雲量で判定しています。
+OVATIONが取れないときは、Kpから推定します。
 
 <a class="cta" href="../index.html"><b>極光ナビ</b>：Kp予報・雲量・暗さ・月明かりをまとめて判定し、今夜の見えやすさを表示します。</a>
 
 ## まとめ
 
 - Kpは、地球全体の磁場の乱れを0〜9で表す3時間ごとの数字です。5以上が磁気嵐です。
-- 「Kpいくつで見えるか」は地磁気緯度で変わり、北海道に一律の数字はありません。
+- 「Kpいくつで見えるか」は地磁気緯度で変わります。北海道に一律の数字はありません。
 - 予報は27日予報→3日予報→当夜のOVATIONと雲の順に確かめます。時刻はUTCです。
 - Kpが高くても、雲・月明かり・暗さがそろわないと見えません。
 
