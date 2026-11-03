@@ -126,3 +126,6 @@
 | 事実 | 出典 | 確認日 |
 |---|---|---|
 | 北海道新聞の例は、2024年5月11日夜に北海道石狩市で撮った低緯度オーロラ（iPhone 手持ち・ナイトモード5秒）。続きは有料で未読 | https://www.hokkaido-np.co.jp/article/1017373/ | 2026-11-03 |
+| Visit Rovaniemi の案内：道路わきに車を止めない・駐車しない、暗い季節は反射材を身につける、現地の安全の案内に従う | https://www.visitrovaniemi.fi/a-guide-for-responsible-northern-lights-experience-in-rovaniemi/ | 2026-11-03 |
+| 北海道新聞の例で撮ったのは一般の方（22歳）。記事の筆者は「オーロラ取材班」、見出しは「写真記者が教えます」 | https://www.hokkaido-np.co.jp/article/1017373/ | 2026-11-03 |
+| ソニーのページに「500ルール」という名前はなく、「一般的に以下の計算式を目安にします」と式だけ | https://support.sony.jp/electronics/support/articles/00364639 | 2026-11-03 |
