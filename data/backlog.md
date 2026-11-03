@@ -5,7 +5,7 @@
 
 | 優先 | slug | テーマ | 柱 | 区分の見込み | 必要な体験 | 状態 |
 |---|---|---|---|---|---|---|
-| 1 | aurora-destinations-compare | トロムソ・ロヴァニエミ・アビスコの比較 | A | approve | 不要 | 承認待ち（PR：claude/aurora-destinations-compare、2026-11-03。採点80点未満のため approve） |
+| 1 | aurora-destinations-compare | トロムソ・ロヴァニエミ・アビスコの比較 | A | approve | 不要 | 公開済み（2026-11-03、PR #11） |
 | 2 | aurora-best-time-night | オーロラが出やすい時間帯と季節 | D | auto | 不要 | 待ち |
 | 3 | rovaniemi-december-guide | 12月のロヴァニエミ：日照・気温・クリスマスの混雑と予約の注意 | A | auto | 不要（12月に行った体験はないので、調査だけで書く） | 待ち（新規 2026-11-01。11月中に出したい） |
 | 4 | ry-rental-suitcase | スーツケースは借りる派：アールワイレンタルを使ってみた | B | approve | スーツケースレンタル（体験メモあり：2026-10-suitcase-rental.md。写真のみ未着） | 調査待ち（公式サイトに接続できず。再調査から） |
