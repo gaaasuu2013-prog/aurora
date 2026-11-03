@@ -82,7 +82,7 @@ Beyond Arctic というオーロラツアーに参加した夜に撮りました
 | シャッタースピード | 2〜4秒（動きが激しいとき）、6〜8秒（穏やかなとき） | 5〜15秒程度。速く動くときは短く |
 | ISO感度 | 1600〜3200 | 800〜3200 |
 
-15〜30秒はソニーの星空向けの目安です。AIに相談した範囲は推奨値ではありません。
+表の5〜15秒はオーロラ向けの目安です。ソニーの15〜30秒は星空向けの目安です。AIに相談した範囲は推奨値ではありません。
 
 - Visit Rovaniemi：5〜15秒程度から、いちばん開いた絞り、ISO800〜3200（出典：[Visit Rovaniemi](https://www.visitrovaniemi.fi/a-guide-for-responsible-northern-lights-experience-in-rovaniemi/)）
 - Visit Norway：出発点は f/2.8・15秒・ISO1600。動きが速いときはシャッターを短く（出典：[Visit Norway](https://www.visitnorway.com/things-to-do/nature-attractions/northern-lights/how-to-photograph/)）
@@ -104,7 +104,7 @@ F値（絞り）は小さいほど光を多く取り込めます。ISO感度は�
 α7 IV はフルサイズです（出典：[ソニー α7 IV 主な仕様](https://www.sony.jp/ichigan/products/ILCE-7M4/spec.html)）。
 20mm のレンズなら、目安は約25秒です。
 AIに相談して撮った範囲の2〜8秒は、それよりかなり短めでした。
-高画素の機種では、拡大すると流れて見えることもあります。あくまで目安です。
+ソニーも「この計算式はあくまでも目安です」としています。
 
 ## ピントはオート？ マニュアル？
 
@@ -115,6 +115,7 @@ AIに相談して撮った範囲の2〜8秒は、それよりかなり短めで�
 ニコンも、明るい星を拡大して合わせる方法です。気温の変化でずれることがあるので、再確認も大事です（出典：[ニコン 星空クイックガイド](https://nij.nikon.com/cms/sp/nightlandscapes_stars/stars.html)）。
 
 ツアーでは、カメラマンから「レンズの根元あたりを回せばピントを合わせられる」と教わりました。
+「根元あたり」は私たちの覚えている言い方です。レンズにはリングが複数あるので、どれがフォーカスリングかは説明書で確かめてから回してください。
 α7 IV の説明書では、マニュアルフォーカスの手順は次のとおりです（出典：[ソニー α7 IV ヘルプガイド「マニュアルフォーカス」](https://helpguide.sony.net/ilc/2110/v1/ja/contents/TP1000617221.html)、[同「ピント拡大」](https://helpguide.sony.net/ilc/2110/v1/ja/contents/TP1000617477.html)）。
 
 1. メニューのフォーカスモードで「マニュアルフォーカス」を選ぶ
@@ -129,7 +130,7 @@ Visit Rovaniemi は、道路わきに車を止めないよう案内していま�
 α7 IV のセルフタイマーには、10秒・5秒・2秒があります（出典：[ソニー α7 IV 主な仕様](https://www.sony.jp/ichigan/products/ILCE-7M4/spec.html)）。
 
 メーカーの使用温度は0〜40℃で、0℃を下回る場所はその範囲外です（出典：[ソニー α7 IV 主な仕様](https://www.sony.jp/ichigan/products/ILCE-7M4/spec.html)）。
-私たちが行った10月は、感覚では最低−5℃くらいでした（服装の記事「[オーロラ旅の持ち物と服装](aurora-packing-list.html)」）。人の寒さ対策も、この記事にまとめています。
+私たちが行った10月は、感覚では最低−5℃くらいでした（服装の記事「[オーロラ旅の持ち物と服装](aurora-packing-list.html)」）。人の寒さ対策も、その記事にまとめています。
 
 ソニーのヘルプガイドには、低温の注意もあります（出典：[ソニー α7 IV ヘルプガイド「バッテリーについて」](https://helpguide.sony.net/ilc/2110/v1/ja/contents/TP1000617101.html)、[同「使用上のご注意」](https://helpguide.sony.net/ilc/2110/v1/ja/contents/TP1000656447.html)）。
 
