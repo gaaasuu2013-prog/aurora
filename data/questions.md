@@ -87,4 +87,4 @@
 - [ ] (rovaniemi-aurora-tour-review) どちらのツアーでも、温かい飲み物以外に何が出ましたか？（焚き火・ソーセージなど） Beyond Arctic で防寒着は借りましたか？
 - [ ] (rovaniemi-aurora-tour-review) Arctic GM で、オーロラが見えるまで何か所くらい移動しましたか？ 見えたのは何時ごろでしたか？ ガイドの説明は英語でしたか？
 - [ ] (rovaniemi-aurora-tour-review) 「公式サイトから予約した」のは、Beyond Arctic・Arctic GM の両方ですか？（片方だけなら、どちらか）
-- [ ] (aurora-photo-smartphone) パートナーが α7 IV で撮ったうまくいった1枚（カーブする道）は、ピントを手で合わせましたか？ オートでしたか？ 三脚は使いましたか？
+- [x] (aurora-photo-smartphone) パートナーが α7 IV で撮ったうまくいった1枚（カーブする道）は、ピントを手で合わせましたか？ オートでしたか？ 三脚は使いましたか？（→オート、三脚あり）
