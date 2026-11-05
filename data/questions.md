@@ -69,8 +69,8 @@
 
 ## 寝台列車（helsinki-rovaniemi-night-train）※2026-11-01 analyst 追加
 - [x] (helsinki-rovaniemi-night-train) ヘルシンキ→ロヴァニエミの寝台列車は、どこで予約しましたか？（→VR公式サイト）
-- [ ] (helsinki-rovaniemi-night-train) 寝台列車は、出発の何日（何週間）くらい前に予約しましたか？
-- [ ] (helsinki-rovaniemi-night-train) 客室はどの種類でしたか？（2人用個室・シャワー付きなど） 2人分の料金はいくらでしたか？
+- [x] (helsinki-rovaniemi-night-train) 寝台列車は、出発の何日（何週間）くらい前に予約しましたか？（→80日前）
+- [x] (helsinki-rovaniemi-night-train) 客室はどの種類でしたか？（2人用個室・シャワー付きなど） 2人分の料金はいくらでしたか？（→トイレ・シャワー付きの上階個室、2人で204ユーロ）
 - [ ] (helsinki-rovaniemi-night-train) 出発と到着は何時でしたか？ よく眠れましたか？ 良かった点と困った点を1つずつ
 - [ ] (helsinki-rovaniemi-night-train) 写真：客室の中、列車の外観（あれば）
 
