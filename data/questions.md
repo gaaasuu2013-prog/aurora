@@ -68,7 +68,8 @@
 - [x] (aurora-photo-smartphone) 2026-10-28に送ってくれた写真（紫の空に緑の帯、手前に白樺）は自分たちで撮ったもの？（→カメラマンの写真として使う）
 
 ## 寝台列車（helsinki-rovaniemi-night-train）※2026-11-01 analyst 追加
-- [ ] (helsinki-rovaniemi-night-train) ヘルシンキ→ロヴァニエミの寝台列車は、どこで予約しましたか？（VR公式サイト・アプリ・旅行会社など） 何日前に予約しましたか？
+- [x] (helsinki-rovaniemi-night-train) ヘルシンキ→ロヴァニエミの寝台列車は、どこで予約しましたか？（→VR公式サイト）
+- [ ] (helsinki-rovaniemi-night-train) 寝台列車は、出発の何日（何週間）くらい前に予約しましたか？
 - [ ] (helsinki-rovaniemi-night-train) 客室はどの種類でしたか？（2人用個室・シャワー付きなど） 2人分の料金はいくらでしたか？
 - [ ] (helsinki-rovaniemi-night-train) 出発と到着は何時でしたか？ よく眠れましたか？ 良かった点と困った点を1つずつ
 - [ ] (helsinki-rovaniemi-night-train) 写真：客室の中、列車の外観（あれば）
