@@ -46,7 +46,7 @@
 | 見える時間帯（FMI） | 「ふつうは真夜中と、その前後2時間ほど」 | https://en.ilmatieteenlaitos.fi/auroras-in-finland | 2026-11-06 | 公式（FMI） |
 | 見る方角（FMI） | オーロラは北の空に見えることが多いので、北の地平線まで開けた場所を | https://en.ilmatieteenlaitos.fi/auroras-in-finland | 2026-11-06 | 公式（FMI） |
 | しきい値は場所ごと（FMI） | 数値の Kp 基準はなく、活動度が「場所ごとのしきい値」を超えると見える見込みが高い（天気しだい） | https://en.ilmatieteenlaitos.fi/auroras-in-finland | 2026-11-06 | 公式（FMI） |
-| 太陽活動周期と南フィンランド | 大きなオーロラの数は黒点数に2〜3年遅れて増減し、「この影響は南フィンランドでいちばん大きい」 | https://en.ilmatieteenlaitos.fi/auroras-in-finland | 2026-11-06 | 公式（FMI） |
+| 太陽活動周期と南フィンランド | 大きなオーロラの数は黒点数に数年（2年ほど）遅れて増減し、「この影響は南フィンランドでいちばん大きい」 | https://en.ilmatieteenlaitos.fi/auroras-in-finland | 2026-11-06 | 公式（FMI） |
 | FMI のオーロラページ（英語） | 「Auroras and space weather」。地磁気の乱れからオーロラの見込みを示す。過去24時間の棒グラフと観測点の地図、指標は R 指数。黄の棒・四角＝見える可能性はあるがふつう淡い／赤の棒・ひし形＝見える可能性がとても高い | https://en.ilmatieteenlaitos.fi/auroras-and-space-weather | 2026-11-06 | 公式（FMI） |
 | R 指数とは | 磁場の変化の速さを表す指数（10分あたりの変化。絶対値の nT ではない）。観測点ごとに下・上の2つのしきい値 | https://en.ilmatieteenlaitos.fi/auroras-and-space-weather | 2026-11-06 | 公式（FMI） |
 | サービス改良（2024年） | FMI 発表（2024-01-24）：約20年続くオーロラのサービス。R 指数の更新を10分ごとから5分ごとに。しきい値を1つから2つ（黄・赤）に。しきい値はケヴォ・ムオニオ・ハンカサルミのオーロラカメラ画像で決めた | https://en.ilmatieteenlaitos.fi/press-release/4h8gM2x3Us7CW2xjVJYMvB | 2026-11-06 | 公式（FMI） |
