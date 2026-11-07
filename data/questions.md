@@ -77,7 +77,7 @@
 
 ## 中欧をまわった旅程（aurora-central-europe-route）※2026-11-01 analyst 追加
 - [x] (aurora-central-europe-route) ロヴァニエミ・プラハ・ハルシュタット・ウィーンに、それぞれ何泊しましたか？（→3・4・1・2泊）
-- [ ] (aurora-central-europe-route) 旅は、日本を出てから帰るまで全部で何日間でしたか？
+- [x] (aurora-central-europe-route) 旅は、日本を出てから帰るまで全部で何日間でしたか？（→15日）
 - [ ] (aurora-central-europe-route) プラハ→ハルシュタット、ハルシュタット→ウィーンの電車は、どこで予約しましたか？ 乗り換えで困ったことはありましたか？
 - [ ] (aurora-central-europe-route) 大きなスーツケース（123L・98L）を持っての移動で、大変だった場面はありましたか？
 
