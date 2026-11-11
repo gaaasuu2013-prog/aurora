@@ -84,6 +84,7 @@ Kpが1上がるごとに約2°南へ動き、Kp9で約48°になります。
 
 同研究所は、数字でのKpの基準は示していません。
 場所ごとの「しきい値」を超えると出やすい、という説明です（出典：[Finnish Meteorological Institute「Auroras in Finland」](https://en.ilmatieteenlaitos.fi/auroras-in-finland)）。
+ヘルシンキでの見え方と、FMI の予報の読み方は「[ヘルシンキでオーロラは見える？](helsinki-aurora.html)」にまとめています。
 
 北ノルウェーの磁場は、地球全体の状態と大きくずれることがあります。
 オーロラが急に明るくなる「サブストーム」は、3時間より短い時間で起きます（出典：[NOSWE / UiT](https://site.uit.no/spaceweather/?p=3770)）。

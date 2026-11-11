@@ -1,14 +1,14 @@
 ---
-title: ヘルシンキでオーロラは見える？頻度・条件と予報の見方、見る場所
-description: ヘルシンキでオーロラが見えるのは、フィンランド気象研究所の統計で暗く晴れた夜に平均月1回ほど。見える方角と時間帯、FMIの予報（R指数）の読み方、市内から行ける暗い場所、北へ行く方法を出典つきで紹介します。
+title: ヘルシンキでオーロラは見える？頻度と予報の見方、暗い場所
+description: ヘルシンキでオーロラが見えるのは、暗く晴れた夜に平均月1回ほど（フィンランド気象研究所）。見る方角と時間帯、FMIの予報（R指数）の読み方、近くの暗い場所と北へ行く方法を出典つきでまとめました。
 slug: helsinki-aurora
 date: 2026-11-06
 updated: 2026-11-06
 pillar: A
 place: helsinki
 affiliate: false
-tier: auto
-status: draft
+tier: approve
+status: ready
 ---
 
 ヘルシンキでもオーロラは見えます。ただ、暗く晴れた夜でも平均で月に1回ほどです（出典：[FMI](https://en.ilmatieteenlaitos.fi/auroras-in-finland)）。
@@ -82,7 +82,7 @@ FMI によると、フィンランドの秋と冬は雲が多く、空の約65�
 
 このページでは、R 指数という指標で地磁気の乱れを見ます。
 R 指数は、磁場がどれだけ速く変わっているかを表す数字です。
-計算は10分間の変化で、更新は5分ごとです（出典：[FMI プレスリリース](https://en.ilmatieteenlaitos.fi/press-release/4h8gM2x3Us7CW2xjVJYMvB)）。
+計算には10分間の変化を使います（出典：[FMI「Auroras and space weather」](https://en.ilmatieteenlaitos.fi/auroras-and-space-weather)）。
 
 観測点ごとに、下と上の2つのしきい値があります（出典：[FMI「Auroras and space weather」](https://en.ilmatieteenlaitos.fi/auroras-and-space-weather)）。
 
@@ -90,10 +90,12 @@ R 指数は、磁場がどれだけ速く変わっているかを表す数字で
 - 赤の棒・ひし形：見える可能性がとても高い
 
 過去24時間の棒グラフと、観測点の地図で確かめられます。
-ヘルシンキに近い南の観測点が黄や赤になっていたら、北の空を見てみる合図です。
+目安は、ヘルシンキに近い南の観測点の色です。
+黄なら、北の空を見てみる。
+赤なら、外に出る価値が大きい夜です。
 
-FMI の2024年1月24日の発表では、R 指数の更新が10分ごとから5分ごとになりました。
-しきい値も1つから2つ（黄・赤）に増えています（出典：[FMI プレスリリース](https://en.ilmatieteenlaitos.fi/press-release/4h8gM2x3Us7CW2xjVJYMvB)）。
+R 指数は5分ごとに更新されます。
+黄・赤の2段階になったのは、2024年1月の改良からです（出典：[FMI プレスリリース](https://en.ilmatieteenlaitos.fi/press-release/4h8gM2x3Us7CW2xjVJYMvB)）。
 
 ### 夜ごとの「オーロラの確率」はフィンランド語のページに
 
@@ -141,8 +143,11 @@ Kp は、地球の磁場の乱れを0〜9で表す数字です。
 
 ### Kp いくつなら見える？
 
-計算上はオーロラ帯が低いKpでも地平線近くまで届きますが、実際には大きく乱れた夜（FMIのR指数が赤のしきい値を超える夜など）でないと見えにくいです。
-地平線近くの淡い光は、街明かりや低い雲にすぐ隠れてしまうからです。
+実際は、大きく乱れた夜でないと見えにくいです。
+たとえば、FMI の R 指数が赤のしきい値を超える夜です。
+
+計算の上では、低い Kp でもオーロラ帯は地平線近くまで届きます。
+でも地平線近くの淡い光は、街明かりや低い雲にすぐ隠れてしまいます。
 
 参考までに、極光ナビの計算上の目安は、北の地平線近くで Kp 約1.8、真上で Kp 約4.3 です。
 地球の磁場を1本の棒磁石とみなす「双極子近似」で出した値で、公的な観測値ではありません。
@@ -159,7 +164,7 @@ FMI によると、大きなオーロラの数は太陽の黒点の数に2年ほ
 
 Kp の読み方は「[Kp指数とは？オーロラ予報の見方](kp-index-guide.html)」にまとめています。
 
-## ヘルシンキ近くでオーロラを見る場所は？ヌークシオへの行き方
+## ヘルシンキ近くで暗い空を探すなら：ヌークシオへの行き方
 
 市内は街明かりが多く、淡いオーロラは見えにくくなります。
 少しでも暗い場所へ行くなら、エスポー市にあるヌークシオ国立公園が候補です。
@@ -177,7 +182,7 @@ Kp の読み方は「[Kp指数とは？オーロラ予報の見方](kp-index-gui
 
 - **帰りのバスがあるかを先に確かめる。** 真夜中前後に帰りのバスがあるか、出かける前に HSL の経路検索で確かめましょう。帰れないなら、行かないでください。
 - **1人で行かない。** 暗い森の近くへ行くので、誰かと一緒に。
-- **冬の夜は、道が凍っていることがある（出典：[Luontoon](https://www.luontoon.fi/en/articles/hiking-in-the-dark)）。** 足元に気をつけて歩きましょう。
+- **冬は道が滑りやすいことがあります（出典：[Luontoon](https://www.luontoon.fi/en/articles/hiking-in-the-dark)）。** 滑りにくい靴で、足元に気をつけてください。
 
 Metsähallitus は、暗い中を歩くときの準備として次を挙げています（出典：[Luontoon](https://www.luontoon.fi/en/articles/hiking-in-the-dark)）。
 
@@ -190,6 +195,7 @@ Metsähallitus は、暗い中を歩くときの準備として次を挙げて�
 
 なお、ヌークシオでのオーロラ観察について、公式の案内は見つかりませんでした。
 「オーロラの名所」というより、「北の空が暗い場所を探しに行ける自然公園」と考えてください。
+北の空が開けているかは、現地で確かめてください。
 
 ## 見込みを上げたいなら北へ：寝台列車と国内線
 
@@ -227,4 +233,4 @@ Metsähallitus は、暗い中を歩くときの準備として次を挙げて�
 - [Visit Espoo「Haukkalampi recreational area」](https://visitespoo.fi/en/visitor/see-do/nuuksio-national-park/haukkalampi-recreational-area)（確認日 2026-11-06）
 - [VR「Night trains」](https://vr.fi/en/night-trains)（確認日 2026-11-06）
 - [Finnair「Finnish Lapland」](https://www.finnair.com/en/finnish-lapland)（確認日 2026-11-06）
-- ヘルシンキの地磁気緯度と目安の Kp：極光ナビの計算（双極子近似。式は「66.5°から Kp 1ごとに2.05°」で、NOAA の丸めた値〈Kp0 で約66°、1ごとに約2°〉だと真上は Kp 約4.1）。公的な観測値ではありません。考え方は「[Kp指数とは？オーロラ予報の見方](kp-index-guide.html)」（確認日 2026-11-06）
+- ヘルシンキの地磁気緯度と目安の Kp：極光ナビの計算（双極子近似）。式の詳細は「[Kp指数とは？オーロラ予報の見方](kp-index-guide.html)」
